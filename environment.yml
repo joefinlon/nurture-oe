@@ -1,0 +1,19 @@
+name: nurture-oe
+channels:
+  - conda-forge
+  - nodefaults
+dependencies:
+  - python=3.12
+  - numpy
+  - scipy
+  - xarray
+  - h5py
+  - netcdf4
+  - pandas
+  - matplotlib
+  - ultraplot
+  - pyyaml
+  - pytest
+  - jupyterlab
+  - ipykernel
+  - pip

@@ -1,0 +1,21 @@
+[build-system]
+requires = ["setuptools>=64"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "nurture-oe"
+version = "0.1.0"
+description = "NURTURE -> FALCON optimal-estimation cloud retrieval: readers, co-registration, scattering-database tools"
+requires-python = ">=3.11"
+dependencies = ["numpy", "scipy", "xarray", "h5py", "netCDF4", "pandas", "pyyaml"]
+
+[project.optional-dependencies]
+plot = ["matplotlib", "ultraplot"]
+test = ["pytest"]
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+markers = ["slow: reads more than 100 MB from the data store"]

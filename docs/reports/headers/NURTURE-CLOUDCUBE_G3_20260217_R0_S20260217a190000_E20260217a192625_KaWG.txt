@@ -1,0 +1,182 @@
+# Header dump: NURTURE-CLOUDCUBE_G3_20260217_R0_S20260217a190000_E20260217a192625_KaWG.nc
+# size: 570,957,307 bytes
+
+## Global attributes
+  'title': 'NURTURE 2026 CloudCube Measurements'
+  'project': 'NURTURE 2026'
+  'ProcessingLevel': 'L2'
+  'ACVSNC_standard_name_URL': 'https://doi.org/10.5067/DOC/ESCO/ESDS-RFC-043v1'
+  'ACVSNC_standard_name_version': '1.0'
+  'Conventions': 'CF-1.9'
+  'Format': 'NetCDF4'
+  'VersionID': 'R0'
+  'institution': 'NASA Jet Propulsion Laboratory'
+  'PI_name': 'Raquel Rodriguez-Monje'
+  'PI_contact': 'raquel.rodriguez.monje@jpl.nasa.gov'
+  'file_originator': 'Arturo Umeyama'
+  'file_originator_contact': 'arturo.umeyama@jpl.nasa.gov'
+  'source': 'CloudCube'
+  'measurement_platform': 'NASA Gulfstream-III'
+  'platform_identifier': 'N520NA'
+  'platform_type': 'AirMobile'
+  'flight_start_date': '20260217'
+  'time_coverage_start': '2026-02-17 19:00:00'
+  'time_coverage_end': '2026-02-17 19:26:25'
+  'geospatial_lat_max': '54.162735 degrees_north'
+  'geospatial_lat_min': '53.600296 degrees_north'
+  'geospatial_lon_max': '-61.798691 degrees_east'
+  'geospatial_lon_min': '-67.733078 degrees_east'
+  'last_modified_date': '2026-08-10'
+  'history': 'R0: Initial processing of field flight data.'
+  'keywords': 'precipitation, radar, multifrequency'
+  'data_product_groups': Empty(dtype=dtype('S1'))
+  'data_use_guideline': 'For responsible scientific use of the data sets provided, data users are strongly encouraged to carefully study the file headers and directly consult with the instrument PIs. Please acknowledge the data source and offer co-authorship to relevant instrument PIs when appropriate.'
+  'radar_sensitivity_ka_dbz': '-19.26 dBZ @ 1 km'
+  'radar_sensitivity_w_dbz': '-32.64 dBZ @ 1 km'
+  'radar_sensitivity_g_dbz': '-37.58 dBZ @ 1 km'
+  '_NCProperties': 'version=2,netcdf=4.9.2,hdf5=1.14.4'
+
+- /alt  shape=(15787,) dtype=float64 chunks=None compression=None fillvalue=np.float64(9.969209968386869e+36)
+    dims: ['/time']
+    'VarType': 'Coordinate'
+    'units': 'm'
+    'long_name': 'Altitude of the aircraft above WGS84 ellipsoid. Interpolated from aircraft navigation files '
+    'name': 'alt'
+    'ACVSNC_standard_name': 'Platform_AltitudeEllipsoid_InSitu_None'
+- /heading  shape=(15787,) dtype=float64 chunks=None compression=None fillvalue=np.float64(9.969209968386869e+36)
+    dims: ['/time']
+    'VarType': 'Other'
+    'units': 'degrees'
+    'long_name': 'True heading angle of the aircraft. Interpolated from aircraft navigation files '
+    'name': 'heading'
+- /incidence_angle  shape=(15787,) dtype=float64 chunks=None compression=None fillvalue=np.float64(9.969209968386869e+36)
+    dims: ['/time']
+    'VarType': 'Other'
+    'units': 'degrees'
+    'long_name': 'Incidence angle on the surface '
+    'name': 'incidence_angle'
+- /katten_g  shape=(15787, 751) dtype=float64 chunks=None compression=None fillvalue=np.float64(nan)
+    dims: ['/time', '/range']
+    'VarType': 'Other'
+    'units': 'dB.km-1'
+    'long_name': 'Gaseous attenuation profile at G-band'
+    'name': 'katten_g'
+    '_FillValue': nan
+- /katten_ka  shape=(15787, 751) dtype=float64 chunks=None compression=None fillvalue=np.float64(nan)
+    dims: ['/time', '/range']
+    'VarType': 'Other'
+    'units': 'dB.km-1'
+    'long_name': 'Gaseous attenuation profile at Ka-band'
+    'name': 'katten_ka'
+    '_FillValue': nan
+- /katten_w  shape=(15787, 751) dtype=float64 chunks=None compression=None fillvalue=np.float64(nan)
+    dims: ['/time', '/range']
+    'VarType': 'Other'
+    'units': 'dB.km-1'
+    'long_name': 'Gaseous attenuation profile at W-band'
+    'name': 'katten_w'
+    '_FillValue': nan
+- /landmask  shape=(15787,) dtype=int32 chunks=None compression=None fillvalue=np.int32(-2147483647)
+    dims: ['/time']
+    'VarType': 'Flag'
+    'units': '1'
+    'long_name': 'Surface mask'
+    'flag_values': '0, 1, 2, 3'
+    'flag_meanings': 'ocean, river, ice, land'
+    'name': 'landmask'
+- /lat  shape=(15787,) dtype=float64 chunks=None compression=None fillvalue=np.float64(9.969209968386869e+36)
+    dims: ['/time']
+    'VarType': 'Coordinate'
+    'units': 'degrees_north'
+    'long_name': 'Latitude of the aircraft. Interpolated from aircraft navigation files '
+    'name': 'lat'
+    'standard_name': 'latitude'
+    'ACVSNC_standard_name': 'Platform_Latitude_InSitu_None'
+- /lon  shape=(15787,) dtype=float64 chunks=None compression=None fillvalue=np.float64(9.969209968386869e+36)
+    dims: ['/time']
+    'VarType': 'Coordinate'
+    'units': 'degrees_east'
+    'long_name': 'Longitude of the aircraft. Interpolated from aircraft navigation files '
+    'name': 'lon'
+    'standard_name': 'longitude'
+    'ACVSNC_standard_name': 'Platform_Longitude_InSitu_None'
+- /look_vector_ecef  shape=(15787, 3) dtype=float64 chunks=None compression=None fillvalue=np.float64(nan)
+    dims: ['/time', '/nxyz']
+    'VarType': 'Other'
+    'units': '1'
+    'long_name': '3 components of unit vector along antenna pointing direction in ECEF'
+    'name': 'look_vector_ecef'
+    '_FillValue': nan
+- /nxyz  shape=(3,) dtype=>f4 chunks=None compression=None fillvalue=np.float32(0.0)
+    dimension scale NAME: 'This is a netCDF dimension but not a netCDF variable.         3'
+    value: array([0., 0., 0.], dtype='>f4')
+- /pitch  shape=(15787,) dtype=float64 chunks=None compression=None fillvalue=np.float64(9.969209968386869e+36)
+    dims: ['/time']
+    'VarType': 'Other'
+    'units': 'degrees'
+    'long_name': 'Pitch angle of the aircraft. Interpolated from aircraft navigation files '
+    'name': 'pitch'
+- /range  shape=(751,) dtype=float64 chunks=None compression=None fillvalue=np.float64(9.969209968386869e+36)
+    dimension scale NAME: 'range'
+    'VarType': 'Dimension'
+    'units': 'm'
+    'long_name': 'Range from the aircraft'
+    'name': 'range'
+- /roll  shape=(15787,) dtype=float64 chunks=None compression=None fillvalue=np.float64(9.969209968386869e+36)
+    dims: ['/time']
+    'VarType': 'Other'
+    'units': 'degrees'
+    'long_name': 'Roll angle of the aircraft. Interpolated from aircraft navigation files '
+    'name': 'roll'
+- /s0_g  shape=(15787,) dtype=float64 chunks=None compression=None fillvalue=np.float64(nan)
+    dims: ['/time']
+    'VarType': 'Other'
+    'units': 'dB'
+    'long_name': 'Surface NRCS at surface at G-band'
+    'name': 's0_g'
+    '_FillValue': nan
+- /s0_ka  shape=(15787,) dtype=float64 chunks=None compression=None fillvalue=np.float64(nan)
+    dims: ['/time']
+    'VarType': 'Other'
+    'units': 'dB'
+    'long_name': 'Surface NRCS at Ka-band'
+    'name': 's0_ka'
+    '_FillValue': nan
+- /s0_w  shape=(15787,) dtype=float64 chunks=None compression=None fillvalue=np.float64(nan)
+    dims: ['/time']
+    'VarType': 'Other'
+    'units': 'dB'
+    'long_name': 'Surface NRCS at surface at W-band'
+    'name': 's0_w'
+    '_FillValue': nan
+- /time  shape=(15787,) dtype=float64 chunks=None compression=None fillvalue=np.float64(9.969209968386869e+36)
+    dimension scale NAME: 'time'
+    'VarType': 'Dimension'
+    'units': 'seconds since 2026-02-17 00:00:00'
+    'long_name': 'UTC mid time of sampling interval'
+    'name': 'time'
+    'standard_name': 'time'
+- /zm_g  shape=(15787, 751) dtype=float64 chunks=None compression=None fillvalue=np.float64(nan)
+    dims: ['/time', '/range']
+    'VarType': 'Data Product'
+    'units': 'dBZ'
+    'long_name': 'Reflectivity factor at G-band'
+    'name': 'zm_g'
+    'ACVSNC_standard_name': 'CldOpt_RadarReflectivity_Profile_G'
+    '_FillValue': nan
+- /zm_ka  shape=(15787, 751) dtype=float64 chunks=None compression=None fillvalue=np.float64(nan)
+    dims: ['/time', '/range']
+    'VarType': 'Data Product'
+    'units': 'dBZ'
+    'long_name': 'Reflectivity factor at Ka-band'
+    'name': 'zm_ka'
+    'ACVSNC_standard_name': 'CldOpt_RadarReflectivity_Profile_Ka'
+    '_FillValue': nan
+- /zm_w  shape=(15787, 751) dtype=float64 chunks=None compression=None fillvalue=np.float64(nan)
+    dims: ['/time', '/range']
+    'VarType': 'Data Product'
+    'units': 'dBZ'
+    'long_name': 'Reflectivity factor at W-band'
+    'name': 'zm_w'
+    'ACVSNC_standard_name': 'CldOpt_RadarReflectivity_Profile_W'
+    '_FillValue': nan

@@ -1,0 +1,951 @@
+# Header dump: nurture-HALO_G3_20260217_R0_L1.h5
+# size: 590,735,467 bytes
+
+## Global attributes
+  'ACVSNC_standard_name_URL': 'https://doi.org/10.5067/DOC/ESCO/ESDS-RFC-043v1'
+  'ACVSNC_standard_name_version': '1.0'
+  'Conventions': 'CF-1.10'
+  'Format': 'HDF5'
+  'IdentifierProductDOI': '10.5067/NURTURE/HALO/DATA101'
+  'PI_contact': ' Address: MS 475 NASA/LaRC, Hampton, VA 23681; email: amin.r.nehrir@nasa.gov; 757-864-6107'
+  'PI_name': ' Nehrir, Amin R.'
+  'PanoplyPlotNote': 'When plotting data, will need to Swap Y Axis Bounds'
+  'ProcessingLevel': 'L2'
+  'VersionID': 'R0'
+  'aircraft_data_stream': 'IWG1'
+  'associated_data': 'The source of the atmospheric state products used in the data reduction is identified in the attributes of the /State/ folder and is either a sonde replicated along flight track or a model such as MERRA2. The Global Land One-kilometer Base Elevation (GLOBE) Digital Elevation Model, Version 1.0. provided surface elevation information (see http://www.ngdc.noaa.gov/mgg/topo/globe.html)'
+  'data_processing_note': 'All data products have been interpolated to the same uniform altitude grid (DataProducts/Altitude) and horizontally averaged or interpolated to the GPS times (Nav_Data/gps_time).  Additional information is found as attributes in each scientific data set.'
+  'data_product_groups': 'DataProducts, DataUncertainty'
+  'data_use_guideline': 'For responsible scientific use of the data sets provided, data users are strongly encouraged to carefully study the file headers and directly consult with the instrument PIs. Please acknowledge the data source and offer co-authorship to relevant instrument PIs when appropriate.'
+  'file_originator': 'James Collins'
+  'file_originator_contact': 'james.e.collins@nasa.gov'
+  'flight_number_day': 'L1'
+  'flight_start_date': '2026-02-17'
+  'geospatial_lat_max': '56.52 degrees_north'
+  'geospatial_lat_min': '48.87 degrees_north'
+  'geospatial_lon_max': '-60.4 degrees_east'
+  'geospatial_lon_min': '-86.44 degrees_east'
+  'history': 'R0'
+  'institution': 'NASA Langley Research Center'
+  'keywords': 'H2O MASS FRACTION, RELATIVE HUMIDITY, H2O TOTAL COLUMN, AEROSOL BACKSCATTER, LIDAR DEPOLARIZATION RATIO, AEROSOL EXTINCTION, ANGSTROM EXPONENT'
+  'last_modified_date': '2026-08-27'
+  'measurement_platform': 'NASA LaRC GIII N520NA'
+  'platform_identifier': 'LARC-G3'
+  'platform_type': 'AirMobile'
+  'project': 'NURTURE'
+  'references': 'detailed data product information provided in nurture-HALO_LARC-G3_20260124_README.pdf and https://doi.org/10.5194/amt-15-605-2022'
+  'source': 'NASA/Langley Airborne HALO'
+  'source_description': 'High-Altitude Lidar Observatory (HALO) High Spectral Resolution Lidar and Water Vapor (H2O) Differential Absorption Lidar (DIAL)'
+  'summary': 'NURTURE High-Altitude Lidar Observatory (HALO) High Spectral Resolution Lidar and Water Vapor (H2O) Differential Absorption Lidar (DIAL) on 2026-02-17 flight.R0'
+  'time_coverage_end': '2026-02-17 19:25:00'
+  'time_coverage_resolution': 'varies'
+  'time_coverage_start': '2026-02-17 14:41:48'
+  'title': 'NURTURE High-Altitude Lidar Observatory (HALO) High Spectral Resolution Lidar and Water Vapor (H2O) Differential Absorption Lidar (DIAL)'
+  'unit_convention': 'http://codes.wmo.int/wmdr/unit'
+
+## Group /DataProducts
+- /DataProducts/1064_aer_dep  shape=(1689, 845) dtype=float64 chunks=None compression=None fillvalue=np.float64(0.0)
+    dims: ['/time', '/z']
+    'ACVSNC_standard_name': 'AerOpt_DepolarizationRatio_Profile_IR_RHa_Bulk_None'
+    'Comment': Empty(dtype=dtype('O'))
+    'Description ': '1064 nm aerosol depolarization ratio'
+    'Horizontal_resolution_(seconds)': '10'
+    'Special Note!': 'Aerosol Depolarization values were calculated when 532bsr > 0.1 rather than the standard 0.2'
+    'Units ': 'ratio'
+    'Vertical_resolution_(meters)': '15'
+    '_FillValue': nan
+    'code_date': '28-April-2026'
+    'coordinates': 'time lon lat z'
+    'long_name': '1064 nm aerosol depolarization ratio with clouds screened'
+    'run_date': '27-Aug-2026 08:35:44'
+    'units': '1'
+- /DataProducts/1064_aer_dep_cloud_screened  shape=(1689, 845) dtype=float64 chunks=None compression=None fillvalue=np.float64(0.0)
+    dims: ['/time', '/z']
+    'ACVSNC_standard_name': 'AerOpt_DepolarizationRatio_Profile_IR_RHa_Bulk_None'
+    'Comment': Empty(dtype=dtype('O'))
+    'Horizontal_resolution_(seconds)': '10'
+    'Special Note!': 'Aerosol Depolarization values were calculated when 532bsr > 0.1 rather than the standard 0.2'
+    'Vertical_resolution_(meters)': '15'
+    '_FillValue': nan
+    'code_date': '28-April-2026'
+    'coordinates': 'time lon lat z'
+    'long_name': '1064 nm aerosol depolarization ratio with clouds screened'
+    'random_uncertainty': '/DataUncertainty/1064_aer_dep_cloud_screened_unc'
+    'run_date': '27-Aug-2026 08:35:44'
+    'units': '1'
+- /DataProducts/1064_bsc  shape=(1689, 845) dtype=float64 chunks=None compression=None fillvalue=np.float64(0.0)
+    dims: ['/time', '/z']
+    'ACVSNC_standard_name': 'AerOpt_BackScattering_Profile_IR_RHa_Bulk_None'
+    'Comment': Empty(dtype=dtype('O'))
+    'Description ': '1064 nm aerosol backscatter coefficient'
+    'Horizontal_resolution_(seconds)': '10'
+    'State source files': '/Volumes/NURTURE/NURTURE/20260217_F1/dropsondes/'
+    'Units ': 'km^-1sr^-1'
+    'Vertical_resolution_(meters)': '15'
+    '_FillValue': nan
+    'chi': '1'
+    'code_date': '06-Apr-2026'
+    'coordinates': 'time lon lat z'
+    'depol gain ratio': 'from PGR'
+    'long_name': '1064 nm aerosol backscatter coefficient'
+    'molecular depolarization': '0.0037'
+    'run_date': '27-Aug-2026 08:36:27'
+    'units': 'km-1.sr-1'
+- /DataProducts/1064_bsc_Sa  shape=(1689, 845) dtype=float64 chunks=None compression=None fillvalue=np.float64(0.0)
+    dims: ['/time', '/z']
+    'ACVSNC_standard_name': 'AerOpt_BackScattering_Profile_IR_RHa_Bulk_None'
+    'Comment': Empty(dtype=dtype('O'))
+    'Description ': '1064 nm aerosol backscatter ratio used for Sa calucaltion (averaged smililar to extinction coeff.)'
+    'Horizontal_resolution_(seconds)': '60'
+    'Units ': 'km^-1sr^-1'
+    'Vertical_resolution_(meters)': '300'
+    '_FillValue': nan
+    'chi': '1'
+    'code_date': '06-Apr-2026'
+    'coordinates': 'time lon lat z'
+    'long_name': '1064 nm aerosol backscatter ratio used for Sa calculation (averaged similar to extinction coeff.)'
+    'molecular depolarization': '0.0037'
+    'random_uncertainty': '/DataUncertainty/1064_bsc_Sa_unc'
+    'run_date': '27-Aug-2026 08:37:01'
+    'units': 'km-1.sr-1'
+- /DataProducts/1064_bsc_cloud_screened  shape=(1689, 845) dtype=float64 chunks=None compression=None fillvalue=np.float64(0.0)
+    dims: ['/time', '/z']
+    'ACVSNC_standard_name': 'AerOpt_BackScattering_Profile_IR_RHa_Bulk_None'
+    'Comment': Empty(dtype=dtype('O'))
+    'Description ': '1064 nm aerosol backscatter coefficient cloud screened'
+    'Horizontal_resolution_(seconds)': '10'
+    'State source files': '/Volumes/NURTURE/NURTURE/20260217_F1/dropsondes/'
+    'Units ': 'km^-1sr^-1'
+    'Vertical_resolution_(meters)': '15'
+    '_FillValue': nan
+    'chi': '1'
+    'code_date': '06-Apr-2026'
+    'coordinates': 'time lon lat z'
+    'depol gain ratio': 'from PGR'
+    'long_name': '1064 nm aerosol backscatter coefficient cloud screened'
+    'molecular depolarization': '0.0037'
+    'random_uncertainty': '/DataUncertainty/1064_bsc_cloud_screened_unc'
+    'run_date': '27-Aug-2026 08:36:27'
+    'units': 'km-1.sr-1'
+- /DataProducts/1064_bsr  shape=(1689, 845) dtype=float64 chunks=None compression=None fillvalue=np.float64(0.0)
+    dims: ['/time', '/z']
+    'ACVSNC_standard_name': 'AerOpt_BackScattering_Profile_IR_RHa_Bulk_None'
+    'Comment': Empty(dtype=dtype('O'))
+    'Description ': '1064 nm aerosol backscatter scattering ratio'
+    'Horizontal_resolution_(seconds)': '10'
+    'State source files': '/Volumes/NURTURE/NURTURE/20260217_F1/dropsondes/'
+    'Units ': 'ratio'
+    'Vertical_resolution_(meters)': '15'
+    '_FillValue': nan
+    'chi': '1'
+    'code_date': '06-Apr-2026'
+    'coordinates': 'time lon lat z'
+    'depol gain ratio': 'from PGR'
+    'long_name': '1064 nm aerosol backscatter scattering ratio'
+    'molecular depolarization': '0.0037'
+    'run_date': '27-Aug-2026 08:36:27'
+    'units': '1'
+- /DataProducts/1064_bsr_cloud_screened  shape=(1689, 845) dtype=float64 chunks=None compression=None fillvalue=np.float64(0.0)
+    dims: ['/time', '/z']
+    'ACVSNC_standard_name': 'AerOpt_BackScattering_Profile_IR_RHa_Bulk_None'
+    'Comment': Empty(dtype=dtype('O'))
+    'Description ': '1064 nm aerosol backscatter scattering ratio cloud screened'
+    'Horizontal_resolution_(seconds)': '10'
+    'State source files': '/Volumes/NURTURE/NURTURE/20260217_F1/dropsondes/'
+    'Units ': 'ratio'
+    'Vertical_resolution_(meters)': '15'
+    '_FillValue': nan
+    'chi': '1'
+    'code_date': '06-Apr-2026'
+    'coordinates': 'time lon lat z'
+    'depol gain ratio': 'from PGR'
+    'long_name': '1064 nm aerosol backscatter scattering ratio cloud screened'
+    'molecular depolarization': '0.0037'
+    'run_date': '27-Aug-2026 08:36:27'
+    'units': '1'
+- /DataProducts/1064_dep  shape=(1689, 845) dtype=float64 chunks=None compression=None fillvalue=np.float64(0.0)
+    dims: ['/time', '/z']
+    'ACVSNC_standard_name': 'AerOpt_TotalDepolarizationRatio_Profile_IR_RHa_Bulk_None'
+    'Comment': Empty(dtype=dtype('O'))
+    'Description ': '1064 nm total depolarization ratio'
+    'Horizontal_resolution_(seconds)': '10'
+    'State source files': '/Volumes/NURTURE/NURTURE/20260217_F1/dropsondes/'
+    'Units ': 'ratio'
+    'Vertical_resolution_(meters)': '15'
+    '_FillValue': nan
+    'chi': '1'
+    'code_date': '06-Apr-2026'
+    'coordinates': 'time lon lat z'
+    'depol gain ratio': 'from PGR'
+    'long_name': '1064 nm total depolarization ratio'
+    'molecular depolarization': '0.0037'
+    'run_date': '27-Aug-2026 08:36:27'
+    'units': '1'
+- /DataProducts/1064_dep_cloud_screened  shape=(1689, 845) dtype=float64 chunks=None compression=None fillvalue=np.float64(0.0)
+    dims: ['/time', '/z']
+    'ACVSNC_standard_name': 'AerOpt_TotalDepolarizationRatio_Profile_IR_RHa_Bulk_None'
+    'Comment': Empty(dtype=dtype('O'))
+    'Horizontal_resolution_(seconds)': '10'
+    'State source files': '/Volumes/NURTURE/NURTURE/20260217_F1/dropsondes/'
+    'Vertical_resolution_(meters)': '15'
+    '_FillValue': nan
+    'chi': '1'
+    'code_date': '06-Apr-2026'
+    'coordinates': 'time lon lat z'
+    'depol gain ratio': 'from PGR'
+    'long_name': '1064 nm total depolarization ratio with clouds screened'
+    'molecular depolarization': '0.0037'
+    'random_uncertainty': '/DataUncertainty/1064_dep_cloud_screened_unc'
+    'run_date': '27-Aug-2026 08:36:27'
+    'units': '1'
+- /DataProducts/1064_ext  shape=(1689, 845) dtype=float64 chunks=None compression=None fillvalue=np.float64(0.0)
+    dims: ['/time', '/z']
+    'ACVSNC_standard_name': 'AerOpt_Extinction_Profile_IR_RHa_Bulk_None'
+    'Comment': Empty(dtype=dtype('O'))
+    'Description ': '1064 nm aerosol extinction coefficient using Sa input values'
+    'Horizontal_resolution_(seconds)': '60'
+    'Units ': 'km^-1'
+    'Vertical_resolution_(meters)': '300'
+    '_FillValue': nan
+    'code_date': '06-Apr-2026'
+    'coordinates': 'time lon lat z'
+    'long_name': '1064 nm aerosol extinction coefficient using Sa input values'
+    'run_date': '27-Aug-2026 08:37:01'
+    'units': 'km-1'
+- /DataProducts/1064_total_attn_bsc  shape=(1689, 845) dtype=float64 chunks=None compression=None fillvalue=np.float64(0.0)
+    dims: ['/time', '/z']
+    'ACVSNC_standard_name': 'AerOpt_BackScattering_Profile_IR_RHa_Bulk_None'
+    'Comment': Empty(dtype=dtype('O'))
+    'Description ': '1064 nm total attenuated backscatter coefficient'
+    'Horizontal_resolution_(seconds)': '10'
+    'State source files': '/Volumes/NURTURE/NURTURE/20260217_F1/dropsondes/'
+    'Units ': 'km^-1sr^-1'
+    'Vertical_resolution_(meters)': '15'
+    '_FillValue': nan
+    'chi': '1'
+    'code_date': '06-Apr-2026'
+    'coordinates': 'time lon lat z'
+    'depol gain ratio': 'from PGR'
+    'long_name': '1064 nm total attenuated backscatter coefficient'
+    'molecular depolarization': '0.0037'
+    'range for attenuated backscatter normalization': ['1500', '1800']
+    'run_date': '27-Aug-2026 08:36:27'
+    'units': 'km-1.sr-1'
+- /DataProducts/532_AOT_from_bsc  shape=(1689,) dtype=float64 chunks=None compression=None fillvalue=np.float64(0.0)
+    dims: ['/time']
+    'ACVSNC_standard_name': 'AerOpt_Extinction_VertCol_Green_RHa_Bulk_None'
+    'Comment': Empty(dtype=dtype('O'))
+    'Horizontal_resolution_(seconds)': '10'
+    '_FillValue': nan
+    'code_date': '23-April-2026'
+    'coordinates': 'time lon lat'
+    'long_name': '532 nm Cumulative Optical Thickness using backscatter times Sa, up to 532_bsr_minimum_range'
+    'run_date': '27-Aug-2026 08:34:55'
+    'units': '1'
+- /DataProducts/532_AOT_from_bsc_above_cloud  shape=(1689,) dtype=float64 chunks=None compression=None fillvalue=np.float64(0.0)
+    dims: ['/time']
+    'ACVSNC_standard_name': 'AerOpt_Extinction_VertCol_Green_RHa_Bulk_None'
+    'Comment': Empty(dtype=dtype('O'))
+    'Horizontal_resolution_(seconds)': '10'
+    '_FillValue': nan
+    'code_date': '23-April-2026'
+    'coordinates': 'time lon lat'
+    'long_name': '532 nm Cumulative Optical Thickness using backscatter times Sa, from cloud top up to 532_bsr_minimum_range'
+    'run_date': '27-Aug-2026 08:34:55'
+    'units': '1'
+- /DataProducts/532_AOT_from_bsc_col  shape=(1689, 845) dtype=float64 chunks=None compression=None fillvalue=np.float64(0.0)
+    dims: ['/time', '/z']
+    'ACVSNC_standard_name': 'AerOpt_Extinction_Profile_Green_RHa_Bulk_None'
+    'Comment': Empty(dtype=dtype('O'))
+    'Horizontal_resolution_(seconds)': '10'
+    'Low signal mask applied (1 means yes)': '1'
+    'State source files': '/Volumes/NURTURE/NURTURE/20260217_F1/dropsondes/'
+    'Vertical_resolution_(meters)': '15'
+    '_FillValue': nan
+    'alt_max (m)': '14000'
+    'cloud backoff': '45'
+    'code_date': '23-April-2026'
+    'coordinates': 'time lon lat z'
+    'long_name': '532 nm Optical Thickness using backscatter times Sa, up to 532_bsr_minimum_range'
+    'near field altitude offset (m)': '1500'
+    'run_date': '27-Aug-2026 08:34:55'
+    'units': '1'
+- /DataProducts/532_AOT_hi  shape=(1689,) dtype=float64 chunks=None compression=None fillvalue=np.float64(0.0)
+    dims: ['/time']
+    'ACVSNC_standard_name': 'AerOpt_Extinction_VertCol_Green_RHa_Bulk_None'
+    'Comment': Empty(dtype=dtype('O'))
+    'Horizontal_resolution_(seconds)': '60'
+    '_FillValue': nan
+    'code_date': '23-April-2026'
+    'coordinates': 'time lon lat'
+    'long_name': '532 nm Total Optical Thickness (using molecular signal)'
+    'random_uncertainty': '/DataUncertainty/532_AOT_hi_unc'
+    'run_date': '27-Aug-2026 08:34:53'
+    'units': '1'
+- /DataProducts/532_AOT_hi_above_cloud  shape=(1689,) dtype=float64 chunks=None compression=None fillvalue=np.float64(0.0)
+    dims: ['/time']
+    'ACVSNC_standard_name': 'AerOpt_Extinction_VertCol_Green_RHa_Bulk_None'
+    'Comment': Empty(dtype=dtype('O'))
+    'Horizontal_resolution_(seconds)': '60'
+    '_FillValue': nan
+    'code_date': '23-April-2026'
+    'coordinates': 'time lon lat'
+    'long_name': '532 nm Total Optical Thickness (using molecular signal) above cloud top'
+    'random_uncertainty': '/DataUncertainty/532_AOT_hi_above_cloud_unc'
+    'run_date': '27-Aug-2026 08:34:53'
+    'units': '1'
+- /DataProducts/532_AOT_hi_col  shape=(1689, 845) dtype=float64 chunks=None compression=None fillvalue=np.float64(0.0)
+    dims: ['/time', '/z']
+    'ACVSNC_standard_name': 'AerOpt_Extinction_Profile_Green_RHa_Bulk_None'
+    'Comment': Empty(dtype=dtype('O'))
+    'Description ': '532 nm Cumulative Optical Thickness (using molecular signal)'
+    'Horizontal_resolution_(seconds)': '60'
+    'Low signal mask applied (1 means yes)': '1'
+    'Resolution': 'Time avg.  10 seconds, range avg.  300 meters'
+    'State source files': '/Volumes/NURTURE/NURTURE/20260217_F1/dropsondes/'
+    'Units ': 'none'
+    'Vertical_resolution_(meters)': '300'
+    '_FillValue': nan
+    'alt_max (m)': '14000'
+    'cloud backoff': '45'
+    'code_date': '23-April-2026'
+    'coordinates': 'time lon lat z'
+    'long_name': '532 nm Optical Thickness (using molecular signal)'
+    'near field altitude offset (m)': '1500'
+    'random_uncertainty': '/DataUncertainty/532_AOT_hi_col_unc'
+    'run_date': '27-Aug-2026 08:34:53'
+    'units': '1'
+- /DataProducts/532_Sa  shape=(1689, 845) dtype=float64 chunks=None compression=None fillvalue=np.float64(0.0)
+    dims: ['/time', '/z']
+    'ACVSNC_standard_name': 'AerOpt_LidarRatio_Profile_Green_RHa_Bulk_None'
+    'Comment': Empty(dtype=dtype('O'))
+    'Description ': 'aerosol extinction-to-backscatter ratio'
+    'Horizontal_resolution_(seconds)': '60'
+    'State source files': '20260217_F1_MERRAmet.h5'
+    'Units ': 'sr'
+    'Vertical_resolution_(meters)': '300'
+    '_FillValue': nan
+    'cloud screen': 'NOT active'
+    'code_date': ' 22-April-2026 10:30:00'
+    'coordinates': 'time lon lat z'
+    'long_name': 'aerosol extinction-to-backscatter ratio'
+    'random_uncertainty': '/DataUncertainty/532_Sa_unc'
+    'run_date': '27-Aug-2026 08:34:45'
+    'units': 'sr'
+- /DataProducts/532_aer_dep  shape=(1689, 845) dtype=float64 chunks=None compression=None fillvalue=np.float64(0.0)
+    dims: ['/time', '/z']
+    'ACVSNC_standard_name': 'AerOpt_DepolarizationRatio_Profile_Green_RHa_Bulk_None'
+    'Comment': Empty(dtype=dtype('O'))
+    'Description ': '532 nm aerosol depolarization ratio'
+    'Horizontal_resolution_(seconds)': '10'
+    'Special Note!': 'Aerosol Depolarization values were calculated when 532bsr > 0.1 rather than the standard 0.2'
+    'Units ': 'ratio'
+    'Vertical_resolution_(meters)': '15'
+    '_FillValue': nan
+    'code_date': '28-April-2026'
+    'coordinates': 'time lon lat z'
+    'long_name': '532 nm aerosol depolarization ratio'
+    'run_date': '27-Aug-2026 08:35:44'
+    'units': '1'
+- /DataProducts/532_aer_dep_cloud_screened  shape=(1689, 845) dtype=float64 chunks=None compression=None fillvalue=np.float64(0.0)
+    dims: ['/time', '/z']
+    'ACVSNC_standard_name': 'AerOpt_DepolarizationRatio_Profile_Green_RHa_Bulk_None'
+    'Comment': Empty(dtype=dtype('O'))
+    'Horizontal_resolution_(seconds)': '10'
+    'Special Note!': 'Aerosol Depolarization values were calculated when 532bsr > 0.1 rather than the standard 0.2'
+    'Vertical_resolution_(meters)': '15'
+    '_FillValue': nan
+    'code_date': '28-April-2026'
+    'coordinates': 'time lon lat z'
+    'long_name': '532 nm aerosol depolarization ratio with clouds screened'
+    'random_uncertainty': '/DataUncertainty/532_aer_dep_cloud_screened_unc'
+    'run_date': '27-Aug-2026 08:35:44'
+    'units': '1'
+- /DataProducts/532_bsc  shape=(1689, 845) dtype=float64 chunks=None compression=None fillvalue=np.float64(0.0)
+    dims: ['/time', '/z']
+    'ACVSNC_standard_name': 'AerOpt_BackScattering_Profile_Green_RHa_Bulk_None'
+    'Comment': Empty(dtype=dtype('O'))
+    'Description ': '532 nm aerosol backscatter coefficient'
+    'Horizontal_resolution_(seconds)': '10'
+    'State source files': '20260217_F1_MERRAmet.h5'
+    'Units ': 'km^-1sr^-1'
+    'Vertical_resolution_(meters)': '15'
+    '_FillValue': nan
+    'chi': '1'
+    'code_date': '21-Apr-2026'
+    'coordinates': 'time lon lat z'
+    'long_name': '532 nm aerosol backscatter coefficient'
+    'molecular depolarization': '0.0036'
+    'random_uncertainty': '532_bsc_unc'
+    'run_date': '27-Aug-2026 08:34:19'
+    'units': 'km-1.sr-1'
+- /DataProducts/532_bsc_Sa  shape=(1689, 845) dtype=float64 chunks=None compression=None fillvalue=np.float64(0.0)
+    dims: ['/time', '/z']
+    'ACVSNC_standard_name': 'AerOpt_BackScattering_Profile_Green_RHa_Bulk_None'
+    'Comment': Empty(dtype=dtype('O'))
+    'Description ': '532 nm aerosol backscatter ratio used for Sa calculation (averaged smililar to extinction coeff.)'
+    'Horizontal_resolution_(seconds)': '60'
+    'State source files': '20260217_F1_MERRAmet.h5'
+    'Units ': 'km^-1sr^-1'
+    'Vertical_resolution_(meters)': '300'
+    '_FillValue': nan
+    'chi': '1'
+    'code_date': '21-Apr-2026'
+    'coordinates': 'time lon lat z'
+    'long_name': '532 nm aerosol backscatter ratio used for Sa calcualtion (averaged similar to extinction coeff.)'
+    'molecular depolarization': '0.0036'
+    'random_uncertainty': '/DataUncertainty/532_bsc_Sa_unc'
+    'run_date': '27-Aug-2026 08:34:40'
+    'units': 'km-1.sr-1'
+- /DataProducts/532_bsc_cloud_screened  shape=(1689, 845) dtype=float64 chunks=None compression=None fillvalue=np.float64(0.0)
+    dims: ['/time', '/z']
+    'ACVSNC_standard_name': 'AerOpt_BackScattering_Profile_Green_RHa_Bulk_None'
+    'Comment': Empty(dtype=dtype('O'))
+    'Description ': '532 nm aerosol backscatter coefficient cloud screened'
+    'Horizontal_resolution_(seconds)': '10'
+    'State source files': '20260217_F1_MERRAmet.h5'
+    'Units ': 'km^-1sr^-1'
+    'Vertical_resolution_(meters)': '15'
+    '_FillValue': nan
+    'chi': '1'
+    'code_date': '21-Apr-2026'
+    'coordinates': 'time lon lat z'
+    'long_name': '532 nm aerosol backscatter coefficient cloud screened'
+    'molecular depolarization': '0.0036'
+    'random_uncertainty': '/DataUncertainty/532_bsc_cloud_screened_unc'
+    'run_date': '27-Aug-2026 08:34:19'
+    'units': 'km-1.sr-1'
+- /DataProducts/532_bsr  shape=(1689, 845) dtype=float64 chunks=None compression=None fillvalue=np.float64(0.0)
+    dims: ['/time', '/z']
+    'ACVSNC_standard_name': 'AerOpt_BackScattering_Profile_Green_RHa_Bulk_None'
+    'Comment': Empty(dtype=dtype('O'))
+    'Description ': '532 nm aerosol backscatter scattering ratio'
+    'Horizontal_resolution_(seconds)': '10'
+    'State source files': '20260217_F1_MERRAmet.h5'
+    'Units ': 'ratio'
+    'Vertical_resolution_(meters)': '15'
+    '_FillValue': nan
+    'chi': '1'
+    'code_date': '21-Apr-2026'
+    'coordinates': 'time lon lat z'
+    'long_name': '532 nm aerosol backscatter scattering ratio'
+    'molecular depolarization': '0.0036'
+    'run_date': '27-Aug-2026 08:34:19'
+    'units': '1'
+- /DataProducts/532_bsr_cloud_screened  shape=(1689, 845) dtype=float64 chunks=None compression=None fillvalue=np.float64(0.0)
+    dims: ['/time', '/z']
+    'ACVSNC_standard_name': 'AerOpt_BackScattering_Profile_Green_RHa_Bulk_None'
+    'Comment': Empty(dtype=dtype('O'))
+    'Description ': '532 nm aerosol backscatter scattering ratio cloud screened'
+    'Horizontal_resolution_(seconds)': '10'
+    'State source files': '20260217_F1_MERRAmet.h5'
+    'Units ': 'ratio'
+    'Vertical_resolution_(meters)': '15'
+    '_FillValue': nan
+    'chi': '1'
+    'code_date': '21-Apr-2026'
+    'coordinates': 'time lon lat z'
+    'long_name': '532 nm aerosol backscatter scattering ratio cloud screened'
+    'molecular depolarization': '0.0036'
+    'run_date': '27-Aug-2026 08:34:19'
+    'units': '1'
+- /DataProducts/532_dep  shape=(1689, 845) dtype=float64 chunks=None compression=None fillvalue=np.float64(0.0)
+    dims: ['/time', '/z']
+    'ACVSNC_standard_name': 'AerOpt_TotalDepolarizationRatio_Profile_Green_RHa_Bulk_None'
+    'Comment': Empty(dtype=dtype('O'))
+    'Description ': '532 nm total depolarization ratio'
+    'Horizontal_resolution_(seconds)': '10'
+    'State source files': '20260217_F1_MERRAmet.h5'
+    'Units ': 'ratio'
+    'Vertical_resolution_(meters)': '15'
+    '_FillValue': nan
+    'chi': '1'
+    'code_date': '21-Apr-2026'
+    'coordinates': 'time lon lat z'
+    'long_name': '532 nm total depolarization ratio'
+    'molecular depolarization': '0.0036'
+    'run_date': '27-Aug-2026 08:34:19'
+    'units': '1'
+- /DataProducts/532_dep_cloud_screened  shape=(1689, 845) dtype=float64 chunks=None compression=None fillvalue=np.float64(0.0)
+    dims: ['/time', '/z']
+    'ACVSNC_standard_name': 'AerOpt_TotalDepolarizationRatio_Profile_Green_RHa_Bulk_None'
+    'Comment': Empty(dtype=dtype('O'))
+    'Horizontal_resolution_(seconds)': '10'
+    'State source files': '20260217_F1_MERRAmet.h5'
+    'Vertical_resolution_(meters)': '15'
+    '_FillValue': nan
+    'chi': '1'
+    'code_date': '21-Apr-2026'
+    'coordinates': 'time lon lat z'
+    'long_name': '532 nm total depolarization ratio with clouds screened'
+    'molecular depolarization': '0.0036'
+    'random_uncertainty': '/DataUncertainty/532_dep_cloud_screened_unc'
+    'run_date': '27-Aug-2026 08:34:19'
+    'units': '1'
+- /DataProducts/532_ext  shape=(1689, 845) dtype=float64 chunks=None compression=None fillvalue=np.float64(0.0)
+    dims: ['/time', '/z']
+    'ACVSNC_standard_name': 'AerOpt_Extinction_Profile_Green_RHa_Bulk_None'
+    'Comment': Empty(dtype=dtype('O'))
+    'Description ': '532 nm aerosol extinction coefficient'
+    'Horizontal_resolution_(seconds)': '60'
+    'State source files': '20260217_F1_MERRAmet.h5'
+    'Units ': 'km^-1'
+    'Vertical_resolution_(meters)': '300'
+    '_FillValue': nan
+    'cloud screen': 'NOT active'
+    'code_date': '06-Oct-2023'
+    'coordinates': 'time lon lat z'
+    'long_name': '532 nm aerosol extinction coefficient from molecular signal'
+    'random_uncertainty': '/DataUncertainty/532_ext_unc'
+    'run_date': '27-Aug-2026 08:34:38'
+    'units': 'km-1'
+- /DataProducts/532_extinction_from_backscatter  shape=(1689, 845) dtype=float64 chunks=None compression=None fillvalue=np.float64(0.0)
+    dims: ['/time', '/z']
+    'ACVSNC_standard_name': 'AerOpt_Extinction_Profile_Green_RHa_Bulk_None'
+    'Additional vertical smoothing (bins)': '25'
+    'Comment': 'calculated from backscatter and smoothed/default lidar ratio'
+    'Horizontal_resolution_(seconds)': '10'
+    'Vertical_resolution_(meters)': '15'
+    '_FillValue': nan
+    'altitude bin range for median Sas ': ' from altitude bin 22 to 87; from altitude bin 88 to 154; from altitude bin 155 to 845;'
+    'cloud screen': 'active'
+    'code_date': '11-Oct-2022'
+    'coordinates': 'time lon lat z'
+    'long_name': '532 nm aerosol extinction coefficient  from backscatter'
+    'median Sas ': ['12.6509', '12.9533', '22.0705']
+    'run_date': '27-Aug-2026 08:34:47'
+    'source products': '/DataProducts/532_Sa, /DataProducts/532_bsc_cloud_screened'
+    'units': 'km-1'
+- /DataProducts/532_total_attn_bsc  shape=(1689, 845) dtype=float64 chunks=None compression=None fillvalue=np.float64(0.0)
+    dims: ['/time', '/z']
+    'ACVSNC_standard_name': 'AerOpt_BackScattering_Profile_Green_RHa_Bulk_None'
+    'Comment': Empty(dtype=dtype('O'))
+    'Description ': '532 nm total attenuated backscatter coefficient'
+    'Horizontal_resolution_(seconds)': '10'
+    'State source files': '20260217_F1_MERRAmet.h5'
+    'Units ': 'km^-1sr^-1'
+    'Vertical_resolution_(meters)': '15'
+    '_FillValue': nan
+    'chi': '1'
+    'code_date': '21-Apr-2026'
+    'coordinates': 'time lon lat z'
+    'long_name': '532 nm total attenuated backscatter coefficient'
+    'molecular depolarization': '0.0036'
+    'run_date': '27-Aug-2026 08:34:19'
+    'units': 'km-1.sr-1'
+- /DataProducts/Aerosol_ID  shape=(1689, 845) dtype=float32 chunks=None compression=None fillvalue=np.float32(0.0)
+    dims: ['/time', '/z']
+    'ACVSNC_standard_name': 'AerOpt_AerosolType_Profile_GreentoIR_RHa_Bulk_None'
+    'Comment': 'See Burton et al.: Aerosol classification using airborne High Spectral Resolution Lidar measurements - methodology and examples, Atmos. Meas. Tech., 5, 73-98, 2012.'
+    'Horizontal_resolution_(seconds)': '10'
+    'Proximity Thresholds Suspended? 1 means yes.': 1.0
+    'Vertical_resolution_(meters)': '15'
+    '_FillValue': nan
+    'cloud screen': 'NOT active'
+    'coordinates': 'time lon lat z'
+    'flag_meanings': 'Ice, Dusty Mix, Marine, Urban/Pollution, Smoke, Fresh Smoke, Polluted Marine, Dust, Dry Marine'
+    'flag_values': '1,2,3,4,5,6,7,8,9'
+    'long_name': 'HSRL Aerosol Type'
+    'units': '1'
+- /DataProducts/Altitude  shape=(845,) dtype=float64 chunks=None compression=None fillvalue=np.float64(0.0)
+    'ACVSNC_standard_name': '______'
+    'Comment': 'legacy altitude array for data analysis - same as z'
+    'Horizontal_resolution_(seconds)': 'NaN'
+    '_FillValue': nan
+    'long_name': 'legacy altitude array for data analysis - same as z'
+    'units': 'm'
+- /DataProducts/Angstrom_Spherical  shape=(1689, 845) dtype=float64 chunks=None compression=None fillvalue=np.float64(0.0)
+    dims: ['/time', '/z']
+    'ACVSNC_standard_name': 'AerOpt_AngstromExponentScat_Profile_GreentoIR_RHa_Bulk_None'
+    'Comment': 'See Sugimoto and Lee,  Appl Optics, 2006'
+    'Description ': 'Spherical Angstrom Coef, gamma_s, from Sugimoto and Lee, Appl Opt 2006'
+    'Horizontal_resolution_(seconds)': '10'
+    'Units ': 'sr'
+    'Vertical_resolution_(meters)': '15'
+    '_FillValue': nan
+    'code_date': '11-Aug-2026'
+    'coordinates': 'time lon lat z'
+    'long_name': 'Spherical Angstrom Coef, gamma_s, from Sugimoto and Lee, Appl Opt 2006'
+    'run_date': '27-Aug-2026 08:36:47'
+    'units': '1'
+- /DataProducts/PWV_bot_altitude_v  shape=(1689,) dtype=float64 chunks=None compression=None fillvalue=np.float64(0.0)
+    dims: ['/time']
+    'ACVSNC_standard_name': 'None'
+    'Comment': Empty(dtype=dtype('O'))
+    'Horizontal_resolution_(seconds)': 'NaN'
+    '_FillValue': nan
+    'coordinates': 'time lon lat'
+    'long_name': 'bottom most altitude used in the pwv calculation from h2o_mmr_v'
+    'units': 'm'
+- /DataProducts/PWV_top_altitude_v  shape=(1689,) dtype=float64 chunks=None compression=None fillvalue=np.float64(0.0)
+    dims: ['/time']
+    'ACVSNC_standard_name': 'None'
+    'Comment': Empty(dtype=dtype('O'))
+    'Horizontal_resolution_(seconds)': 'NaN'
+    '_FillValue': nan
+    'coordinates': 'time lon lat'
+    'long_name': 'top most altitude used in the pwv calculation from h2o_mmr_v'
+    'units': 'm'
+- /DataProducts/PWV_v  shape=(1689,) dtype=float64 chunks=None compression=None fillvalue=np.float64(0.0)
+    dims: ['/time']
+    'ACVSNC_standard_name': 'Met_PrecipWV_VertCol_None'
+    'Comment': 'Minimum column amount of h2o_mmr_v data for calculation is 900m'
+    'Horizontal_resolution_(seconds)': '60'
+    '_FillValue': nan
+    'code_date': '20-Feb-2026'
+    'coordinates': 'time lon lat'
+    'long_name': 'precipitable water vapor for clear (cloud free) conditions calculated from h2o_mmr_v and pressure'
+    'run_date': '27-Aug-2026 08:44:21'
+    'units': 'mm'
+- /DataProducts/RHi_v  shape=(1689, 845) dtype=float64 chunks=None compression=None fillvalue=np.float64(0.0)
+    dims: ['/time', '/z']
+    'ACVSNC_standard_name': 'Met_RelativeHumidityIce_Profile_None'
+    'Comment': 'range avg. is variable 315 to 705 meters as seen in range_cell_v, time avg. is 60 seconds'
+    'Horizontal_resolution_(seconds)': '60'
+    'Resolution': 'range avg. is variable 315 to 705 meters as seen in range_cell_v, time avg. is 60 seconds.'
+    'Vertical_resolution_(meters)': 'NaN'
+    '_FillValue': nan
+    'code_date': '10-Mar-2022'
+    'coordinates': 'time lon lat z'
+    'long_name': 'relative humidity over ice from h2o_mmr_v'
+    'run_date': '27-Aug-2026 08:44:27'
+    'units': 'percent'
+- /DataProducts/RHw_v  shape=(1689, 845) dtype=float64 chunks=None compression=None fillvalue=np.float64(0.0)
+    dims: ['/time', '/z']
+    'ACVSNC_standard_name': 'Met_RelativeHumidityWater_Profile_None'
+    'Comment': 'range avg. is variable 315 to 705 meters as seen in range_cell_v, time avg. is 60 seconds'
+    'Horizontal_resolution_(seconds)': '60'
+    'Resolution': 'range avg. is variable 315 to 705 meters as seen in range_cell_v, time avg. is 60 seconds.'
+    'Vertical_resolution_(meters)': 'NaN'
+    '_FillValue': nan
+    'code_date': '10-Mar-2022'
+    'coordinates': 'time lon lat z'
+    'long_name': 'relative humidity over water from h2o_mmr_v'
+    'run_date': '27-Aug-2026 08:44:25'
+    'units': 'percent'
+- /DataProducts/WVD_1064_532  shape=(1689, 845) dtype=float64 chunks=None compression=None fillvalue=np.float64(0.0)
+    dims: ['/time', '/z']
+    'ACVSNC_standard_name': 'AerOpt_AngstromExponentBackScat_Profile_IRtoGreen_RHa_Bulk_None'
+    'Comment': Empty(dtype=dtype('O'))
+    'Description ': 'aerosol backscatter wavelength dependence IR VIS'
+    'Horizontal_resolution_(seconds)': '10'
+    'Special Note!': 'WVD values were calculated when 532bsr > 0.1 rather than the standard 0.2'
+    'Units ': 'ratio'
+    'Vertical_resolution_(meters)': '15'
+    '_FillValue': nan
+    'code_date': '28-April-2026'
+    'coordinates': 'time lon lat z'
+    'long_name': 'aerosol backscatter wavelength dependence IR VIS'
+    'random_uncertainty': '/DataUncertainty/WVD_1064_532_unc'
+    'run_date': '27-Aug-2026 08:35:45'
+    'units': '1'
+- /DataProducts/cloud_top_height  shape=(1689,) dtype=float64 chunks=None compression=None fillvalue=np.float64(0.0)
+    dims: ['/time']
+    'ACVSNC_standard_name': 'CldMacro_CTH_VertCol_None'
+    'Comment': Empty(dtype=dtype('O'))
+    'Horizontal_resolution_(seconds)': '10'
+    '_FillValue': nan
+    'code_date': '06-Apr-2018'
+    'coordinates': 'time lon lat'
+    'long_name': 'Cloud Identification and cloud top height'
+    'run_date': '27-Aug-2026 08:34:11'
+    'units': 'm'
+- /DataProducts/cloud_top_height_935  shape=(1689,) dtype=float64 chunks=None compression=None fillvalue=np.float64(0.0)
+    dims: ['/time']
+    'ACVSNC_standard_name': 'CldMacro_CTH_VertCol_None'
+    'Comment': Empty(dtype=dtype('O'))
+    'Horizontal_resolution_(seconds)': '10'
+    '_FillValue': nan
+    'code_date': '29-Jun-2021'
+    'coordinates': 'time lon lat'
+    'long_name': 'Cloud identification and cloud top height for water vapor data products'
+    'run_date': '27-Aug-2026 08:40:01'
+    'units': 'm'
+- /DataProducts/h2o_mmr_v  shape=(1689, 845) dtype=float64 chunks=None compression=None fillvalue=np.float64(0.0)
+    dims: ['/time', '/z']
+    'ACVSNC_standard_name': 'Met_H2OMR_Profile_None'
+    'Comment': 'variable vertical resolution - shown in range_cell_v'
+    'Horizontal_resolution_(seconds)': '60'
+    'Resolution': 'range avg. is variable 315 to 705 meters as seen in range_cell_v, time avg. is 60 seconds.'
+    'Vertical_resolution_(meters)': 'NaN'
+    '_FillValue': nan
+    'code_date': '12-Aug-2026'
+    'coordinates': 'time lon lat z'
+    'long_name': 'Water Vapor Mass Mixing Ratio'
+    'random_uncertainty': '/DataUncertainty/h2o_mmr_v_unc'
+    'run_date': '27-Aug-2026 08:42:26'
+    'units': 'g.kg-1'
+- /DataProducts/range_cell_v  shape=(1689, 845) dtype=float64 chunks=None compression=None fillvalue=np.float64(0.0)
+    dims: ['/time', '/z']
+    'ACVSNC_standard_name': 'None'
+    'Comment': 'variable vertical resolution - shown in range_cell_v'
+    'Horizontal_resolution_(seconds)': 'NaN'
+    'Vertical_resolution_(meters)': 'NaN'
+    '_FillValue': nan
+    'code_date': '12-Aug-2026'
+    'coordinates': 'time lon lat z'
+    'long_name': 'range cell size for water vapor calculations'
+    'run_date': '27-Aug-2026 08:42:26'
+    'units': 'm'
+## Group /DataUncertainty
+- /DataUncertainty/1064_aer_dep_cloud_screened_unc  shape=(1689, 845) dtype=float64 chunks=None compression=None fillvalue=np.float64(0.0)
+    dims: ['/time', '/z']
+    'ACVSNC_standard_name': 'AerOpt_DepolarizationRatio_Profile_IR_RHa_Bulk_None'
+    'Comment': 'None'
+    'Horizontal_resolution_(seconds)': '10'
+    'Vertical_resolution_(meters)': '15'
+    '_FillValue': nan
+    'code_date': '28-April-2026'
+    'coordinates': 'time lon lat z'
+    'long_name': 'Random Uncertainty of 1064 nm aerosol depolarization ratio cloud screened'
+    'run_date': '27-Aug-2026 08:35:45'
+    'units': '1'
+- /DataUncertainty/1064_bsc_Sa_unc  shape=(1689, 845) dtype=float64 chunks=None compression=None fillvalue=np.float64(0.0)
+    dims: ['/time', '/z']
+    'ACVSNC_standard_name': 'AerOpt_BackScattering_Profile_IR_RHa_Bulk_None'
+    'Comment': 'None'
+    'Horizontal_resolution_(seconds)': '60'
+    'Vertical_resolution_(meters)': '300'
+    '_FillValue': nan
+    'code_date': '06-Apr-2026'
+    'coordinates': 'time lon lat z'
+    'long_name': 'Random Uncertainty of 1064 nm aerosol backscatter ratio used for Sa calculation (averaged similar to extinction coeff.)'
+    'run_date': '27-Aug-2026 08:37:15'
+    'units': 'km-1.sr-1'
+- /DataUncertainty/1064_bsc_cloud_screened_unc  shape=(1689, 845) dtype=float64 chunks=None compression=None fillvalue=np.float64(0.0)
+    dims: ['/time', '/z']
+    'ACVSNC_standard_name': 'AerOpt_BackScattering_Profile_IR_RHa_Bulk_None'
+    'Comment': 'None'
+    'Horizontal_resolution_(seconds)': '10'
+    'Vertical_resolution_(meters)': '15'
+    '_FillValue': nan
+    'code_date': '06-Apr-2026'
+    'coordinates': 'time lon lat z'
+    'long_name': 'Random Uncertainty of 1064 nm aerosol backscatter coefficient cloud screened'
+    'run_date': '27-Aug-2026 08:36:45'
+    'units': 'km-1.sr-1'
+- /DataUncertainty/1064_dep_cloud_screened_unc  shape=(1689, 845) dtype=float64 chunks=None compression=None fillvalue=np.float64(0.0)
+    dims: ['/time', '/z']
+    'ACVSNC_standard_name': 'AerOpt_BackScattering_Profile_IR_RHa_Bulk_None'
+    'Comment': 'None'
+    'Horizontal_resolution_(seconds)': '10'
+    'Vertical_resolution_(meters)': '15'
+    '_FillValue': nan
+    'code_date': '06-Apr-2026'
+    'coordinates': 'time lon lat z'
+    'long_name': 'Random Uncertainty of 1064 nm aerosol backscatter coefficient cloud screened'
+    'run_date': '27-Aug-2026 08:36:45'
+    'units': '1'
+- /DataUncertainty/532_AOT_hi_above_cloud_unc  shape=(1689,) dtype=float64 chunks=None compression=None fillvalue=np.float64(0.0)
+    dims: ['/time']
+    'ACVSNC_standard_name': 'AerOpt_AOD_VertCol_Green_RHa_Bulk_None'
+    'Comment': 'None'
+    'Horizontal_resolution_(seconds)': '10'
+    '_FillValue': nan
+    'code_date': '23-April-2026'
+    'coordinates': 'time lon lat'
+    'long_name': 'Random Uncertainty of 532 nm Total Optical Thickness (using molecular signal) above cloud'
+    'run_date': '27-Aug-2026 08:34:54'
+    'units': '1'
+- /DataUncertainty/532_AOT_hi_col_unc  shape=(1689, 845) dtype=float64 chunks=None compression=None fillvalue=np.float64(0.0)
+    dims: ['/time', '/z']
+    'ACVSNC_standard_name': 'AerOpt_AOD_Profile_Green_RHa_Bulk_None'
+    'Comment': 'None'
+    'Horizontal_resolution_(seconds)': '10'
+    'Vertical_resolution_(meters)': '15'
+    '_FillValue': nan
+    'code_date': '23-April-2026'
+    'coordinates': 'time lon lat z'
+    'long_name': 'Random Uncertainty of 532 nm Cumulative Optical Thickness (using molecular signal)'
+    'run_date': '27-Aug-2026 08:34:54'
+    'units': '1'
+- /DataUncertainty/532_AOT_hi_unc  shape=(1689,) dtype=float64 chunks=None compression=None fillvalue=np.float64(0.0)
+    dims: ['/time']
+    'ACVSNC_standard_name': 'AerOpt_AOD_VertCol_Green_RHa_Bulk_None'
+    'Comment': 'None'
+    'Horizontal_resolution_(seconds)': '10'
+    '_FillValue': nan
+    'code_date': '23-April-2026'
+    'coordinates': 'time lon lat'
+    'long_name': 'Random Uncertainty of 532 nm Total Optical Thickness (using molecular signal)'
+    'run_date': '27-Aug-2026 08:34:54'
+    'units': '1'
+- /DataUncertainty/532_Sa_unc  shape=(1689, 845) dtype=float64 chunks=None compression=None fillvalue=np.float64(0.0)
+    dims: ['/time', '/z']
+    'ACVSNC_standard_name': 'AerOpt_LidarRatio_Profile_Green_RHa_Bulk_None'
+    'Comment': 'None'
+    'Horizontal_resolution_(seconds)': '10'
+    'Vertical_resolution_(meters)': '15'
+    '_FillValue': nan
+    'code_date': ' 22-April-2026 10:30:00'
+    'coordinates': 'time lon lat z'
+    'long_name': 'Random Uncertainty of 532 nm aerosol extinction-to-backscatter ratio'
+    'run_date': '27-Aug-2026 08:34:47'
+    'units': 'sr'
+- /DataUncertainty/532_aer_dep_cloud_screened_unc  shape=(1689, 845) dtype=float64 chunks=None compression=None fillvalue=np.float64(0.0)
+    dims: ['/time', '/z']
+    'ACVSNC_standard_name': 'AerOpt_DepolarizationRatio_Profile_Green_RHa_Bulk_None'
+    'Comment': 'None'
+    'Horizontal_resolution_(seconds)': '10'
+    'Vertical_resolution_(meters)': '15'
+    '_FillValue': nan
+    'code_date': '28-April-2026'
+    'coordinates': 'time lon lat z'
+    'long_name': 'Random Uncertainty of 532 nm aerosol depolarization ratio cloud screened'
+    'run_date': '27-Aug-2026 08:35:44'
+    'units': '1'
+- /DataUncertainty/532_bsc_Sa_unc  shape=(1689, 845) dtype=float64 chunks=None compression=None fillvalue=np.float64(0.0)
+    dims: ['/time', '/z']
+    'ACVSNC_standard_name': 'AerOpt_BackScattering_Profile_Green_RHa_Bulk_None'
+    'Comment': 'None'
+    'Horizontal_resolution_(seconds)': '60'
+    'Vertical_resolution_(meters)': '300'
+    '_FillValue': nan
+    'code_date': '21-Apr-2026'
+    'coordinates': 'time lon lat z'
+    'long_name': 'Random Uncertainty of 532 nm aerosol backscatter ratio used for Sa calcualtion (averaged similar to extinction coeff.)'
+    'run_date': '27-Aug-2026 08:34:47'
+    'units': 'km-1.sr-1'
+- /DataUncertainty/532_bsc_cloud_screened_unc  shape=(1689, 845) dtype=float64 chunks=None compression=None fillvalue=np.float64(0.0)
+    dims: ['/time', '/z']
+    'ACVSNC_standard_name': 'AerOpt_BackScattering_Profile_Green_RHa_Bulk_None'
+    'Comment': 'None'
+    'Horizontal_resolution_(seconds)': '10'
+    'Vertical_resolution_(meters)': '15'
+    '_FillValue': nan
+    'code_date': '21-Apr-2026'
+    'coordinates': 'time lon lat z'
+    'long_name': 'Random Uncertainty of 532 nm aerosol backscatter coefficient cloud screened'
+    'run_date': '27-Aug-2026 08:34:34'
+    'units': 'km-1.sr-1'
+- /DataUncertainty/532_dep_cloud_screened_unc  shape=(1689, 845) dtype=float64 chunks=None compression=None fillvalue=np.float64(0.0)
+    dims: ['/time', '/z']
+    'ACVSNC_standard_name': 'AerOpt_DepolarizationRatio_Profile_Green_RHa_Bulk_None'
+    'Comment': 'None'
+    'Horizontal_resolution_(seconds)': '10'
+    'Vertical_resolution_(meters)': '15'
+    '_FillValue': nan
+    'code_date': '21-Apr-2026'
+    'coordinates': 'time lon lat z'
+    'long_name': 'Random Uncertainty of 532 nm aerosol backscatter coefficient cloud screened'
+    'run_date': '27-Aug-2026 08:34:33'
+    'units': '1'
+- /DataUncertainty/532_ext_unc  shape=(1689, 845) dtype=float64 chunks=None compression=None fillvalue=np.float64(0.0)
+    dims: ['/time', '/z']
+    'ACVSNC_standard_name': 'AerOpt_Extinction_Profile_Green_RHa_Bulk_None'
+    'Comment': 'None'
+    'Horizontal_resolution_(seconds)': '60'
+    'Vertical_resolution_(meters)': '300'
+    '_FillValue': nan
+    'code_date': '06-Oct-2023'
+    'coordinates': 'time lon lat z'
+    'long_name': 'Random Uncertainty of 532 nm aerosol extinction coefficient'
+    'run_date': '27-Aug-2026 08:34:39'
+    'units': 'km-1'
+- /DataUncertainty/WVD_1064_532_unc  shape=(1689, 845) dtype=float64 chunks=None compression=None fillvalue=np.float64(0.0)
+    dims: ['/time', '/z']
+    'ACVSNC_standard_name': 'AerOpt_AngstromExponentBackScat_Profile_IRtoGreen_RHa_Bulk_None'
+    'Comment': 'None'
+    'Horizontal_resolution_(seconds)': '10'
+    'Vertical_resolution_(meters)': '15'
+    '_FillValue': nan
+    'code_date': '28-April-2026'
+    'coordinates': 'time lon lat z'
+    'long_name': 'Random Uncertainty of aerosol backscatter wavelength dependence IR VIS'
+    'run_date': '27-Aug-2026 08:35:45'
+    'units': '1'
+- /DataUncertainty/h2o_mmr_v_unc  shape=(1689, 845) dtype=float64 chunks=None compression=None fillvalue=np.float64(0.0)
+    dims: ['/time', '/z']
+    'ACVSNC_standard_name': 'Met_H2OMR_Profile_None'
+    'Comment': 'range avg. is variable 315 to 705 meters as seen in range_cell_v, time avg. is 60 seconds'
+    'Horizontal_resolution_(seconds)': '60'
+    'Resolution': 'range avg. is variable 315 to 705 meters as seen in range_cell_v, time avg. is 60 seconds.'
+    'Vertical_resolution_(meters)': 'NaN'
+    '_FillValue': nan
+    'code_date': '12-Aug-2026'
+    'coordinates': 'time lon lat z'
+    'long_name': 'Random Uncertainty of Water Vapor Mass Mixing Ratio'
+    'run_date': '27-Aug-2026 08:42:26'
+    'units': 'g.kg-1'
+## Group /Nav_Data
+- /Nav_Data/TrueHeading  shape=(1689,) dtype=float64 chunks=None compression=None fillvalue=np.float64(0.0)
+    'Description': 'Aircaft True Heading'
+    'units': 'deg'
+- /Nav_Data/TrueVehicleTrack  shape=(1689,) dtype=float64 chunks=None compression=None fillvalue=np.float64(0.0)
+    'Description': 'Aircraft track heading'
+    'units': 'deg'
+- /Nav_Data/gps_alt  shape=(1689,) dtype=float64 chunks=None compression=None fillvalue=np.float64(0.0)
+    'Description': 'Altitude of aircraft'
+    'units': 'm'
+- /Nav_Data/gps_date  shape=(1689,) dtype=float64 chunks=None compression=None fillvalue=np.float64(0.0)
+    'Description': 'Date'
+    'units': 'none'
+- /Nav_Data/gps_gnd_speed_kmph  shape=(1689,) dtype=float64 chunks=None compression=None fillvalue=np.float64(0.0)
+    'Description': 'Ground Speed'
+    'units': 'kmph'
+- /Nav_Data/gps_gnd_speed_knts  shape=(1689,) dtype=float64 chunks=None compression=None fillvalue=np.float64(0.0)
+    'Description': 'Ground Speed'
+    'units': 'knots'
+- /Nav_Data/gps_lat  shape=(1689,) dtype=float64 chunks=None compression=None fillvalue=np.float64(0.0)
+    'Description': 'Latitude'
+    'units': 'deg'
+- /Nav_Data/gps_lon  shape=(1689,) dtype=float64 chunks=None compression=None fillvalue=np.float64(0.0)
+    'Description': 'Longitude'
+    'units': 'deg'
+- /Nav_Data/gps_time  shape=(1689,) dtype=float64 chunks=None compression=None fillvalue=np.float64(0.0)
+    'Description': 'UTC hours'
+    'units': 'hrs'
+- /Nav_Data/imu_pitch  shape=(1689,) dtype=float64 chunks=None compression=None fillvalue=np.float64(0.0)
+    'Description': 'Aircraft pitch angle'
+    'units': 'deg'
+- /Nav_Data/imu_roll  shape=(1689,) dtype=float64 chunks=None compression=None fillvalue=np.float64(0.0)
+    'Description': 'Aircraft roll angle'
+    'units': 'deg'
+## Group /State
+- /State/Number_Density  shape=(1689, 845) dtype=float64 chunks=None compression=None fillvalue=np.float64(0.0)
+    'Description': 'Molecular Number Density'
+    'units': 'm^-3'
+- /State/Pressure  shape=(1689, 845) dtype=float64 chunks=None compression=None fillvalue=np.float64(0.0)
+    'Description': 'Pressure'
+    'units': 'atm'
+- /State/Relative_Humidity  shape=(1689, 845) dtype=float64 chunks=None compression=None fillvalue=np.float64(0.0)
+    'Description': 'Relative Humidity in percent'
+    'units': '%'
+- /State/State_Type  shape=(1,) dtype=float64 chunks=None compression=None fillvalue=np.float64(0.0)
+    'Description': '1-Ballon sonde, 2-MERRA2 model, 3-LaRC O3 sonde, 4-Drop sonde, 5-HRRR model'
+    'units': 'flag'
+    value: 2.0
+- /State/Temperature  shape=(1689, 845) dtype=float64 chunks=None compression=None fillvalue=np.float64(0.0)
+    'Description': 'Temperature'
+    'units': 'K'
+- /State/U  shape=(1689, 845) dtype=float64 chunks=None compression=None fillvalue=np.float64(0.0)
+    'Description': 'MERRA2 ONLY: U (east) component of wind'
+    'units': 'm/s'
+- /State/V  shape=(1689, 845) dtype=float64 chunks=None compression=None fillvalue=np.float64(0.0)
+    'Description': 'MERRA2 ONLY: V (north) component of wind'
+    'units': 'm/s'
+## Group /UserInput
+- /UserInput/DEM_altitude  shape=(1689,) dtype=float64 chunks=None compression=None fillvalue=np.float64(0.0)
+    'Description': 'Altitude of Global Multi-resolution Terrain Elevation Data 2010 (GMTED2010) digital elevation map'
+    'units': 'm'
+- /lat  shape=(1689,) dtype=float64 chunks=None compression=None fillvalue=np.float64(0.0)
+    dims: ['/time']
+    'ACVSNC_standard_name': 'Platform_Latitude_InSitu_None'
+    'long_name': 'latitude of the measurement instant'
+    'units': 'degrees_north'
+- /lon  shape=(1689,) dtype=float64 chunks=None compression=None fillvalue=np.float64(0.0)
+    dims: ['/time']
+    'ACVSNC_standard_name': 'Platform_Longitude_InSitu_None'
+    'long_name': 'longitude of the measurement instant'
+    'units': 'degrees_east'
+- /time  shape=(1689,) dtype=float64 chunks=None compression=None fillvalue=np.float64(0.0)
+    dimension scale NAME: 'time'
+    'axis': 'X'
+    'long_name': 'instant time in UTC'
+    'units': 'seconds since 2026-02-17 00:00:00'
+- /z  shape=(845,) dtype=float64 chunks=None compression=None fillvalue=np.float64(0.0)
+    dimension scale NAME: 'z'
+    'axis': 'Y'
+    'long_name': 'Altitude '
+    'positive': 'up '
+    'units': 'm'

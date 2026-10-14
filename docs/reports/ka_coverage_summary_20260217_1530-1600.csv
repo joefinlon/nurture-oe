@@ -1,0 +1,7 @@
+definition,subset,n_ice_WG,n_ka,fraction
+"Z>Zmin, file attr (-16.32 dBZ)","all ice, W&G detected",19270,752,0.03902439024390244
+"Z>Zmin, file attr (-16.32 dBZ)",... and T < 0 °C,19270,752,0.03902439024390244
+"Z>Zmin, PK (-19.26 dBZ)","all ice, W&G detected",19270,2066,0.10721328489880644
+"Z>Zmin, PK (-19.26 dBZ)",... and T < 0 °C,19270,2066,0.10721328489880644
+finite zm_ka only,"all ice, W&G detected",19270,2433,0.12625843279709392
+finite zm_ka only,... and T < 0 °C,19270,2433,0.12625843279709392

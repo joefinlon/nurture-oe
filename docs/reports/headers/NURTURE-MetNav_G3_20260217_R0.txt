@@ -1,0 +1,61 @@
+# Header dump: NURTURE-MetNav_G3_20260217_R0.ict
+# size: 2,716,651 bytes
+# header lines: 57; data rows: 17733
+
+57,1001
+NASA Airborne Science Program
+National Suborbital Research Center (Bay Area Environmental Research Institute at NASA Ames Research Center)
+N520NA Meteorological and Navigation (MetNav) Facility Instrumentation
+NURTURE 2026
+1,1
+2026,02,17,2026,09,10
+1
+Time_Start, seconds
+24
+1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1
+-99999,-99999,-99999,-99999,-99999,-99999,-99999,-99999,-99999,-99999,-99999,-99999,-99999,-99999,-99999,-99999,-99999,-99999,-99999,-99999,-99999,-99999,-99999,-99999
+Latitude, deg, Platform_Latitude_InSitu_None
+Longitude, deg, Platform_Longitude_InSitu_None
+GPS_Altitude_MSL, m, Platform_AltitudeMSL_InSitu_None
+Pressure_Altitude, ft, Platform_AltitudePressure_InSitu_None
+Ground_Speed, m/s, Platform_GroundSpeed_InSitu_None
+True_Air_Speed, m/s, Platform_AircraftTrueAirSpeed_InSitu_None
+Indicated_Air_Speed, kts, Platform_AircraftIndicatedAirSpeed_InSitu_None
+Mach_Number, mach, None
+Vertical_Speed, ft/s, None
+True_Heading, deg +- 180, Platform_HeadingTrue_InSitu_None
+Track_Angle, deg +- 180, Platform_TrackAngle_InSitu_None
+Drift_Angle, deg +- 90, Platform_DriftAngle_InSitu_None
+Pitch_Angle, deg +-90, Platform_PitchAngle_InSitu_None, up+
+Roll_Angle, deg +-180, Platform_RollAngle_InSitu_None, rt+
+Static_Air_Temp, degrees Celcius, Met_StaticAirTemperature_InSitu_None
+Total_Air_Temp, degrees Celcius, None
+Static_Pressure, hPa, Met_StaticPressure_InSitu_None
+Cabin_Pressure, hPa, None
+Wind_Speed, m/s, Met_WindSpeed_InSitu_None
+Wind_Direction, deg 0-360 cw from +y, Met_WindDirection_InSitu_None
+Solar_Zenith_Angle, deg, Met_SolarZenithAngle_InSitu_None
+Aircraft_Sun_Elevation, deg, None
+Sun_Azimuth, deg, Met_SolarAzimuthAngle_InSitu_None
+Aircraft_Sun_Azimuth, deg, None
+0
+19
+PI_CONTACT_INFO: NSRC MetNav PI - Ryan Bennett - joseph.r.bennett@nasa.gov & r.bennett@baeri.org.
+Platform: NASA Gulfstream III - N520NA
+LOCATION: Included in data records
+ASSOCIATED_DATA: This flight represents NURTURE science flight #17 out of Goose Bay - Happy Valley, CA (YYR) 
+INSTRUMENT_INFO: https://airbornescience.nasa.gov/aircraft/Gulfstream_III_-_LaRC
+DATA_INFO: For platform information, please visit: https://airbornescience.nasa.gov/sites/default/files/Attributes%20of%20NASA%20Gulfstream%20III%20%28N520NA%29%2C%20RSD-FLT-014%2C%20V1.1.pdf
+UNCERTAINTY: To be updated
+ULOD_FLAG: -7777
+ULOD_VALUE: N/A
+LLOD_FLAG: -8888
+LLOD_VALUE: N/A;
+DM_CONTACT_INFO: Ryan Bennett - joseph.r.bennett@nasa.gov & r.bennett@baeri.org.
+PROJECT_INFO: N/A
+STIPULATIONS_ON_USE: Data users are strongly encouraged to contact the instrument PI/data manager for information on instrument caveats and best practices. Otherwise, NURTURE data management protocols apply.
+OTHER_COMMENTS: Public release of Gulfstream III aircraft data, trimmed to flight time.
+REVISION: R0
+R0: Standardized missing data flag.
+RA: Initial release MetNav submission, please contact the PI with any questions.
+Time_Start,Latitude,Longitude,GPS_Altitude_MSL,Pressure_Altitude,Ground_Speed,True_Air_Speed,Indicated_Air_Speed,Mach_Number,Vertical_Speed,True_Heading,Track_Angle,Drift_Angle,Pitch_Angle,Roll_Angle,Static_Air_Temp,Total_Air_Temp,Static_Pressure,Cabin_Pressure,Wind_Speed,Wind_Direction,Solar_Zenith_Angle,Aircraft_Sun_Elevation,Sun_Azimuth,Aircraft_Sun_Azimuth

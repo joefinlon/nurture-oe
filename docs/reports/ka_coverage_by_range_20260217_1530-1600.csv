@@ -1,0 +1,22 @@
+definition,range_km,n_ice_WG,n_ka,fraction
+"Z>Zmin, file attr (-16.32 dBZ)",0-2,0,0,
+"Z>Zmin, file attr (-16.32 dBZ)",2-4,0,0,
+"Z>Zmin, file attr (-16.32 dBZ)",4-6,0,0,
+"Z>Zmin, file attr (-16.32 dBZ)",6-8,1194,0,0.0
+"Z>Zmin, file attr (-16.32 dBZ)",8-10,12828,0,0.0
+"Z>Zmin, file attr (-16.32 dBZ)",10-12,5248,752,0.14329268292682926
+"Z>Zmin, file attr (-16.32 dBZ)",12-14,0,0,
+"Z>Zmin, PK (-19.26 dBZ)",0-2,0,0,
+"Z>Zmin, PK (-19.26 dBZ)",2-4,0,0,
+"Z>Zmin, PK (-19.26 dBZ)",4-6,0,0,
+"Z>Zmin, PK (-19.26 dBZ)",6-8,1194,0,0.0
+"Z>Zmin, PK (-19.26 dBZ)",8-10,12828,164,0.01278453383224197
+"Z>Zmin, PK (-19.26 dBZ)",10-12,5248,1902,0.3624237804878049
+"Z>Zmin, PK (-19.26 dBZ)",12-14,0,0,
+finite zm_ka only,0-2,0,0,
+finite zm_ka only,2-4,0,0,
+finite zm_ka only,4-6,0,0,
+finite zm_ka only,6-8,1194,0,0.0
+finite zm_ka only,8-10,12828,227,0.01769566573121297
+finite zm_ka only,10-12,5248,2206,0.42035060975609756
+finite zm_ka only,12-14,0,0,

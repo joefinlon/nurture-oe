@@ -1,0 +1,960 @@
+{
+ "reader_warnings": [
+  "/DataProducts/Angstrom_Spherical: 'Units ' = 'sr' disagrees with CF units = '1'; using CF units"
+ ],
+ "halo_aerowv": {
+  "n_profiles": 1689,
+  "n_z": 845,
+  "z_ascending": true,
+  "z_first_last_step": [
+   -300.0,
+   12351.22,
+   14.9896
+  ],
+  "vars_not_named_in_PK_A10_2": [
+   "1064_aer_dep_cloud_screened_unc",
+   "1064_bsc_Sa",
+   "1064_bsc_Sa_unc",
+   "1064_bsc_cloud_screened_unc",
+   "532_AOT_from_bsc",
+   "532_AOT_from_bsc_above_cloud",
+   "532_AOT_from_bsc_col",
+   "532_AOT_hi_above_cloud_unc",
+   "532_AOT_hi_col_unc",
+   "532_AOT_hi_unc",
+   "532_aer_dep_cloud_screened_unc",
+   "532_bsc_Sa",
+   "532_bsc_Sa_unc",
+   "Altitude",
+   "State_Type",
+   "TrueVehicleTrack",
+   "gps_alt",
+   "gps_date",
+   "gps_gnd_speed_kmph",
+   "gps_gnd_speed_knts",
+   "gps_lat",
+   "gps_lon",
+   "gps_time"
+  ],
+  "PK_A10_2_named_not_in_file": [],
+  "State_Type": 2.0,
+  "State_units": {
+   "Temperature": "K",
+   "Pressure": "atm",
+   "Number_Density": "m^-3",
+   "Relative_Humidity": "%",
+   "U": "m/s",
+   "V": "m/s"
+  },
+  "State_Pressure_range": [
+   0.1684,
+   1.0506
+  ],
+  "time_spacing_s_pct_0_5_50_95_100": [
+   9.04,
+   9.5,
+   10.0,
+   10.5,
+   23.0
+  ],
+  "n_sub_pct_0_1_5_50_100": [
+   8.0,
+   18.0,
+   20.0,
+   20.0,
+   20.0
+  ],
+  "n_liquid_gt2p5km_below": 10439,
+  "n_ice_gt2p5km_below": 62700,
+  "fill_fraction_liquid_ice": {
+   "532_total_attn_bsc": [
+    0.909,
+    0.804
+   ],
+   "532_dep": [
+    0.909,
+    0.804
+   ],
+   "532_bsc": [
+    0.909,
+    0.804
+   ],
+   "532_bsr": [
+    0.909,
+    0.804
+   ],
+   "1064_total_attn_bsc": [
+    0.172,
+    0.479
+   ],
+   "1064_dep": [
+    0.172,
+    0.479
+   ],
+   "532_aer_dep": [
+    0.909,
+    0.804
+   ],
+   "1064_aer_dep": [
+    0.151,
+    0.392
+   ],
+   "532_bsc_cloud_screened": [
+    0.055,
+    0.504
+   ],
+   "532_ext": [
+    0.042,
+    0.457
+   ],
+   "532_Sa": [
+    0.042,
+    0.457
+   ],
+   "532_extinction_from_backscatter": [
+    0.055,
+    0.504
+   ],
+   "Aerosol_ID": [
+    0.013,
+    0.345
+   ],
+   "h2o_mmr_v": [
+    0.665,
+    0.932
+   ]
+  },
+  "unc_mask_equals_screened_mask": {
+   "532_bsc_cloud_screened_unc": true,
+   "532_dep_cloud_screened_unc": true,
+   "1064_bsc_cloud_screened_unc": true,
+   "1064_dep_cloud_screened_unc": false,
+   "532_aer_dep_cloud_screened_unc": true,
+   "1064_aer_dep_cloud_screened_unc": true
+  },
+  "screened_unc_finite_in_cloud": {
+   "532_bsc_cloud_screened_unc": 0.432,
+   "532_dep_cloud_screened_unc": 0.432,
+   "1064_bsc_cloud_screened_unc": 0.375,
+   "1064_dep_cloud_screened_unc": 0.434,
+   "532_aer_dep_cloud_screened_unc": 0.432,
+   "1064_aer_dep_cloud_screened_unc": 0.314
+  },
+  "aerosol_id_eq1_vs_cs_ice": {
+   "P(C&S ice | Aerosol_ID==1)": 0.467,
+   "P(Aerosol_ID==1 | C&S ice, >2.5 km below)": 0.338,
+   "Aerosol_ID classes present": [
+    1,
+    3,
+    4,
+    5,
+    6,
+    7,
+    9
+   ]
+  },
+  "finite_fraction_by_region": {
+   "1064_aer_dep": {
+    "above_aircraft": 0.0,
+    "0-0.5km_below": 0.0,
+    "0.5-2.5km_below": 0.024,
+    "below_DEM": 0.0,
+    "rest": 0.096
+   },
+   "1064_aer_dep_cloud_screened": {
+    "above_aircraft": 0.0,
+    "0-0.5km_below": 0.0,
+    "0.5-2.5km_below": 0.024,
+    "below_DEM": 0.0,
+    "rest": 0.089
+   },
+   "1064_bsc": {
+    "above_aircraft": 0.0,
+    "0-0.5km_below": 0.0,
+    "0.5-2.5km_below": 0.703,
+    "below_DEM": 0.0,
+    "rest": 0.767
+   },
+   "1064_bsc_Sa": {
+    "above_aircraft": 0.0,
+    "0-0.5km_below": 0.0,
+    "0.5-2.5km_below": 0.624,
+    "below_DEM": 0.0,
+    "rest": 0.731
+   },
+   "1064_bsc_cloud_screened": {
+    "above_aircraft": 0.0,
+    "0-0.5km_below": 0.0,
+    "0.5-2.5km_below": 0.703,
+    "below_DEM": 0.0,
+    "rest": 0.754
+   },
+   "1064_bsr": {
+    "above_aircraft": 0.0,
+    "0-0.5km_below": 0.0,
+    "0.5-2.5km_below": 0.703,
+    "below_DEM": 0.0,
+    "rest": 0.767
+   },
+   "1064_bsr_cloud_screened": {
+    "above_aircraft": 0.0,
+    "0-0.5km_below": 0.0,
+    "0.5-2.5km_below": 0.703,
+    "below_DEM": 0.0,
+    "rest": 0.754
+   },
+   "1064_dep": {
+    "above_aircraft": 0.0,
+    "0-0.5km_below": 0.0,
+    "0.5-2.5km_below": 0.703,
+    "below_DEM": 0.0,
+    "rest": 0.767
+   },
+   "1064_dep_cloud_screened": {
+    "above_aircraft": 0.0,
+    "0-0.5km_below": 0.0,
+    "0.5-2.5km_below": 0.703,
+    "below_DEM": 0.0,
+    "rest": 0.754
+   },
+   "1064_ext": {
+    "above_aircraft": 0.0,
+    "0-0.5km_below": 0.0,
+    "0.5-2.5km_below": 0.624,
+    "below_DEM": 0.0,
+    "rest": 0.731
+   },
+   "1064_total_attn_bsc": {
+    "above_aircraft": 0.0,
+    "0-0.5km_below": 0.0,
+    "0.5-2.5km_below": 0.469,
+    "below_DEM": 0.0,
+    "rest": 0.767
+   },
+   "532_AOT_from_bsc_col": {
+    "above_aircraft": 0.0,
+    "0-0.5km_below": 0.0,
+    "0.5-2.5km_below": 0.882,
+    "below_DEM": 0.0,
+    "rest": 0.756
+   },
+   "532_AOT_hi_col": {
+    "above_aircraft": 0.0,
+    "0-0.5km_below": 0.0,
+    "0.5-2.5km_below": 0.473,
+    "below_DEM": 0.0,
+    "rest": 0.761
+   },
+   "532_Sa": {
+    "above_aircraft": 0.0,
+    "0-0.5km_below": 0.0,
+    "0.5-2.5km_below": 0.0,
+    "below_DEM": 0.0,
+    "rest": 0.096
+   },
+   "532_aer_dep": {
+    "above_aircraft": 0.0,
+    "0-0.5km_below": 0.0,
+    "0.5-2.5km_below": 0.079,
+    "below_DEM": 0.0,
+    "rest": 0.148
+   },
+   "532_aer_dep_cloud_screened": {
+    "above_aircraft": 0.0,
+    "0-0.5km_below": 0.0,
+    "0.5-2.5km_below": 0.079,
+    "below_DEM": 0.0,
+    "rest": 0.102
+   },
+   "532_bsc": {
+    "above_aircraft": 0.0,
+    "0-0.5km_below": 0.002,
+    "0.5-2.5km_below": 0.942,
+    "below_DEM": 0.0,
+    "rest": 0.818
+   },
+   "532_bsc_Sa": {
+    "above_aircraft": 0.0,
+    "0-0.5km_below": 0.0,
+    "0.5-2.5km_below": 0.881,
+    "below_DEM": 0.0,
+    "rest": 0.757
+   },
+   "532_bsc_cloud_screened": {
+    "above_aircraft": 0.0,
+    "0-0.5km_below": 0.002,
+    "0.5-2.5km_below": 0.942,
+    "below_DEM": 0.0,
+    "rest": 0.769
+   },
+   "532_bsr": {
+    "above_aircraft": 0.0,
+    "0-0.5km_below": 0.002,
+    "0.5-2.5km_below": 0.942,
+    "below_DEM": 0.0,
+    "rest": 0.818
+   },
+   "532_bsr_cloud_screened": {
+    "above_aircraft": 0.0,
+    "0-0.5km_below": 0.002,
+    "0.5-2.5km_below": 0.942,
+    "below_DEM": 0.0,
+    "rest": 0.769
+   },
+   "532_dep": {
+    "above_aircraft": 0.0,
+    "0-0.5km_below": 0.002,
+    "0.5-2.5km_below": 0.942,
+    "below_DEM": 0.0,
+    "rest": 0.818
+   },
+   "532_dep_cloud_screened": {
+    "above_aircraft": 0.0,
+    "0-0.5km_below": 0.002,
+    "0.5-2.5km_below": 0.942,
+    "below_DEM": 0.0,
+    "rest": 0.769
+   },
+   "532_ext": {
+    "above_aircraft": 0.0,
+    "0-0.5km_below": 0.0,
+    "0.5-2.5km_below": 0.335,
+    "below_DEM": 0.0,
+    "rest": 0.708
+   },
+   "532_extinction_from_backscatter": {
+    "above_aircraft": 0.0,
+    "0-0.5km_below": 0.002,
+    "0.5-2.5km_below": 0.942,
+    "below_DEM": 0.0,
+    "rest": 0.769
+   },
+   "532_total_attn_bsc": {
+    "above_aircraft": 0.0,
+    "0-0.5km_below": 0.0,
+    "0.5-2.5km_below": 0.473,
+    "below_DEM": 0.0,
+    "rest": 0.818
+   },
+   "Aerosol_ID": {
+    "above_aircraft": 0.0,
+    "0-0.5km_below": 0.0,
+    "0.5-2.5km_below": 0.0,
+    "below_DEM": 0.0,
+    "rest": 0.068
+   },
+   "Angstrom_Spherical": {
+    "above_aircraft": 0.0,
+    "0-0.5km_below": 0.0,
+    "0.5-2.5km_below": 0.024,
+    "below_DEM": 0.0,
+    "rest": 0.095
+   },
+   "RHi_v": {
+    "above_aircraft": 0.0,
+    "0-0.5km_below": 0.0,
+    "0.5-2.5km_below": 0.714,
+    "below_DEM": 0.002,
+    "rest": 0.84
+   },
+   "RHw_v": {
+    "above_aircraft": 0.0,
+    "0-0.5km_below": 0.0,
+    "0.5-2.5km_below": 0.714,
+    "below_DEM": 0.002,
+    "rest": 0.84
+   },
+   "WVD_1064_532": {
+    "above_aircraft": 0.0,
+    "0-0.5km_below": 0.0,
+    "0.5-2.5km_below": 0.024,
+    "below_DEM": 0.0,
+    "rest": 0.096
+   },
+   "h2o_mmr_v": {
+    "above_aircraft": 0.0,
+    "0-0.5km_below": 0.0,
+    "0.5-2.5km_below": 0.714,
+    "below_DEM": 0.002,
+    "rest": 0.84
+   },
+   "range_cell_v": {
+    "above_aircraft": 0.0,
+    "0-0.5km_below": 0.0,
+    "0.5-2.5km_below": 0.714,
+    "below_DEM": 0.0,
+    "rest": 0.847
+   },
+   "1064_aer_dep_cloud_screened_unc": {
+    "above_aircraft": 0.0,
+    "0-0.5km_below": 0.0,
+    "0.5-2.5km_below": 0.024,
+    "below_DEM": 0.0,
+    "rest": 0.089
+   },
+   "1064_bsc_Sa_unc": {
+    "above_aircraft": 0.0,
+    "0-0.5km_below": 0.0,
+    "0.5-2.5km_below": 0.562,
+    "below_DEM": 0.0,
+    "rest": 0.717
+   },
+   "1064_bsc_cloud_screened_unc": {
+    "above_aircraft": 0.0,
+    "0-0.5km_below": 0.0,
+    "0.5-2.5km_below": 0.703,
+    "below_DEM": 0.0,
+    "rest": 0.754
+   },
+   "1064_dep_cloud_screened_unc": {
+    "above_aircraft": 0.0,
+    "0-0.5km_below": 0.0,
+    "0.5-2.5km_below": 0.703,
+    "below_DEM": 0.0,
+    "rest": 0.765
+   },
+   "532_AOT_hi_col_unc": {
+    "above_aircraft": 0.0,
+    "0-0.5km_below": 0.0,
+    "0.5-2.5km_below": 0.473,
+    "below_DEM": 0.0,
+    "rest": 0.761
+   },
+   "532_Sa_unc": {
+    "above_aircraft": 0.0,
+    "0-0.5km_below": 0.0,
+    "0.5-2.5km_below": 0.0,
+    "below_DEM": 0.0,
+    "rest": 0.094
+   },
+   "532_aer_dep_cloud_screened_unc": {
+    "above_aircraft": 0.0,
+    "0-0.5km_below": 0.0,
+    "0.5-2.5km_below": 0.079,
+    "below_DEM": 0.0,
+    "rest": 0.102
+   },
+   "532_bsc_Sa_unc": {
+    "above_aircraft": 0.0,
+    "0-0.5km_below": 0.0,
+    "0.5-2.5km_below": 0.818,
+    "below_DEM": 0.0,
+    "rest": 0.745
+   },
+   "532_bsc_cloud_screened_unc": {
+    "above_aircraft": 0.0,
+    "0-0.5km_below": 0.002,
+    "0.5-2.5km_below": 0.942,
+    "below_DEM": 0.0,
+    "rest": 0.769
+   },
+   "532_dep_cloud_screened_unc": {
+    "above_aircraft": 0.0,
+    "0-0.5km_below": 0.002,
+    "0.5-2.5km_below": 0.942,
+    "below_DEM": 0.0,
+    "rest": 0.769
+   },
+   "532_ext_unc": {
+    "above_aircraft": 0.0,
+    "0-0.5km_below": 0.0,
+    "0.5-2.5km_below": 0.335,
+    "below_DEM": 0.0,
+    "rest": 0.708
+   },
+   "WVD_1064_532_unc": {
+    "above_aircraft": 0.0,
+    "0-0.5km_below": 0.0,
+    "0.5-2.5km_below": 0.024,
+    "below_DEM": 0.0,
+    "rest": 0.088
+   },
+   "h2o_mmr_v_unc": {
+    "above_aircraft": 0.0,
+    "0-0.5km_below": 0.0,
+    "0.5-2.5km_below": 0.714,
+    "below_DEM": 0.0,
+    "rest": 0.829
+   },
+   "Number_Density": {
+    "above_aircraft": 1.0,
+    "0-0.5km_below": 1.0,
+    "0.5-2.5km_below": 1.0,
+    "below_DEM": 1.0,
+    "rest": 1.0
+   },
+   "Pressure": {
+    "above_aircraft": 1.0,
+    "0-0.5km_below": 1.0,
+    "0.5-2.5km_below": 1.0,
+    "below_DEM": 1.0,
+    "rest": 1.0
+   },
+   "Relative_Humidity": {
+    "above_aircraft": 0.993,
+    "0-0.5km_below": 0.984,
+    "0.5-2.5km_below": 0.997,
+    "below_DEM": 0.002,
+    "rest": 0.982
+   },
+   "Temperature": {
+    "above_aircraft": 1.0,
+    "0-0.5km_below": 1.0,
+    "0.5-2.5km_below": 1.0,
+    "below_DEM": 1.0,
+    "rest": 1.0
+   },
+   "U": {
+    "above_aircraft": 0.993,
+    "0-0.5km_below": 0.984,
+    "0.5-2.5km_below": 0.997,
+    "below_DEM": 0.002,
+    "rest": 0.982
+   },
+   "V": {
+    "above_aircraft": 0.993,
+    "0-0.5km_below": 0.984,
+    "0.5-2.5km_below": 0.997,
+    "below_DEM": 0.002,
+    "rest": 0.982
+   }
+  },
+  "h2o_lowest_valid_above_cth935_m_pct_5_50_95": [
+   15.0,
+   15.0,
+   695.5
+  ],
+  "h2o_n_profiles_with_cth935": 1330
+ },
+ "halo_cloudsurface": {
+  "n_profiles": 33765,
+  "n_z": 845,
+  "z_identical_to_aerowv": true,
+  "Type_classes": {
+   "0": 228635,
+   "1": 399206,
+   "2": 873004,
+   "3": 28122,
+   "4": 18188639,
+   "5": 12906
+  },
+  "dt_s_pct_0_1_50_99_100": [
+   0.036,
+   0.499,
+   0.501,
+   0.502,
+   13.5
+  ]
+ },
+ "attitude_vs_metnav": {
+  "n_profiles_turning(|roll|>5deg)": 50,
+  "imu_pitch": {
+   "sampled_at_t": {
+    "rms_all": 0.343,
+    "rms_turning": 0.503,
+    "median_diff": 0.29
+   },
+   "mean_[t-5,t+5)": {
+    "rms_all": 0.339,
+    "rms_turning": 0.486,
+    "median_diff": 0.288
+   }
+  },
+  "imu_pitch_pct_1_50_99": [
+   -2.04,
+   2.71,
+   8.66
+  ],
+  "imu_roll": {
+   "sampled_at_t": {
+    "rms_all": 1.45,
+    "rms_turning": 6.152,
+    "median_diff": -0.05
+   },
+   "mean_[t-5,t+5)": {
+    "rms_all": 1.329,
+    "rms_turning": 5.328,
+    "median_diff": -0.053
+   }
+  },
+  "imu_roll_pct_1_50_99": [
+   -15.61,
+   -0.19,
+   4.86
+  ]
+ },
+ "metnav": {
+  "n": 17733,
+  "t_first_last": [
+   "2026-02-17T14:46:19.000000000",
+   "2026-02-17T19:41:51.000000000"
+  ],
+  "dt_s_unique_counts": {
+   "1.0": 17732
+  },
+  "variables": {
+   "Latitude": "deg",
+   "Longitude": "deg",
+   "GPS_Altitude_MSL": "m",
+   "Pressure_Altitude": "ft",
+   "Ground_Speed": "m/s",
+   "True_Air_Speed": "m/s",
+   "Indicated_Air_Speed": "kts",
+   "Mach_Number": "mach",
+   "Vertical_Speed": "ft/s",
+   "True_Heading": "deg +- 180",
+   "Track_Angle": "deg +- 180",
+   "Drift_Angle": "deg +- 90",
+   "Pitch_Angle": "deg +-90",
+   "Roll_Angle": "deg +-180",
+   "Static_Air_Temp": "degrees Celcius",
+   "Total_Air_Temp": "degrees Celcius",
+   "Static_Pressure": "hPa",
+   "Cabin_Pressure": "hPa",
+   "Wind_Speed": "m/s",
+   "Wind_Direction": "deg 0-360 cw from +y",
+   "Solar_Zenith_Angle": "deg",
+   "Aircraft_Sun_Elevation": "deg",
+   "Sun_Azimuth": "deg",
+   "Aircraft_Sun_Azimuth": "deg"
+  },
+  "missing_fraction": {
+   "Latitude": 0.0,
+   "Longitude": 0.0,
+   "GPS_Altitude_MSL": 0.0,
+   "Pressure_Altitude": 0.0,
+   "Ground_Speed": 0.0,
+   "True_Air_Speed": 0.0,
+   "Indicated_Air_Speed": 0.0,
+   "Mach_Number": 0.0,
+   "Vertical_Speed": 0.0,
+   "True_Heading": 0.0,
+   "Track_Angle": 0.002,
+   "Drift_Angle": 0.002,
+   "Pitch_Angle": 0.0,
+   "Roll_Angle": 0.0,
+   "Static_Air_Temp": 0.0,
+   "Total_Air_Temp": 0.0,
+   "Static_Pressure": 0.0,
+   "Cabin_Pressure": 0.0,
+   "Wind_Speed": 0.003,
+   "Wind_Direction": 0.003,
+   "Solar_Zenith_Angle": 0.0,
+   "Aircraft_Sun_Elevation": 0.0,
+   "Sun_Azimuth": 0.0,
+   "Aircraft_Sun_Azimuth": 0.0
+  },
+  "llod_ulod_flag_vars": []
+ },
+ "cloudcube": {
+  "cloudcube_1513": {
+   "file": "NURTURE-CLOUDCUBE_G3_20260217_R0_S20260217a151300_E20260217a152010_KaWG.nc",
+   "n_time": 4283,
+   "n_range": 751,
+   "dt_s": [
+    0.10044,
+    0.10044,
+    0.10044
+   ],
+   "gate_spacing_m": 19.9863,
+   "range_first_last": [
+    -999.31,
+    13990.31
+   ],
+   "zmin_1km_dbz": {
+    "ka": -16.32,
+    "w": -32.64,
+    "g": -37.58
+   },
+   "halo_gps_alt_minus_cc_alt_m_pct_1_50_99": [
+    18.8,
+    19.9,
+    21.0
+   ],
+   "offnadir_deg_pct_1_50_99": [
+    3.14,
+    3.23,
+    3.38
+   ],
+   "abs(offnadir - incidence_angle)_deg_pct_50_99": [
+    0.061,
+    0.077
+   ],
+   "landmask_counts": {
+    "1": 101,
+    "3": 4182
+   }
+  },
+  "cloudcube_1521": {
+   "file": "NURTURE-CLOUDCUBE_G3_20260217_R0_S20260217a152158_E20260217a185937_KaWG.nc",
+   "n_time": 130027,
+   "n_range": 751,
+   "dt_s": [
+    0.10044,
+    0.10044,
+    0.10044
+   ],
+   "gate_spacing_m": 19.9863,
+   "range_first_last": [
+    -999.31,
+    13990.31
+   ],
+   "zmin_1km_dbz": {
+    "ka": -16.32,
+    "w": -32.64,
+    "g": -37.58
+   },
+   "halo_gps_alt_minus_cc_alt_m_pct_1_50_99": [
+    18.7,
+    38.1,
+    44.0
+   ],
+   "offnadir_deg_pct_1_50_99": [
+    1.84,
+    2.44,
+    20.29
+   ],
+   "abs(offnadir - incidence_angle)_deg_pct_50_99": [
+    0.105,
+    0.189
+   ],
+   "landmask_counts": {
+    "0": 25570,
+    "1": 2782,
+    "3": 101675
+   }
+  },
+  "cloudcube_1900": {
+   "file": "NURTURE-CLOUDCUBE_G3_20260217_R0_S20260217a190000_E20260217a192625_KaWG.nc",
+   "n_time": 15787,
+   "n_range": 751,
+   "dt_s": [
+    0.10044,
+    0.10044,
+    0.10044
+   ],
+   "gate_spacing_m": 19.9863,
+   "range_first_last": [
+    -999.31,
+    13990.31
+   ],
+   "zmin_1km_dbz": {
+    "ka": -19.26,
+    "w": -32.64,
+    "g": -37.58
+   },
+   "halo_gps_alt_minus_cc_alt_m_pct_1_50_99": [
+    11.0,
+    20.0,
+    23.6
+   ],
+   "offnadir_deg_pct_1_50_99": [
+    0.38,
+    1.81,
+    14.93
+   ],
+   "abs(offnadir - incidence_angle)_deg_pct_50_99": [
+    0.048,
+    0.2
+   ],
+   "landmask_counts": {
+    "1": 1603,
+    "3": 14184
+   }
+  }
+ },
+ "cloudcube_profiles_1521": {
+  "segment": [
+   "2026-02-17T15:30:00",
+   "2026-02-17T16:00:00"
+  ],
+  "ka": {
+   "finite_fraction": 0.0746,
+   "zm-Zmin_attr p0.1/p1/p50 @ 6.0-9.0 km": [
+    -9.0,
+    -8.0,
+    -2.8
+   ],
+   "zm-Zmin_attr p0.1/p1/p50 @ 9.0-11.5 km": [
+    -8.5,
+    -6.9,
+    -0.1
+   ],
+   "katten_finite_fraction": 0.775,
+   "katten_dB_per_km_pct_1_50_99": [
+    0.0039,
+    0.0223,
+    0.1169
+   ],
+   "katten_finite_at_r<0": 0.22
+  },
+  "w": {
+   "finite_fraction": 0.248,
+   "zm-Zmin_attr p0.1/p1/p50 @ 0.5-3.0 km": [
+    -3.4,
+    -1.3,
+    1.2
+   ],
+   "zm-Zmin_attr p0.1/p1/p50 @ 3.0-6.0 km": [
+    -7.9,
+    2.0,
+    9.5
+   ],
+   "zm-Zmin_attr p0.1/p1/p50 @ 6.0-9.0 km": [
+    -10.9,
+    -8.8,
+    -0.2
+   ],
+   "zm-Zmin_attr p0.1/p1/p50 @ 9.0-11.5 km": [
+    -9.9,
+    -7.2,
+    6.0
+   ],
+   "katten_finite_fraction": 0.776,
+   "katten_dB_per_km_pct_1_50_99": [
+    0.0036,
+    0.0233,
+    0.3223
+   ],
+   "katten_finite_at_r<0": 0.25
+  },
+  "g": {
+   "finite_fraction": 0.2264,
+   "zm-Zmin_attr p0.1/p1/p50 @ 6.0-9.0 km": [
+    -7.0,
+    -5.0,
+    3.3
+   ],
+   "zm-Zmin_attr p0.1/p1/p50 @ 9.0-11.5 km": [
+    -6.3,
+    -3.9,
+    5.4
+   ],
+   "katten_finite_fraction": 0.75,
+   "katten_dB_per_km_pct_1_50_99": [
+    0.0035,
+    0.0484,
+    1.918
+   ],
+   "katten_finite_at_r<0": 0.0
+  },
+  "W_surface_peak_minus_CS_altSurface_m_pct_5_25_50_75_95": {
+   "HALO MSL reference": [
+    -34.4,
+    -18.6,
+    -11.3,
+    -3.9,
+    7.6
+   ],
+   "CloudCube ellipsoid alt": [
+    -61.7,
+    -48.2,
+    -40.3,
+    -33.8,
+    -21.0
+   ]
+  }
+ },
+ "cloudcube_profiles_1900": {
+  "segment": [
+   "2026-02-17T19:00:00",
+   "2026-02-17T19:25:00"
+  ],
+  "ka": {
+   "finite_fraction": 0.2112,
+   "zm-Zmin_attr p0.1/p1/p50 @ 0.5-3.0 km": [
+    -7.5,
+    -5.3,
+    0.8
+   ],
+   "zm-Zmin_attr p0.1/p1/p50 @ 3.0-6.0 km": [
+    -8.4,
+    -6.9,
+    -1.5
+   ],
+   "zm-Zmin_attr p0.1/p1/p50 @ 6.0-9.0 km": [
+    -8.7,
+    -7.0,
+    2.6
+   ],
+   "zm-Zmin_attr p0.1/p1/p50 @ 9.0-11.5 km": [
+    -7.7,
+    -5.5,
+    5.7
+   ],
+   "katten_finite_fraction": 0.711,
+   "katten_dB_per_km_pct_1_50_99": [
+    0.004,
+    0.0255,
+    0.1182
+   ],
+   "katten_finite_at_r<0": 0.22
+  },
+  "w": {
+   "finite_fraction": 0.2123,
+   "zm-Zmin_attr p0.1/p1/p50 @ 3.0-6.0 km": [
+    -10.9,
+    -9.2,
+    -0.3
+   ],
+   "zm-Zmin_attr p0.1/p1/p50 @ 6.0-9.0 km": [
+    -10.6,
+    -8.5,
+    0.0
+   ],
+   "zm-Zmin_attr p0.1/p1/p50 @ 9.0-11.5 km": [
+    -9.8,
+    -7.2,
+    5.1
+   ],
+   "katten_finite_fraction": 0.713,
+   "katten_dB_per_km_pct_1_50_99": [
+    0.0037,
+    0.0319,
+    0.3397
+   ],
+   "katten_finite_at_r<0": 0.262
+  },
+  "g": {
+   "finite_fraction": 0.193,
+   "zm-Zmin_attr p0.1/p1/p50 @ 3.0-6.0 km": [
+    -7.4,
+    -5.8,
+    2.1
+   ],
+   "zm-Zmin_attr p0.1/p1/p50 @ 6.0-9.0 km": [
+    -6.9,
+    -4.8,
+    3.8
+   ],
+   "zm-Zmin_attr p0.1/p1/p50 @ 9.0-11.5 km": [
+    -6.4,
+    -4.2,
+    4.7
+   ],
+   "katten_finite_fraction": 0.693,
+   "katten_dB_per_km_pct_1_50_99": [
+    0.0035,
+    0.1004,
+    2.0544
+   ],
+   "katten_finite_at_r<0": 0.01
+  },
+  "W_surface_peak_minus_CS_altSurface_m_pct_5_25_50_75_95": {
+   "HALO MSL reference": [
+    -7.1,
+    0.3,
+    6.9,
+    12.5,
+    18.5
+   ],
+   "CloudCube ellipsoid alt": [
+    -26.9,
+    -19.2,
+    -13.0,
+    -6.9,
+    2.4
+   ]
+  }
+ }
+}

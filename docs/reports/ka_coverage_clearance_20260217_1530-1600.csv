@@ -1,0 +1,19 @@
+definition,subset,n_ice_WG,n_ka,fraction,clearance_above_surface_m
+"Z>Zmin, file attr (-16.32 dBZ)","all ice, W&G detected",18944,752,0.03969594594594594,0
+"Z>Zmin, PK (-19.26 dBZ)","all ice, W&G detected",18944,2066,0.10905827702702703,0
+finite zm_ka only,"all ice, W&G detected",18944,2433,0.12843116554054054,0
+"Z>Zmin, file attr (-16.32 dBZ)","all ice, W&G detected",18934,742,0.03918876095912116,60
+"Z>Zmin, PK (-19.26 dBZ)","all ice, W&G detected",18934,2056,0.10858772578430337,60
+finite zm_ka only,"all ice, W&G detected",18934,2423,0.1279708460969684,60
+"Z>Zmin, file attr (-16.32 dBZ)","all ice, W&G detected",18905,713,0.03771489024067707,120
+"Z>Zmin, PK (-19.26 dBZ)","all ice, W&G detected",18905,2027,0.10722031208674954,120
+finite zm_ka only,"all ice, W&G detected",18905,2394,0.12663316582914572,120
+"Z>Zmin, file attr (-16.32 dBZ)","all ice, W&G detected",18809,617,0.03280344515923228,250
+"Z>Zmin, PK (-19.26 dBZ)","all ice, W&G detected",18809,1931,0.10266361848051465,250
+finite zm_ka only,"all ice, W&G detected",18809,2298,0.1221755542559413,250
+"Z>Zmin, file attr (-16.32 dBZ)","all ice, W&G detected",18267,394,0.02156894947172497,500
+"Z>Zmin, PK (-19.26 dBZ)","all ice, W&G detected",18267,1569,0.085892593200854,500
+finite zm_ka only,"all ice, W&G detected",18267,1911,0.10461487929052389,500
+"Z>Zmin, file attr (-16.32 dBZ)","all ice, W&G detected",16397,124,0.007562358968103922,1000
+"Z>Zmin, PK (-19.26 dBZ)","all ice, W&G detected",16397,698,0.042568762578520464,1000
+finite zm_ka only,"all ice, W&G detected",16397,958,0.05842532170518997,1000

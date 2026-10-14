@@ -1,0 +1,103 @@
+# Header dump: NURTURE-HALO-CloudAndSurface_G3_20260217_R0_L1.h5
+# size: 373,445,136 bytes
+
+## Global attributes
+
+- /000_Readme  shape=(1, 18) dtype=object chunks=None compression=None fillvalue=b''
+    'Long_Name': 'Readme/file header'
+    'StandardName': 'None'
+    'units': 'None'
+- /000_revision_date  shape=(1, 1) dtype=object chunks=None compression=None fillvalue=b''
+    'Long_Name': 'date last processed'
+    'StandardName': 'None'
+    'units': 'None'
+## Group /DataProducts
+## Group /DataProducts/Cloud
+- /DataProducts/Cloud/Cloud Top Height  shape=(33765, 1) dtype=float64 chunks=None compression=None fillvalue=np.float64(0.0)
+    'Long_Name': 'Cloud top height used for property retreivals'
+    'StandardName': 'None'
+    'units': 'm'
+- /DataProducts/Cloud/IAB532  shape=(33765, 1) dtype=float64 chunks=None compression=None fillvalue=np.float64(0.0)
+    'Long_Name': 'Integrated Cloud Attenuated Backscatter at 532 nm'
+    'StandardName': 'None'
+    'units': 'sr^-1'
+- /DataProducts/Cloud/LID532  shape=(33765, 1) dtype=float64 chunks=None compression=None fillvalue=np.float64(0.0)
+    'Long_Name': 'Integrated Cloud Depolarization at 532 nm'
+    'StandardName': 'None'
+    'units': 'sr^-1'
+- /DataProducts/Cloud/Multilayer Cloud Base Heights  shape=(33765, 10) dtype=float64 chunks=None compression=None fillvalue=np.float64(0.0)
+    'Long_Name': 'Cloud base height (up to 5 layers highest to lowest)'
+    'StandardName': 'None'
+    'units': 'm'
+- /DataProducts/Cloud/Multilayer Cloud Top Heights  shape=(33765, 10) dtype=float64 chunks=None compression=None fillvalue=np.float64(0.0)
+    'Long_Name': 'Cloud top height (up to 5 layers highest to lowest)'
+    'StandardName': 'None'
+    'units': 'm'
+- /DataProducts/Cloud/Sc532  shape=(33765, 1) dtype=float64 chunks=None compression=None fillvalue=np.float64(0.0)
+    'Long_Name': 'Opaque Cloud Lidar Ratio at 532 nm'
+    'StandardName': 'None'
+    'units': 'sr'
+- /DataProducts/Cloud/WaterExtinction532  shape=(33765, 1) dtype=float64 chunks=None compression=None fillvalue=np.float64(0.0)
+    'Long_Name': 'Water Cloud Extinction at 532 nm averaged between OD=1 and OD=2'
+    'StandardName': 'None'
+    'units': 'km^-1'
+## Group /DataProducts/CloudMask
+- /DataProducts/CloudMask/Altitude  shape=(1, 845) dtype=float64 chunks=None compression=None fillvalue=np.float64(0.0)
+    'Long_Name': 'Cloud Mask Altitude (15m bin)'
+    'StandardName': 'None'
+    'units': 'm'
+- /DataProducts/CloudMask/Type  shape=(33765, 845) dtype=float64 chunks=None compression=None fillvalue=np.float64(0.0)
+    'Long_Name': 'Cloud Phase Mask: 0 = Water Dominant, 1 = Ice/Water Mix OR Ice/HOI Mix, 2 = Ice Dominant, 3 = HOI, 4 = Aerosol'
+    'StandardName': 'None'
+    'units': 'None'
+## Group /DataProducts/Surface
+- /DataProducts/Surface/WindSpeed  shape=(33765, 1) dtype=float64 chunks=None compression=None fillvalue=np.float64(0.0)
+    'Long_Name': 'Surface Wind Speed'
+    'StandardName': 'None'
+    'units': 'm/s'
+- /DataProducts/Surface/altSurface  shape=(33765, 1) dtype=float64 chunks=None compression=None fillvalue=np.float64(0.0)
+    'Long_Name': 'HSRL Determined Surface Altitude'
+    'StandardName': 'None'
+    'units': 'm'
+- /DataProducts/Surface/correctedReflectance  shape=(33765, 1) dtype=float64 chunks=None compression=None fillvalue=np.float64(0.0)
+    'Long_Name': 'Surface Reflectance corrected for atmosphere and subsurface relevant to water'
+    'StandardName': 'None'
+    'units': 'sr^-1'
+- /DataProducts/Surface/paraReflectance  shape=(33765, 1) dtype=float64 chunks=None compression=None fillvalue=np.float64(0.0)
+    'Long_Name': 'Copolarized reflectance corrected for atmospheric transmission'
+    'StandardName': 'None'
+    'units': 'sr^-1'
+- /DataProducts/Surface/surfaceDepol  shape=(33765, 1) dtype=float64 chunks=None compression=None fillvalue=np.float64(0.0)
+    'Long_Name': 'Depolarization Ratio of the Surface'
+    'StandardName': 'None'
+    'units': 'None'
+- /DataProducts/Surface/surfaceMol  shape=(33765, 1) dtype=float64 chunks=None compression=None fillvalue=np.float64(0.0)
+    'Long_Name': 'Molecular-to-Copolarized Channel Surface Ratio'
+    'StandardName': 'None'
+    'units': 'None'
+## Group /DataProducts/WaterCloudProfile
+- /DataProducts/WaterCloudProfile/Altitude  shape=(501, 1) dtype=float64 chunks=None compression=None fillvalue=np.float64(0.0)
+    'Long_Name': 'Profile altitude relative to cloud top'
+    'StandardName': 'None'
+    'units': 'm'
+- /DataProducts/WaterCloudProfile/ExtinctionProfile532  shape=(33765, 501) dtype=float64 chunks=None compression=None fillvalue=np.float64(0.0)
+    'Long_Name': 'Water Cloud Extinction profile at 532 nm'
+    'StandardName': 'None'
+    'units': 'm'
+## Group /Nav
+- /Nav/gps_alt  shape=(33765, 1) dtype=float64 chunks=None compression=None fillvalue=np.float64(0.0)
+    'Long_Name': 'Aircraft GPS Altitude'
+    'StandardName': 'None'
+    'units': 'm'
+- /Nav/gps_lat  shape=(33765, 1) dtype=float64 chunks=None compression=None fillvalue=np.float64(0.0)
+    'Long_Name': 'Aircraft Latitude'
+    'StandardName': 'None'
+    'units': 'degrees'
+- /Nav/gps_lon  shape=(33765, 1) dtype=float64 chunks=None compression=None fillvalue=np.float64(0.0)
+    'Long_Name': 'Aircraft Longitude'
+    'StandardName': 'None'
+    'units': 'degrees'
+- /Nav/gps_time  shape=(33765, 1) dtype=float64 chunks=None compression=None fillvalue=np.float64(0.0)
+    'Long_Name': 'UTC time of the sampling interval'
+    'StandardName': 'None'
+    'units': 'hours'

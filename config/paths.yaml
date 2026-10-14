@@ -1,0 +1,9 @@
+# Data locations for nurture-oe. All data stores are read-only.
+# SSP is moving from ~/Documents/code/python/SSP to ~/Documents/data/SSP (2026-10-05).
+ssp_root: ~/Documents/data/SSP
+tamuice2016: ~/Documents/data/SSP/TAMUice2016-1.0/Data_0.2_15.25
+tamuoic2019: ~/Documents/data/SSP/TAMUoic2019-1.1
+arts_ssdb: ~/Documents/data/SSP/ARTS-1-1
+sirlut: ~/Documents/data/SSP/SIRLUT-1-0
+nurture_example: ~/Documents/data/SSP/Example_Data_20260217
+cache_dir: ~/Documents/data/nurture-oe-cache

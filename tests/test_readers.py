@@ -71,7 +71,9 @@ def test_parse_sensitivity(text, val):
 
 def test_cloudcube_slice_and_sensitivity():
     seg = ("2026-02-17T15:30:00", "2026-02-17T15:30:30")
-    with pytest.warns(UserWarning, match="radar_sensitivity_ka_dbz"):
+    import warnings
+    with warnings.catch_warnings():
+        warnings.simplefilter("error")   # -16.32 is recorded per granule in PK v1.11
         cc = read_cloudcube(example_file("cloudcube_1521"), time_range=seg)
     assert cc.attrs["zmin_1km_dbz_ka"] == -16.32
     assert cc.sizes["range"] == 751
@@ -82,7 +84,7 @@ def test_cloudcube_slice_and_sensitivity():
     assert np.isfinite(cc["alt"].values).all()
 
 
-def test_cloudcube_1900_matches_pk_ka():
+def test_cloudcube_1900_ka_sensitivity():
     import warnings
     with warnings.catch_warnings():
         warnings.simplefilter("error")

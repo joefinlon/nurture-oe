@@ -1,0 +1,112 @@
+{
+ "n_heterogeneous": 273,
+ "n_fixed_set": 155,
+ "peak_offset_s_fixed_set": -2.5,
+ "peak_corr_fixed_set": 0.592,
+ "peak_offset_s_variable_set": 0.0,
+ "peak_corr_variable_set": 0.516,
+ "corr_at_0_variable_set": 0.516,
+ "full_width_half_drop_s_fixed_set": [
+  -7.0,
+  4.5
+ ],
+ "curve_min_over_sweep_fixed_set": 0.373,
+ "offsets_within_0.01_of_peak_fixed_set": [
+  -2.5,
+  -2.0,
+  -1.5
+ ],
+ "peak_offset_s_spearman_fixed_set": -0.5,
+ "peak_spearman_fixed_set": 0.49,
+ "spearman_at_0_fixed_set": 0.486,
+ "full_width_half_drop_s_spearman": [
+  -4.0,
+  2.0
+ ],
+ "min_robust_std_offset_s": -2.5,
+ "bootstrap": {
+  "iid": {
+   "n": 2000,
+   "peak_offset_pct_2.5_50_97.5": [
+    -10.0,
+    -2.5,
+    9.5
+   ],
+   "fraction_peak_in_[-1,+1]": 0.241
+  },
+  "block10": {
+   "n": 2000,
+   "peak_offset_pct_2.5_50_97.5": [
+    -10.0,
+    0.0,
+    10.0
+   ],
+   "fraction_peak_in_[-1,+1]": 0.287
+  },
+  "iid_spearman": {
+   "n": 2000,
+   "peak_offset_pct_2.5_50_97.5": [
+    -10.0,
+    -0.5,
+    9.0
+   ],
+   "fraction_peak_in_[-1,+1]": 0.582
+  }
+ },
+ "bookkeeping_flight": {
+  "n_profiles": 1689,
+  "n_sub_counts": {
+   "8": 1,
+   "10": 2,
+   "11": 2,
+   "12": 1,
+   "14": 2,
+   "15": 1,
+   "16": 6,
+   "17": 1,
+   "18": 3,
+   "19": 59,
+   "20": 1610,
+   "21": 1
+  },
+  "n_windows_not_20": 79,
+  "n_windows_not_20_distinct": 79,
+  "n_windows_with_duplicate_times": 0,
+  "spacing_s_pct_0_1_50_99_100": [
+   9.036,
+   9.5,
+   10.0,
+   11.5,
+   23.0
+  ],
+  "n_consecutive_pairs_spacing_lt_10s": 236,
+  "n_consecutive_pairs_sharing_subprofiles": 183,
+  "n_subprofiles_shared(in two windows)": 190,
+  "max_windows_per_subprofile": 2,
+  "n_subprofiles_in_no_window(within span)": 341,
+  "n_subprofiles_in_span": 33765
+ },
+ "bookkeeping_1530_1600": {
+  "n_profiles": 179,
+  "n_sub_counts": {
+   "19": 10,
+   "20": 169
+  },
+  "n_windows_not_20": 10,
+  "n_windows_not_20_distinct": 10,
+  "n_windows_with_duplicate_times": 0,
+  "spacing_s_pct_0_1_50_99_100": [
+   9.5,
+   9.5,
+   10.0,
+   10.5,
+   10.5
+  ],
+  "n_consecutive_pairs_spacing_lt_10s": 19,
+  "n_consecutive_pairs_sharing_subprofiles": 12,
+  "n_subprofiles_shared(in two windows)": 12,
+  "max_windows_per_subprofile": 2,
+  "n_subprofiles_in_no_window(within span)": 21,
+  "n_subprofiles_in_span": 3579
+ }
+}

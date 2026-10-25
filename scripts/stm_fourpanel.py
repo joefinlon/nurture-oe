@@ -1,6 +1,9 @@
 """Four-panel STM figure (appendix A §A.8(4)) from the cached co-registration.
 
 Run ``scripts/run_task_d.py`` first. Writes ``docs/reports/figures/stm_20260217_1530-1600.png``.
+With ``--0p5s``, plots the 0.5 s x 15 m file of ``scripts/build_coreg_0p5s.py`` instead
+(``..._0p5s.png``): native 0.5 s particulate beta_p and delta_p at 532 nm from the HALO cloud
+file; radar by footprint with body-fixed beams (= ray time).
 """
 
 import sys
@@ -28,8 +31,37 @@ def ramp(colors, name):
     return cm
 
 
-def main(path=None, ymax_km=6.0, radar_clearance_m=250.0):
-    ds = xr.open_dataset(path or cache_dir() / "coreg_20260217_1530-1600.nc")
+RADAR_PANELS = [
+    ("zgc_w", r"CloudCube $Z_W$ — gas-corrected only (display); masked <250 m above lidar surface", "dBZ",
+     dict(cmap=ramp(AQUA, "aqua"), norm=mcolors.Normalize(-30, 20)), None),
+    ("dwr_wg_gc", r"DWR$_{W-G}$ — gas-corrected only; contour: HALO liquid (phase class 0)", "dB",
+     dict(cmap=ramp(DIVERGING, "div"), norm=mcolors.TwoSlopeNorm(vcenter=0, vmin=-6, vmax=12)), [-6, -3, 0, 3, 6, 9, 12]),
+]
+BSC_TICKS = [1e-4, 1e-3, 1e-2, 1e-1]
+PANELS_10S = [
+    ("532_total_attn_bsc", r"HALO $\beta'_{532}$", r"km$^{-1}$ sr$^{-1}$",
+     dict(cmap=ramp(BLUE, "blue"), norm=mcolors.LogNorm(1e-4, 1e-1)), BSC_TICKS),
+    ("532_dep", r"HALO $\delta_{532}$ (volume)", "1",
+     dict(cmap=ramp(ORANGE, "orange"), norm=mcolors.Normalize(0, 0.5)), None),
+] + RADAR_PANELS
+PANELS_0P5S = [
+    ("bsc532_km", r"HALO $\beta_{p,532}$ (particulate, 0.5 s; units inferred)", r"km$^{-1}$ sr$^{-1}$",
+     dict(cmap=ramp(BLUE, "blue"), norm=mcolors.LogNorm(1e-4, 1e-1)), BSC_TICKS),
+    ("dep532_shown", r"HALO $\delta_{p,532}$ (particulate, 0.5 s; shown where $\beta_p \geq 10^{-3}$ km$^{-1}$ sr$^{-1}$)", "1",
+     dict(cmap=ramp(ORANGE, "orange"), norm=mcolors.Normalize(0, 0.5)), None),
+] + RADAR_PANELS
+
+
+def add_display_fields(ds, dep_bsc_min_km=1e-3):
+    """0.5 s file: beta_p in km-1 sr-1 (inferred m-1 sr-1 x 1e3) and delta_p masked where beta_p is small (display)."""
+    bsc_km = ds["bsc532"] * 1e3
+    return ds.assign(bsc532_km=bsc_km, dep532_shown=ds["dep532"].where(bsc_km >= dep_bsc_min_km))
+
+
+def main(path=None, ymax_km=6.0, radar_clearance_m=250.0, suffix="", grid_label="HALO 10 s × 15 m", panels=PANELS_10S):
+    ds = xr.open_dataset(path or cache_dir() / f"coreg_20260217_1530-1600{suffix}.nc")
+    if "bsc532" in ds:
+        ds = add_display_fields(ds)
     t = ds["time"].values
     zkm = ds["z"].values / 1000.0
     liquid = ds["liquid"].values.astype(float)
@@ -37,16 +69,6 @@ def main(path=None, ymax_km=6.0, radar_clearance_m=250.0):
     # display-only: hide radar gates within radar_clearance_m of the lidar surface (surface clutter)
     near_sfc = (zkm[None, :] - sfc[:, None]) * 1000.0 < radar_clearance_m
 
-    panels = [
-        ("532_total_attn_bsc", r"HALO $\beta'_{532}$", r"km$^{-1}$ sr$^{-1}$",
-         dict(cmap=ramp(BLUE, "blue"), norm=mcolors.LogNorm(1e-4, 1e-1)), [1e-4, 1e-3, 1e-2, 1e-1]),
-        ("532_dep", r"HALO $\delta_{532}$ (volume)", "1",
-         dict(cmap=ramp(ORANGE, "orange"), norm=mcolors.Normalize(0, 0.5)), None),
-        ("zgc_w", r"CloudCube $Z_W$ — gas-corrected only (display); masked <250 m above lidar surface", "dBZ",
-         dict(cmap=ramp(AQUA, "aqua"), norm=mcolors.Normalize(-30, 20)), None),
-        ("dwr_wg_gc", r"DWR$_{W-G}$ — gas-corrected only; contour: HALO liquid (C&S class 0)", "dB",
-         dict(cmap=ramp(DIVERGING, "div"), norm=mcolors.TwoSlopeNorm(vcenter=0, vmin=-6, vmax=12)), [-6, -3, 0, 3, 6, 9, 12]),
-    ]
     fig, axs = uplt.subplots(nrows=4, refwidth=7.5, refaspect=3.6, sharex=True, sharey=True,
                              facecolor=SURFACE)
     for ax, (var, title, units, kw, ticks) in zip(axs, panels):
@@ -57,21 +79,24 @@ def main(path=None, ymax_km=6.0, radar_clearance_m=250.0):
         cb = ax.colorbar(m, loc="r", label=units, width=0.12)
         if ticks is not None:
             cb.set_ticks(ticks)
-            if var == "532_total_attn_bsc":
+            if var in ("532_total_attn_bsc", "bsc532_km"):
                 cb.set_ticklabels([f"$10^{{{int(np.log10(v))}}}$" for v in ticks])
         ax.plot(t, sfc, color=MUTED, lw=1.0)
         if var == "dwr_wg_gc":
             ax.contour(t, zkm, liquid.T, levels=[0.5], colors=INK, linewidths=1.0)
         ax.format(title=title, titleloc="l", facecolor=SURFACE, gridcolor=GRID)
     axs.format(ylim=(0, ymax_km), ylabel="Altitude (km MSL)", xlabel="UTC, 2026-02-17",
-               suptitle="NURTURE G-III, HALO + CloudCube co-registered on the HALO 10 s × 15 m grid "
+               suptitle=f"NURTURE G-III, HALO + CloudCube co-registered on the {grid_label} grid "
                         "(15:30–16:00 UTC)")
     axs.format(xrotation=0)
     axs[-1].xaxis.set_major_formatter(mdates.DateFormatter("%H:%M"))
-    out = REPO_ROOT / "docs" / "reports" / "figures" / "stm_20260217_1530-1600.png"
+    out = REPO_ROOT / "docs" / "reports" / "figures" / f"stm_20260217_1530-1600{suffix}.png"
     fig.savefig(out, dpi=200, facecolor=SURFACE)
     print(f"wrote {out}")
 
 
 if __name__ == "__main__":
+    if "--0p5s" in sys.argv:
+        sys.exit(main(path=cache_dir() / "coreg_cloud_20260217_1530-1600_0p5s.nc", suffix="_0p5s",
+                      grid_label="HALO 0.5 s × 15 m", panels=PANELS_0P5S))
     sys.exit(main())

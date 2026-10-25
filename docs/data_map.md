@@ -1,8 +1,8 @@
 # data_map.md — data sources for nurture-oe
 
-**Distilled from** `appendix_A_nurture_datasets.md` (2026-10-09) and `index.md` v1.10 (Project Knowledge), plus a directory inspection of the local data stores (2026-10-05). §1 re-synced to the PK snapshot on 2026-10-14. Project Knowledge is authoritative; this file is a working summary. Register IDs (D/G/O) refer to `index.md` §11.
+**Distilled from** `appendix_A_nurture_datasets.md` (2026-10-25) and `index.md` **v1.13** (Project Knowledge), plus a directory inspection of the local data stores (2026-10-05). §1 re-synced to the v1.12 PK snapshot on 2026-10-20; §1.6 added at the v1.13 fold (2026-10-25). Project Knowledge is authoritative; this file is a working summary. Register IDs (D/G/O) refer to `index.md` §11.
 
-**PK snapshot.** `docs/pk_snapshot/` holds read-only copies of `index-1-10.md`, `appendix_A_nurture_datasets.md` and `handoff.md`, made 2026-10-14. The originals are on OneDrive; never write there. Facts found in this repo after 2026-10-09 are in `docs/findings_for_pk.md`, not here, until they are folded into PK (next: `index.md` v1.11).
+**PK snapshot.** `docs/pk_snapshot/` holds copies of `index.md` (v1.13), `appendix_A_nurture_datasets.md`, `appendix_B_stm_figures.md`, `handoff.md` and `team_followups.md`, written at the v1.13 fold (2026-10-25). The originals are on OneDrive; never write there. Findings of 2026-10-14, 2026-10-20 and 2026-10-25 are folded. Later facts stay in `docs/findings_for_pk.md`, not here, until they are folded.
 
 Paths are keys in `config/paths.yaml`. "Unverified" means nobody has checked it against the file yet, so check it before relying on it.
 
@@ -32,13 +32,15 @@ In the HALO filenames, `L1` is the **flight number** (`flight_number_day`), not 
 - `z` runs from −300 m to 12,351 m at 14.99 m, **ascending**, and is identical to C&S `CloudMask/Altitude`. It is a 15 m **sampling** grid; effective resolution is 30 m (3rd-order Bessel range filter, then interpolation `[O37]`). The header's `z:positive = "up "` has a trailing space.
 - Groups `DataProducts`, `DataUncertainty`, `Nav_Data`, `State`, `UserInput` use `phony_dim_*` dimensions. Map them back to `time`/`z` by length and verify. `DataProducts/Altitude` exists on 02-17.
 - Each 10 s profile is the **mean of twenty 0.5 s C&S profiles**, about 2.4 km along track `[O36]`. `Nav_Data/gps_time` (hours) equals `time` (seconds).
+- **Window `[G23]`:** a profile at t averages the C&S sub-profiles in **[t − 5 s, t + 5 s)**. This is the working co-registration convention; a ±10 s sweep could not resolve the offset, and in 10.5 s steps one sub-profile lies in no window (v1.12, §A.8(5b)). Profile spacing is irregular (median 10.0 s, 9.04–23 s), so consecutive windows can overlap. `lat`/`lon` are positions at t.
 - Undefined within 0.5–2.5 km below the aircraft (product-dependent; `532_ext` 2.5 km).
 
 **Name and attribute traps**
 - Variable names start with digits (`532_ext`). Access them with explicit strings.
 - Attribute names contain trailing spaces (`"Description "`, `"Units "`). Several variables carry both `Units ` and `units`, sometimes disagreeing (`Angstrom_Spherical`: `"sr"` vs `"1"`). Use CF `units` and warn on disagreement.
 - `_FillValue = NaN` everywhere; no `mask_low`, no fill-reason flag `[G23]`.
-- `State/Pressure` is in **atm**. `State_Type` scalar: 1 balloon sonde, 2 MERRA-2, 3 LaRC O₃ sonde, 4 dropsonde, 5 HRRR. 1064 products list dropsondes as state source, 532 products MERRA-2 `[G23]`.
+- `State/Pressure` is in **atm**. `State_Type` scalar: 1 balloon sonde, 2 MERRA-2, 3 LaRC O₃ sonde, 4 dropsonde, 5 HRRR; **= 2 (MERRA-2) on 02-17** (closed). 1064 products list dropsondes as state source, 532 products MERRA-2 `[G23]`.
+- **`Nav_Data/imu_pitch`, `imu_roll`: do not use for incidence angle `[G21]`.** On 02-17 `imu_roll` is neither MetNav sampled at t nor a centered 10 s mean; record it as an unexplained timing/averaging offset (or a different IMU). `imu_pitch` − MetNav pitch has median +0.29°. Attitude comes from MetNav (1 Hz).
 - `UserInput/DEM_altitude`: long_name GMTED2010, global attribute GLOBE (cosmetic).
 - Header ↔ README conflicts: appendix §A.10.3 (16 items).
 
@@ -47,26 +49,20 @@ In the HALO filenames, `L1` is the **flight number** (`flight_number_day`), not 
 | Variable(s) | Res. | `_unc`? | Role |
 |---|---|---|---|
 | `532_total_attn_bsc` (`1064_…`) | 10 s, 15 m | none | $\ln\beta'$ rows in liquid / optically thick cloud `[D21]` |
-| `532_dep` (`1064_dep`) | 10 s | screened only | $\delta_v$ rows with $\beta'$ |
+| `532_dep` (`1064_dep`) | 10 s | screened only | $\delta_v$ rows with $\beta'$; `1064_dep` rows take their mask from the product, not `_unc` (`1064_dep_cloud_screened_unc` is finite on 10,971 pixels where its product is NaN) `[G22]` |
 | `532_bsc`, `532_bsr` (+ screened) | 10 s | screened only | $\ln\beta_p$ rows where HSRL-valid (above cloud, thin ice) `[D21]`, switch `[O33]`; `bsr` = $\beta_p/\beta_m$ |
 | `1064_bsc`, `1064_bsr` | 10 s | screened only | Fernald, normalized to 532 ⇒ not independent of 532 |
 | `532_ext`, `532_Sa` | 60 s, 300 m running mean | yes | not rows alongside $\beta_p$ + $\beta'$; excluded `[O33]` |
 | `1064_ext`, `532_extinction_from_backscatter` | | none | derived; exclude |
-| `h2o_mmr_v` | 60 s, 315–705 m | yes | $\ln q_v$ rows out of cloud; in-liquid values not credible `[O32]` |
+| `h2o_mmr_v` | 60 s, 315–705 m | yes | $\ln q_v$ rows out of cloud; in-liquid values not credible; the README's "stops 100 m above cloud top" does **not** hold on 02-17 (median lowest valid bin 495 m below `cloud_top_height_935`), so exclude in-cloud rows with **our own cloud mask** `[O32]`; in-ice credibility open |
 | `Aerosol_ID` | 10 s | — | class 1 = Ice (9 classes in header) |
 | `/State` | (time, z) | none | MERRA-2 $T$, $p$ for $F(\mathbf{x})$ and $k_{\text{gas}}$ |
 
-02-17 fill fractions in cloud (§A.10.5(b)): unscreened 532 $\beta'$/$\delta$/$\beta_p$ 0.91 liquid, 0.80 ice; 1064 0.17 / 0.48; screened fields and their `_unc` 0.055 / 0.50 (filled on identical pixels); `532_ext` 0.04 / 0.46. Cloud pixels there were defined from ≥50 % of the twenty C&S sub-profiles (liquid = class 0, ice = classes 1–2), >2.5 km below the aircraft: 10,395 liquid, 62,567 ice.
+02-17 fill fractions in cloud (§A.10.5(b)): unscreened 532 $\beta'$/$\delta$/$\beta_p$ 0.91 liquid, 0.80 ice; 1064 0.17 / 0.48; screened fields and their `_unc` 0.055 / 0.50 (filled on identical pixels, except `1064_dep_cloud_screened_unc`); `532_ext` 0.04 / 0.46; `h2o_mmr_v` 0.66 / 0.93 under this definition (0.97 of 2026-10-06 is reproduced only by other masks; §A.8(5c)). In ice, DIAL $\mathrm{RH}_w$ median 89 %, with 19.5 % > 105 % (§A.10.5(i)). Cloud pixels there were defined from ≥50 % of the twenty C&S sub-profiles (liquid = class 0, ice = classes 1–2), >2.5 km below the aircraft: 10,395 liquid, 62,567 ice.
 
 Running means are kept on the full grid ⇒ adjacent rows correlated `[O29]`. Readers return them as-is.
 
-**Checks for task (a)** — done 2026-10-06 (in chat; to be reproduced as regression tests): variable diff vs 01-24 (partly), in-cloud population, `_cloud_screened_unc` masking, `z` ascending, C&S time-base match. **Still open:**
-1. Full header dump and the complete diff against the 01-24 variable list.
-2. Value of `State_Type` (expected 2 = MERRA-2). Units of every `State` variable.
-3. `imu_pitch`/`imu_roll` during cloud legs: 10 s averages or samples? Compare with MetNav. `[G21]`, `[O28]`
-4. NaN-pattern census per variable: near-field band, below-surface, above-cloud truncation of `h2o_mmr_v`. `[G23]`
-
-*Task (a) run 2026-10-14: results in `docs/reports/task_a_readers.md`; new facts in `docs/findings_for_pk.md` until folded into v1.11.*
+**Checks for task (a)** — done 2026-10-14 (`docs/reports/task_a_readers.md`; folded into v1.11): header dump, `State_Type` and units, `imu_*` vs MetNav, NaN census, `h2o_mmr_v` truncation. **Still open:** complete diff against 01-24 (needs the 01-24 dump in the repo).
 
 ### 1.2 HALO Cloud & Surface L2 (`halo_cloudsurface`)
 
@@ -79,41 +75,49 @@ Appendix §A.2. 02-17 granule: **33,765 profiles at 0.5 s**, 845 bins identical 
 - Metadata conflicts awaiting the PI: appendix §A.3 (`LID532`, layer-array shape, `Sc532`/`IAB532` dependence).
 - No uncertainties `[G12]`.
 
-**Checks for task (a)** — done 2026-10-06: names, 2-D variables, time base (20 × 0.5 s per 10 s profile), `WaterCloudProfile/Altitude`. **Still open:** full header dump; the window convention of the 10 s profile relative to its 20 sub-profiles (start/mid/end) — needed for co-registration.
-
-*Task (a) run 2026-10-14: results in `docs/reports/task_a_readers.md`; new facts in `docs/findings_for_pk.md` until folded into v1.11.*
+**Checks for task (a)** — done 2026-10-14 (folded into v1.11). Window convention: see §1.1 (working convention `[G23]`).
 
 ### 1.3 CloudCube L2 (`cloudcube`)
 
-Appendix §A.4 (readme + JPL email 2026-10-08). File headers first inspected 2026-10-14 (see `findings_for_pk.md`).
+Appendix §A.4 (readme + JPL email 2026-10-08; headers of the three 02-17 granules inspected 2026-10-14, folded into v1.11).
 
 - NetCDF4, CF-1.9, L2, JPL. Variables `zm_{ka,w,g}` (dBZ), `katten_{ka,w,g}` (dB km⁻¹), `s0_{ka,w,g}` (dB), `range` (m from aircraft — slant range), `time` (s since 00 UTC, interval mid-time), `lat`, `lon`, `alt`, `roll`, `pitch`, `heading`, `incidence_angle`, `look_vector_ecef`, `landmask` (0 ocean, 1 river, 2 ice, 3 land), `nxyz`.
+- Dims `(time, range)` and `look_vector_ecef (time, nxyz)` (the readme says `(range, time)`, `(3, time)`). 751 gates 19.986 m apart from −999.3 m (r = 0 at index 50; r < 0 unused); rays every 0.10044 s. `_FillValue = NaN` for `zm`/`katten`/`s0`; nav has no `_FillValue` (9.97e36 → NaN); `landmask` −2147483647. Nav/attitude are MetNav interpolated (lag 0 s).
+- **`alt` is above the WGS84 ellipsoid** (20–44 m below HALO MSL on 02-17) and equals MetNav MSL + $N_{\text{EGM96}}$ to ±8 cm. **Never use it for altitude `[DECISION D23]`:** gate altitude $z = \text{alt}_{\text{HALO}} - r\cos\theta$, with HALO `gps_alt` (MSL) interpolated to ray times and $\cos\theta = -\mathbf{l}_{\text{ECEF}}\cdot\hat{u}$ from `look_vector_ecef`.
 - **`zm` is NOT gas-corrected; `katten` is ONE-WAY** specific attenuation (JPL). $F(\mathbf{x})$ carries the full two-way gas path; display-only correction $Z_{gc}(r) = z_m + 2\int_0^r k_{\text{atten}}\,dr'$.
 - **$N = 162$ independent samples per gate** (JPL); high-SNR random error ≈0.33 dB. SNR definition behind the sensitivities unknown `[G1]`, `[G24]`.
-- Sensitivity at 1 km is a **global attribute per granule** (`radar_sensitivity_{ka,w,g}_dbz`). Appendix: Ka −19.26, W −32.64, G −37.58 dBZ. Read it from each file — the Ka value differs between 02-17 granules (finding 2026-10-14).
+- Sensitivity at 1 km is a **global attribute per granule** (`radar_sensitivity_{ka,w,g}_dbz`). W −32.64 and G −37.58 dBZ in all three 02-17 granules; **Ka per granule: −16.32 dBZ for 15:13–18:59, −19.26 for 19:00–19:26.** Read it from each file. The granule's own Ka value is the **admission threshold** of the optional Ka block, $Z_{\mathrm{Ka}} > Z_{1\,\mathrm{km}} + 20\log_{10}(r/1\,\mathrm{km})$ `[O15]`. At 19:00 the Ka range response also changed (≈1 km skirt around strong echoes; σ0 Ka − W −1.6 to −3.3 dB). Mask 19:00-granule Ka rows near strong echoes; calibration per granule (§A.8(5e)).
+- **The documented 1 km sensitivity is not the processor's detection threshold:** delivered `zm` reaches 5–11 dB below $Z_{\min}(r)$ in every band (0.1th percentile; Ka −7.7 to −9.0, W −9.8 to −10.9, G −6.3 to −7.0 dB) `[G24]`. Don't use the attribute as the noise floor in the $\mathrm{SNR}^{-1}$ term `[O31]`.
 - **No uncertainty, MDS/SNR or QC fields** `[G24]`. **No Doppler for the whole campaign** `[G16 closed]`.
-- Scope `[D12 amended 2026-10-09]`: W+G baseline; Ka an optional ice/snow row block above the melting layer per `[O15]`, conditional on the 02-17 Ka coverage check (task d). Readers load all three bands.
+- Scope `[D12 amended 2026-10-09]`: W+G baseline; Ka an optional ice/snow row block above the melting layer per `[O15]` (condition 3 met 2026-10-14: 4.0 % coverage on 15:30–16:00, near-surface snow only; condition 1, Lebsock's concurrence, pending). Readers load all three bands.
+- `look_vector_ecef` is computed from attitude (body-fixed nadir beam assumed). Surface ranges in turns support body-fixed in roll; pitch, lever arm and boresights unknown `[G27]`. Off-nadir ≈2.4° on the 15:30–16:00 straight leg.
 
-**Checks for task (a)**
-1. Full header: dims, gate spacing, fill values, every attribute; is `zm` thresholded or noise-subtracted `[G24]`?
-2. Time overlap with HALO and the relationship between the two time bases.
-3. Range-to-altitude: `alt − range·cos(off-nadir)` from `look_vector_ecef`, compared with HALO `z` and the surface. Report; the regridding itself is task (d), not the reader.
-
-*Task (a) run 2026-10-14: results in `docs/reports/task_a_readers.md`; new facts in `docs/findings_for_pk.md` until folded into v1.11.*
+**Checks for task (a)** — done 2026-10-14 (folded into v1.11). Still open with JPL: SNR definition and processor threshold, noise-subtraction state of `zm`, meaning of NaN `[G24]`; range resolution, near-field limit `[G1]`.
 
 ### 1.4 MetNav ICARTT (`metnav`)
 
 `NURTURE-MetNav_G3_20260217_R0.ict`. ICARTT (FFI 1001), 1 Hz `Time_Start` (s), 24 variables incl. `Pitch_Angle` (up+), `Roll_Angle` (rt+), `True_Heading`, `Static_Air_Temp`, `Static_Pressure`. Fill −99999, LLOD flag −8888, ULOD flag −7777. Candidate 1 Hz attitude source for `[G21]`.
 
-**Checks for task (a):** parse the header; variables, units, rate, fills; compare attitude with HALO `imu_pitch`/`imu_roll`.
-
-*Task (a) run 2026-10-14: results in `docs/reports/task_a_readers.md`; new facts in `docs/findings_for_pk.md` until folded into v1.11.*
+**The attitude source** for incidence angle (`[G21]` interim rule, v1.11). `GPS_Altitude_MSL` equals HALO `gps_alt` in the median (+0.1 m), but drifts −6 to +4 m from it over long stretches (v1.12). There is no ellipsoidal altitude field. 1 Hz with no gaps on 02-17; no LLOD/ULOD values.
 
 ### 1.5 STM co-registration (task d; appendix §A.8(4), §A.11(b))
 
-Segment 15:30–16:00 UTC (TPV transect). Time-match + CloudCube slant range → HALO 15 m altitude grid. Panels: (1) `532_total_attn_bsc`, (2) `532_dep`, (3) $Z_W$ gas-corrected only, (4) $\mathrm{DWR}_{W\text{-}G}$ with the C&S class-0 contour. Ka coverage check: fraction of ice pixels with W and G detected where Ka also detects, $Z_{\min}^{\mathrm{Ka}}(r) = Z_{1\,\mathrm{km}} + 20\log_{10}(r/1\,\mathrm{km})$, $r$ from `alt`.
+Done 2026-10-14 (`docs/reports/task_d_coreg.md`; folded into v1.11, appendix §A.8(4), §A.11(b)). Segment 15:30–16:00 UTC (TPV transect). Each HALO profile at t takes the C&S sub-profiles and CloudCube rays in [t − 5 s, t + 5 s) `[G23]`; gate altitudes on the HALO MSL datum `[D23]`; nearest gate per 15 m bin. Ka coverage: $Z_{\min}^{\mathrm{Ka}}(r) = Z_{1\,\mathrm{km}} + 20\log_{10}(r/1\,\mathrm{km})$ with $r$ the slant range and $Z_{1\,\mathrm{km}}$ from the granule.
 
-*Run 2026-10-14: `docs/reports/task_d_coreg.md`.*
+- **Co-registered radar rows are censored means** over detecting rays: biased high where the detected fraction is < 1 `[O21]` (sized in follow-up §A.8(5d)).
+- **About one gate in three is duplicated** into two 15 m rows (perfectly correlated errors); decimate to native gates before building $\mathbf{S}_\epsilon$ `[O29]`.
+- Window means carry the same representativeness error as the lidar `[O36]`.
+
+*Follow-ups run 2026-10-20 (`docs/reports/followup_*.md`, folded into v1.12): geoid check, window sweep, 0.5 s × 15 m file `coreg_20260217_1530-1600_0p5s.nc` (`scripts/build_coreg_0p5s.py`; superseded 2026-10-25 by `coreg_cloud_20260217_1530-1600_0p5s.nc`, native 0.5 s lidar), DIAL RH_i, censored mean, Ka step at 19:00, mounting.*
+
+### 1.6 HALO 0.5 s cloud file (`nurture_example`/`Cloud_Plots/`, key `halo_cloud`)
+
+*Inspected 2026-10-25; folded into v1.13 (Appendix A §A.10.7, §A.8(7)).* `20260217_cloud_data.mat`, 2.73 GB, MATLAB v7.3 (HDF5, h5py), delivered 2026-10-23; interim, a CF-compliant version is announced. The `.fig`/`.png` files in the folder are the PI's quick-looks (MATLAB v5 figures).
+
+- One struct `data`; groups `nav`, `cloudphase`, `cloud`, `column` (+`OD`), `cprofile`, `sprofile`, `surface`, `reference`, `QA`. Datasets are (profile, …) float64, gzip.
+- 33,765 profiles at 0.5 s, nav identical to C&S. `cloudphase` (845 bins, `alt` = HALO `z`): `bsc`, `dep`, `bsc1064`, `dep1064`, `cp`, `S0`, `cT2p`, `X1064m_syn`. `cprofile` 501 bins cloud-top-relative (= C&S `WaterCloudProfile/Altitude`); `sprofile` 301 bins ±187 m around the surface.
+- **No attributes at all** (no units, descriptions, fills). Reader `io/halo_cloud.py` attaches only `*_inferred` attributes backed by checks (`docs/reports/cloud_0p5s.md`).
+- Traps: `bsc` is m⁻¹ sr⁻¹ (Aerosol/WV uses km⁻¹ sr⁻¹); `dep` is particulate, unscreened (|δ| > 1 in clear air); `bsc1064` is not on the Aerosol/WV 1064 scale; xarray `Dataset.roll` shadows the `surface` variable `roll` (use `ds["roll"]`).
 
 ---
 
@@ -152,12 +156,14 @@ Segment 15:30–16:00 UTC (TPV transect). Time-match + CloudCube slant range →
 - Vendor interface: `DataInterfaces/Python/` (`utils.py`, `assp.py`, `sph.py`, …). Needs netCDF4 and numpy; scipy for interpolation; pyarts only for ARTS-format export (not needed); SHTns only for azimuthally random data (not needed). Use it read-only, or reimplement with netCDF4.
 - Documentation in the store: `ReadMe.pdf` and `TR.pdf` (technical report).
 
+*Task (c) run 2026-10-20: `docs/reports/arts_catalog.md` + CSVs (folded into v1.12, index §5.2): Ka and W cover all sizes; 228/247.2 GHz stop at Dveq ≈ 4.0–4.5 mm for 8 habits; 34 frequencies on disk.*
+
 **Catalog content for task (c)** — one row per habit (ID, name, class):
 1. Size grid: number of sizes, $D_{\max}$ and $D_{\text{veq}}$ ranges.
 2. $m(D)$ from per-file mass: fit $m = \alpha D_{\max}^{\beta}$ and compare with the ReadMe-tabulated $\alpha$, $\beta$.
 3. $A(D)$ (projected or cross-sectional area), if present in the metadata.
 4. Frequency and temperature grids actually present, **per size**.
-5. **Largest $D_{\text{veq}}$ with real (non-extended) data at 94.1, 228 and 247.2 GHz.** The $x \le 10$ DDA limit means large particles lack the highest frequencies; G-band (~239 GHz) needs interpolation between 228 and 247.2 `[GAP G1]`.
+5. **Largest $D_{\text{veq}}$ with real (non-extended) data at the Ka-band grid frequencies, 94.1, 228 and 247.2 GHz** (Ka added 2026-10-20; CloudCube's exact Ka frequency is unknown `[G1]`). The $x \le 10$ DDA limit means large particles lack the highest frequencies; G-band (~239 GHz) needs interpolation between 228 and 247.2 `[GAP G1]`.
 6. Orientation: totally random vs azimuthally random.
 7. Name matches with TAMUice2016 habits (plate, column, bullet rosette, 8-column aggregate). Flag them only: their geometric equivalence is unverified and is an `[O27]` question for a later session.
 

@@ -8,18 +8,9 @@ only reshaping. Variable names (some with spaces) are kept verbatim. No class re
 from pathlib import Path
 
 import h5py
-import numpy as np
 import xarray as xr
 
-from ._hdf5 import decode_attrs, time_slice, to_datetime64
-
-
-def _flight_date(path):
-    stem = Path(path).stem
-    for tok in stem.split("_"):
-        if len(tok) == 8 and tok.isdigit():
-            return np.datetime64(f"{tok[:4]}-{tok[4:6]}-{tok[6:]}", "ns")
-    raise ValueError(f"no YYYYMMDD flight date in file name {stem!r}")
+from ._hdf5 import decode_attrs, flight_date_from_name, time_slice, to_datetime64
 
 
 def read_halo_cloudsurface(path, variables=None, time_range=None):
@@ -50,7 +41,7 @@ def read_halo_cloudsurface(path, variables=None, time_range=None):
     path = Path(path)
     with h5py.File(path, "r") as f:
         hours = f["Nav/gps_time"][:, 0]
-        t = to_datetime64(hours, _flight_date(path), "hours")
+        t = to_datetime64(hours, flight_date_from_name(path), "hours")
         sl = time_slice(t, time_range)
         n_prof = f["Nav/gps_time"].shape[0]
         z = f["DataProducts/CloudMask/Altitude"][0, :]

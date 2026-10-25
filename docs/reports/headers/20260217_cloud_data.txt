@@ -1,0 +1,141 @@
+# 20260217_cloud_data.mat  (h5py walk; MATLAB attrs shown)
+userblock 512
+G /#refs#  attrs={}
+D /#refs#/a  shape=(2,) dtype=uint64 chunks=None compression=None  attrs={'MATLAB_class': 'canonical empty', 'MATLAB_empty': np.uint8(1)}
+G /data  attrs={'MATLAB_class': 'struct'}
+G /data/QA  attrs={'H5PATH': '/data', 'MATLAB_class': 'struct'}
+G /data/QA/block  attrs={'H5PATH': '/dataQA', 'MATLAB_class': 'struct'}
+D /data/QA/block/range_xcorr_532_1064  shape=(34, 201) dtype=float64 chunks=(34, 201) compression=gzip  attrs={'H5PATH': '/dataQAblock', 'MATLAB_class': 'double'}
+D /data/QA/block/range_xcorr_532_paraperp  shape=(34, 201) dtype=float64 chunks=(34, 201) compression=gzip  attrs={'H5PATH': '/dataQAblock', 'MATLAB_class': 'double'}
+D /data/QA/block/record_xcorr_532_1064  shape=(34, 201) dtype=float64 chunks=(34, 201) compression=gzip  attrs={'H5PATH': '/dataQAblock', 'MATLAB_class': 'double'}
+D /data/QA/block/record_xcorr_532_paraperp  shape=(34, 201) dtype=float64 chunks=(34, 201) compression=gzip  attrs={'H5PATH': '/dataQAblock', 'MATLAB_class': 'double'}
+G /data/QA/rec  attrs={'H5PATH': '/dataQA', 'MATLAB_class': 'struct'}
+D /data/QA/rec/maxValIdx_para1064  shape=(33765, 1) dtype=float64 chunks=(6753, 1) compression=gzip  attrs={'H5PATH': '/dataQArec', 'MATLAB_class': 'double'}
+D /data/QA/rec/maxValIdx_para532  shape=(33765, 1) dtype=float64 chunks=(6753, 1) compression=gzip  attrs={'H5PATH': '/dataQArec', 'MATLAB_class': 'double'}
+D /data/QA/rec/maxValIdx_perp1064  shape=(33765, 1) dtype=float64 chunks=(6753, 1) compression=gzip  attrs={'H5PATH': '/dataQArec', 'MATLAB_class': 'double'}
+D /data/QA/rec/maxValIdx_perp532  shape=(33765, 1) dtype=float64 chunks=(6753, 1) compression=gzip  attrs={'H5PATH': '/dataQArec', 'MATLAB_class': 'double'}
+D /data/QA/rec/maxVal_para1064  shape=(33765, 1) dtype=float64 chunks=(6753, 1) compression=gzip  attrs={'H5PATH': '/dataQArec', 'MATLAB_class': 'double'}
+D /data/QA/rec/maxVal_para532  shape=(33765, 1) dtype=float64 chunks=(6753, 1) compression=gzip  attrs={'H5PATH': '/dataQArec', 'MATLAB_class': 'double'}
+D /data/QA/rec/maxVal_perp1064  shape=(33765, 1) dtype=float64 chunks=(6753, 1) compression=gzip  attrs={'H5PATH': '/dataQArec', 'MATLAB_class': 'double'}
+D /data/QA/rec/maxVal_perp532  shape=(33765, 1) dtype=float64 chunks=(6753, 1) compression=gzip  attrs={'H5PATH': '/dataQArec', 'MATLAB_class': 'double'}
+D /data/QA/rec/satcount_para1064  shape=(33765, 1) dtype=float64 chunks=(6753, 1) compression=gzip  attrs={'H5PATH': '/dataQArec', 'MATLAB_class': 'double'}
+D /data/QA/rec/satcount_para532  shape=(33765, 1) dtype=float64 chunks=(6753, 1) compression=gzip  attrs={'H5PATH': '/dataQArec', 'MATLAB_class': 'double'}
+D /data/QA/rec/satcount_perp1064  shape=(33765, 1) dtype=float64 chunks=(6753, 1) compression=gzip  attrs={'H5PATH': '/dataQArec', 'MATLAB_class': 'double'}
+D /data/QA/rec/satcount_perp532  shape=(33765, 1) dtype=float64 chunks=(6753, 1) compression=gzip  attrs={'H5PATH': '/dataQArec', 'MATLAB_class': 'double'}
+G /data/cloud  attrs={'H5PATH': '/data', 'MATLAB_class': 'struct'}
+D /data/cloud/IAB  shape=(33765, 1) dtype=float64 chunks=(6753, 1) compression=gzip  attrs={'H5PATH': '/datacloud', 'MATLAB_class': 'double'}
+D /data/cloud/IAB1064_uncal  shape=(33765, 1) dtype=float64 chunks=(6753, 1) compression=gzip  attrs={'H5PATH': '/datacloud', 'MATLAB_class': 'double'}
+D /data/cloud/LID  shape=(33765, 1) dtype=float64 chunks=(6753, 1) compression=gzip  attrs={'H5PATH': '/datacloud', 'MATLAB_class': 'double'}
+D /data/cloud/LID1064  shape=(33765, 1) dtype=float64 chunks=(6753, 1) compression=gzip  attrs={'H5PATH': '/datacloud', 'MATLAB_class': 'double'}
+D /data/cloud/MT2p  shape=(33765, 1) dtype=float64 chunks=(6753, 1) compression=gzip  attrs={'H5PATH': '/datacloud', 'MATLAB_class': 'double'}
+D /data/cloud/norm  shape=(33765, 1) dtype=float64 chunks=(6753, 1) compression=gzip  attrs={'H5PATH': '/datacloud', 'MATLAB_class': 'double'}
+G /data/cloudphase  attrs={'H5PATH': '/data', 'MATLAB_class': 'struct'}
+D /data/cloudphase/S0  shape=(33765, 845) dtype=float64 chunks=(9, 845) compression=gzip  attrs={'H5PATH': '/datacloudphase', 'MATLAB_class': 'double'}
+D /data/cloudphase/X1064m_syn  shape=(33765, 845) dtype=float64 chunks=(9, 845) compression=gzip  attrs={'H5PATH': '/datacloudphase', 'MATLAB_class': 'double'}
+D /data/cloudphase/alt  shape=(1, 845) dtype=float64 chunks=None compression=None  attrs={'H5PATH': '/datacloudphase', 'MATLAB_class': 'double'}
+D /data/cloudphase/bsc  shape=(33765, 845) dtype=float64 chunks=(9, 845) compression=gzip  attrs={'H5PATH': '/datacloudphase', 'MATLAB_class': 'double'}
+D /data/cloudphase/bsc1064  shape=(33765, 845) dtype=float64 chunks=(9, 845) compression=gzip  attrs={'H5PATH': '/datacloudphase', 'MATLAB_class': 'double'}
+D /data/cloudphase/cT2p  shape=(33765, 845) dtype=float64 chunks=(9, 845) compression=gzip  attrs={'H5PATH': '/datacloudphase', 'MATLAB_class': 'double'}
+D /data/cloudphase/cp  shape=(33765, 845) dtype=float64 chunks=(9, 845) compression=gzip  attrs={'H5PATH': '/datacloudphase', 'MATLAB_class': 'double'}
+D /data/cloudphase/dep  shape=(33765, 845) dtype=float64 chunks=(9, 845) compression=gzip  attrs={'H5PATH': '/datacloudphase', 'MATLAB_class': 'double'}
+D /data/cloudphase/dep1064  shape=(33765, 845) dtype=float64 chunks=(9, 845) compression=gzip  attrs={'H5PATH': '/datacloudphase', 'MATLAB_class': 'double'}
+G /data/column  attrs={'H5PATH': '/data', 'MATLAB_class': 'struct'}
+G /data/column/OD  attrs={'H5PATH': '/datacolumn', 'MATLAB_class': 'struct'}
+D /data/column/OD/OD_coord  shape=(200, 1) dtype=float64 chunks=None compression=None  attrs={'H5PATH': '/datacolumnOD', 'MATLAB_class': 'double'}
+D /data/column/OD/OD_depth  shape=(33765, 5) dtype=float64 chunks=(1607, 5) compression=gzip  attrs={'H5PATH': '/datacolumnOD', 'MATLAB_class': 'double'}
+D /data/column/OD/OD_levels  shape=(5, 1) dtype=float64 chunks=None compression=None  attrs={'H5PATH': '/datacolumnOD', 'MATLAB_class': 'double'}
+D /data/column/OD/dep  shape=(33765, 200) dtype=float64 chunks=(40, 200) compression=gzip  attrs={'H5PATH': '/datacolumnOD', 'MATLAB_class': 'double'}
+D /data/column/OD/ext  shape=(33765, 200) dtype=float64 chunks=(40, 200) compression=gzip  attrs={'H5PATH': '/datacolumnOD', 'MATLAB_class': 'double'}
+D /data/column/Sc  shape=(33765, 1) dtype=float64 chunks=(6753, 1) compression=gzip  attrs={'H5PATH': '/datacolumn', 'MATLAB_class': 'double'}
+D /data/column/Sc_thin  shape=(33765, 1) dtype=float64 chunks=(6753, 1) compression=gzip  attrs={'H5PATH': '/datacolumn', 'MATLAB_class': 'double'}
+D /data/column/cbh  shape=(33765, 1) dtype=float64 chunks=(6753, 1) compression=gzip  attrs={'H5PATH': '/datacolumn', 'MATLAB_class': 'double'}
+D /data/column/cbhs  shape=(33765, 10) dtype=float64 chunks=(803, 10) compression=gzip  attrs={'H5PATH': '/datacolumn', 'MATLAB_class': 'double'}
+D /data/column/columnclass  shape=(33765, 1) dtype=float64 chunks=(6753, 1) compression=gzip  attrs={'H5PATH': '/datacolumn', 'MATLAB_class': 'double'}
+D /data/column/cprofilewaterfraction  shape=(33765, 1) dtype=float64 chunks=(6753, 1) compression=gzip  attrs={'H5PATH': '/datacolumn', 'MATLAB_class': 'double'}
+D /data/column/cth  shape=(33765, 1) dtype=float64 chunks=(6753, 1) compression=gzip  attrs={'H5PATH': '/datacolumn', 'MATLAB_class': 'double'}
+D /data/column/cths  shape=(33765, 10) dtype=float64 chunks=(803, 10) compression=gzip  attrs={'H5PATH': '/datacolumn', 'MATLAB_class': 'double'}
+D /data/column/ext  shape=(33765, 1) dtype=float64 chunks=(6753, 1) compression=gzip  attrs={'H5PATH': '/datacolumn', 'MATLAB_class': 'double'}
+D /data/column/tempLevel0CHighAlt  shape=(33765, 1) dtype=float64 chunks=(6753, 1) compression=gzip  attrs={'H5PATH': '/datacolumn', 'MATLAB_class': 'double'}
+D /data/column/tempLevel0CLowAlt  shape=(33765, 1) dtype=float64 chunks=(6753, 1) compression=gzip  attrs={'H5PATH': '/datacolumn', 'MATLAB_class': 'double'}
+D /data/column/tempLevelMinus20CHighAlt  shape=(33765, 1) dtype=float64 chunks=(6753, 1) compression=gzip  attrs={'H5PATH': '/datacolumn', 'MATLAB_class': 'double'}
+D /data/column/tempLevelMinus20CLowAlt  shape=(33765, 1) dtype=float64 chunks=(6753, 1) compression=gzip  attrs={'H5PATH': '/datacolumn', 'MATLAB_class': 'double'}
+D /data/column/tempLevelMinus40CHighAlt  shape=(33765, 1) dtype=float64 chunks=(6753, 1) compression=gzip  attrs={'H5PATH': '/datacolumn', 'MATLAB_class': 'double'}
+D /data/column/tempLevelMinus40CLowAlt  shape=(33765, 1) dtype=float64 chunks=(6753, 1) compression=gzip  attrs={'H5PATH': '/datacolumn', 'MATLAB_class': 'double'}
+G /data/cprofile  attrs={'H5PATH': '/data', 'MATLAB_class': 'struct'}
+D /data/cprofile/AB  shape=(33765, 501) dtype=float64 chunks=(16, 501) compression=gzip  attrs={'H5PATH': '/datacprofile', 'MATLAB_class': 'double'}
+D /data/cprofile/AB1064  shape=(33765, 501) dtype=float64 chunks=(16, 501) compression=gzip  attrs={'H5PATH': '/datacprofile', 'MATLAB_class': 'double'}
+D /data/cprofile/IAB  shape=(33765, 501) dtype=float64 chunks=(16, 501) compression=gzip  attrs={'H5PATH': '/datacprofile', 'MATLAB_class': 'double'}
+D /data/cprofile/IAB1064  shape=(33765, 501) dtype=float64 chunks=(16, 501) compression=gzip  attrs={'H5PATH': '/datacprofile', 'MATLAB_class': 'double'}
+D /data/cprofile/LID  shape=(33765, 501) dtype=float64 chunks=(16, 501) compression=gzip  attrs={'H5PATH': '/datacprofile', 'MATLAB_class': 'double'}
+D /data/cprofile/LID1064  shape=(33765, 501) dtype=float64 chunks=(16, 501) compression=gzip  attrs={'H5PATH': '/datacprofile', 'MATLAB_class': 'double'}
+D /data/cprofile/Pmol  shape=(33765, 501) dtype=float64 chunks=(16, 501) compression=gzip  attrs={'H5PATH': '/datacprofile', 'MATLAB_class': 'double'}
+D /data/cprofile/Ppara  shape=(33765, 501) dtype=float64 chunks=(16, 501) compression=gzip  attrs={'H5PATH': '/datacprofile', 'MATLAB_class': 'double'}
+D /data/cprofile/Pperp  shape=(33765, 501) dtype=float64 chunks=(16, 501) compression=gzip  attrs={'H5PATH': '/datacprofile', 'MATLAB_class': 'double'}
+D /data/cprofile/Ptotal  shape=(33765, 501) dtype=float64 chunks=(16, 501) compression=gzip  attrs={'H5PATH': '/datacprofile', 'MATLAB_class': 'double'}
+D /data/cprofile/Ptotal1064  shape=(33765, 501) dtype=float64 chunks=(16, 501) compression=gzip  attrs={'H5PATH': '/datacprofile', 'MATLAB_class': 'double'}
+D /data/cprofile/alt  shape=(501, 1) dtype=float64 chunks=None compression=None  attrs={'H5PATH': '/datacprofile', 'MATLAB_class': 'double'}
+D /data/cprofile/beta_m  shape=(33765, 501) dtype=float64 chunks=(16, 501) compression=gzip  attrs={'H5PATH': '/datacprofile', 'MATLAB_class': 'double'}
+D /data/cprofile/dep  shape=(33765, 501) dtype=float64 chunks=(16, 501) compression=gzip  attrs={'H5PATH': '/datacprofile', 'MATLAB_class': 'double'}
+D /data/cprofile/dep1064  shape=(33765, 501) dtype=float64 chunks=(16, 501) compression=gzip  attrs={'H5PATH': '/datacprofile', 'MATLAB_class': 'double'}
+D /data/cprofile/ext  shape=(33765, 501) dtype=float64 chunks=(16, 501) compression=gzip  attrs={'H5PATH': '/datacprofile', 'MATLAB_class': 'double'}
+D /data/cprofile/ext_HSRL  shape=(33765, 501) dtype=float64 chunks=(16, 501) compression=gzip  attrs={'H5PATH': '/datacprofile', 'MATLAB_class': 'double'}
+D /data/cprofile/ext_thin  shape=(33765, 501) dtype=float64 chunks=(16, 501) compression=gzip  attrs={'H5PATH': '/datacprofile', 'MATLAB_class': 'double'}
+D /data/cprofile/moltrans2p  shape=(33765, 501) dtype=float64 chunks=(16, 501) compression=gzip  attrs={'H5PATH': '/datacprofile', 'MATLAB_class': 'double'}
+G /data/nav  attrs={'H5PATH': '/data', 'MATLAB_class': 'struct'}
+D /data/nav/gps_alt  shape=(33765, 1) dtype=float64 chunks=(6753, 1) compression=gzip  attrs={'H5PATH': '/datanav', 'MATLAB_class': 'double'}
+D /data/nav/gps_lat  shape=(33765, 1) dtype=float64 chunks=(6753, 1) compression=gzip  attrs={'H5PATH': '/datanav', 'MATLAB_class': 'double'}
+D /data/nav/gps_lon  shape=(33765, 1) dtype=float64 chunks=(6753, 1) compression=gzip  attrs={'H5PATH': '/datanav', 'MATLAB_class': 'double'}
+D /data/nav/gps_time  shape=(33765, 1) dtype=float64 chunks=(6753, 1) compression=gzip  attrs={'H5PATH': '/datanav', 'MATLAB_class': 'double'}
+G /data/reference  attrs={'H5PATH': '/data', 'MATLAB_class': 'struct'}
+D /data/reference/Altitude  shape=(33765, 1) dtype=float64 chunks=(6753, 1) compression=gzip  attrs={'H5PATH': '/datareference', 'MATLAB_class': 'double'}
+D /data/reference/CT2p  shape=(33765, 1) dtype=float64 chunks=(6753, 1) compression=gzip  attrs={'H5PATH': '/datareference', 'MATLAB_class': 'double'}
+D /data/reference/CT2p_1064  shape=(33765, 1) dtype=float64 chunks=(6753, 1) compression=gzip  attrs={'H5PATH': '/datareference', 'MATLAB_class': 'double'}
+D /data/reference/GR  shape=(33765, 1) dtype=float64 chunks=(6753, 1) compression=gzip  attrs={'H5PATH': '/datareference', 'MATLAB_class': 'double'}
+D /data/reference/N_ref  shape=(33765, 1) dtype=float64 chunks=(6753, 1) compression=gzip  attrs={'H5PATH': '/datareference', 'MATLAB_class': 'double'}
+D /data/reference/lambda  shape=(33765, 1) dtype=float64 chunks=(6753, 1) compression=gzip  attrs={'H5PATH': '/datareference', 'MATLAB_class': 'double'}
+D /data/reference/lambda_unc  shape=(33765, 1) dtype=float64 chunks=(6753, 1) compression=gzip  attrs={'H5PATH': '/datareference', 'MATLAB_class': 'double'}
+D /data/reference/ref_unc  shape=(33765, 1) dtype=float64 chunks=(6753, 1) compression=gzip  attrs={'H5PATH': '/datareference', 'MATLAB_class': 'double'}
+D /data/reference/weight  shape=(33765, 1) dtype=float64 chunks=(6753, 1) compression=gzip  attrs={'H5PATH': '/datareference', 'MATLAB_class': 'double'}
+G /data/sprofile  attrs={'H5PATH': '/data', 'MATLAB_class': 'struct'}
+D /data/sprofile/Pmol  shape=(33765, 301) dtype=float64 chunks=(27, 301) compression=gzip  attrs={'H5PATH': '/datasprofile', 'MATLAB_class': 'double'}
+D /data/sprofile/Ppara  shape=(33765, 301) dtype=float64 chunks=(27, 301) compression=gzip  attrs={'H5PATH': '/datasprofile', 'MATLAB_class': 'double'}
+D /data/sprofile/Ppara1064  shape=(33765, 301) dtype=float64 chunks=(27, 301) compression=gzip  attrs={'H5PATH': '/datasprofile', 'MATLAB_class': 'double'}
+D /data/sprofile/Pperp  shape=(33765, 301) dtype=float64 chunks=(27, 301) compression=gzip  attrs={'H5PATH': '/datasprofile', 'MATLAB_class': 'double'}
+D /data/sprofile/Pperp1064  shape=(33765, 301) dtype=float64 chunks=(27, 301) compression=gzip  attrs={'H5PATH': '/datasprofile', 'MATLAB_class': 'double'}
+D /data/sprofile/Ptotal  shape=(33765, 301) dtype=float64 chunks=(27, 301) compression=gzip  attrs={'H5PATH': '/datasprofile', 'MATLAB_class': 'double'}
+D /data/sprofile/Ptotal1064  shape=(33765, 301) dtype=float64 chunks=(27, 301) compression=gzip  attrs={'H5PATH': '/datasprofile', 'MATLAB_class': 'double'}
+D /data/sprofile/SNR  shape=(33765, 301) dtype=float64 chunks=(27, 301) compression=gzip  attrs={'H5PATH': '/datasprofile', 'MATLAB_class': 'double'}
+D /data/sprofile/alt  shape=(1, 301) dtype=float64 chunks=None compression=None  attrs={'H5PATH': '/datasprofile', 'MATLAB_class': 'double'}
+G /data/surface  attrs={'H5PATH': '/data', 'MATLAB_class': 'struct'}
+D /data/surface/DEMalt  shape=(33765, 1) dtype=float64 chunks=(6753, 1) compression=gzip  attrs={'H5PATH': '/datasurface', 'MATLAB_class': 'double'}
+D /data/surface/T2  shape=(33765, 1) dtype=float64 chunks=(6753, 1) compression=gzip  attrs={'H5PATH': '/datasurface', 'MATLAB_class': 'double'}
+D /data/surface/altSurface  shape=(33765, 1) dtype=float64 chunks=(6753, 1) compression=gzip  attrs={'H5PATH': '/datasurface', 'MATLAB_class': 'double'}
+D /data/surface/altSurface_mean  shape=(33765, 1) dtype=float64 chunks=(6753, 1) compression=gzip  attrs={'H5PATH': '/datasurface', 'MATLAB_class': 'double'}
+D /data/surface/altSurface_var  shape=(33765, 1) dtype=float64 chunks=(6753, 1) compression=gzip  attrs={'H5PATH': '/datasurface', 'MATLAB_class': 'double'}
+D /data/surface/atmCorrFrac  shape=(33765, 1) dtype=float64 chunks=(6753, 1) compression=gzip  attrs={'H5PATH': '/datasurface', 'MATLAB_class': 'double'}
+D /data/surface/atm_bsr  shape=(33765, 1) dtype=float64 chunks=(6753, 1) compression=gzip  attrs={'H5PATH': '/datasurface', 'MATLAB_class': 'double'}
+D /data/surface/atm_dep  shape=(33765, 1) dtype=float64 chunks=(6753, 1) compression=gzip  attrs={'H5PATH': '/datasurface', 'MATLAB_class': 'double'}
+D /data/surface/bkg_mol  shape=(33765, 1) dtype=float64 chunks=(6753, 1) compression=gzip  attrs={'H5PATH': '/datasurface', 'MATLAB_class': 'double'}
+D /data/surface/bkg_total  shape=(33765, 1) dtype=float64 chunks=(6753, 1) compression=gzip  attrs={'H5PATH': '/datasurface', 'MATLAB_class': 'double'}
+D /data/surface/normAltitude  shape=(33765, 1) dtype=float64 chunks=(6753, 1) compression=gzip  attrs={'H5PATH': '/datasurface', 'MATLAB_class': 'double'}
+D /data/surface/normSurface  shape=(33765, 1) dtype=float64 chunks=(6753, 1) compression=gzip  attrs={'H5PATH': '/datasurface', 'MATLAB_class': 'double'}
+D /data/surface/normSurfaceStd  shape=(33765, 1) dtype=float64 chunks=(6753, 1) compression=gzip  attrs={'H5PATH': '/datasurface', 'MATLAB_class': 'double'}
+D /data/surface/oceanCorrMFrac  shape=(33765, 1) dtype=float64 chunks=(6753, 1) compression=gzip  attrs={'H5PATH': '/datasurface', 'MATLAB_class': 'double'}
+D /data/surface/oceanCorrPFrac  shape=(33765, 1) dtype=float64 chunks=(6753, 1) compression=gzip  attrs={'H5PATH': '/datasurface', 'MATLAB_class': 'double'}
+D /data/surface/oceanRatio  shape=(33765, 1) dtype=float64 chunks=(6753, 1) compression=gzip  attrs={'H5PATH': '/datasurface', 'MATLAB_class': 'double'}
+D /data/surface/offset_angle  shape=(33765, 1) dtype=float64 chunks=(6753, 1) compression=gzip  attrs={'H5PATH': '/datasurface', 'MATLAB_class': 'double'}
+D /data/surface/peakSurfaceValue  shape=(33765, 1) dtype=float64 chunks=(6753, 1) compression=gzip  attrs={'H5PATH': '/datasurface', 'MATLAB_class': 'double'}
+D /data/surface/pitch  shape=(33765, 1) dtype=float64 chunks=(6753, 1) compression=gzip  attrs={'H5PATH': '/datasurface', 'MATLAB_class': 'double'}
+D /data/surface/reflectance  shape=(33765, 1) dtype=float64 chunks=(6753, 1) compression=gzip  attrs={'H5PATH': '/datasurface', 'MATLAB_class': 'double'}
+D /data/surface/reflectance1064_noncal  shape=(33765, 1) dtype=float64 chunks=(6753, 1) compression=gzip  attrs={'H5PATH': '/datasurface', 'MATLAB_class': 'double'}
+D /data/surface/reflectanceNoOceanRatio  shape=(33765, 1) dtype=float64 chunks=(6753, 1) compression=gzip  attrs={'H5PATH': '/datasurface', 'MATLAB_class': 'double'}
+D /data/surface/roll  shape=(33765, 1) dtype=float64 chunks=(6753, 1) compression=gzip  attrs={'H5PATH': '/datasurface', 'MATLAB_class': 'double'}
+D /data/surface/surfaceArea  shape=(33765, 1) dtype=float64 chunks=(6753, 1) compression=gzip  attrs={'H5PATH': '/datasurface', 'MATLAB_class': 'double'}
+D /data/surface/surfaceArea1064  shape=(33765, 1) dtype=float64 chunks=(6753, 1) compression=gzip  attrs={'H5PATH': '/datasurface', 'MATLAB_class': 'double'}
+D /data/surface/surfaceAreaNoOceanRatio  shape=(33765, 1) dtype=float64 chunks=(6753, 1) compression=gzip  attrs={'H5PATH': '/datasurface', 'MATLAB_class': 'double'}
+D /data/surface/surfaceAreaPara  shape=(33765, 1) dtype=float64 chunks=(6753, 1) compression=gzip  attrs={'H5PATH': '/datasurface', 'MATLAB_class': 'double'}
+D /data/surface/surfaceDepol  shape=(33765, 1) dtype=float64 chunks=(6753, 1) compression=gzip  attrs={'H5PATH': '/datasurface', 'MATLAB_class': 'double'}
+D /data/surface/surfaceMaxMol  shape=(33765, 1) dtype=float64 chunks=(6753, 1) compression=gzip  attrs={'H5PATH': '/datasurface', 'MATLAB_class': 'double'}
+D /data/surface/surfaceMol  shape=(33765, 1) dtype=float64 chunks=(6753, 1) compression=gzip  attrs={'H5PATH': '/datasurface', 'MATLAB_class': 'double'}
+D /data/surface/waveSlope_2  shape=(33765, 1) dtype=float64 chunks=(6753, 1) compression=gzip  attrs={'H5PATH': '/datasurface', 'MATLAB_class': 'double'}
+D /data/surface/windSpeed  shape=(33765, 1) dtype=float64 chunks=(6753, 1) compression=gzip  attrs={'H5PATH': '/datasurface', 'MATLAB_class': 'double'}

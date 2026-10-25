@@ -2,6 +2,7 @@
 
 import re
 import warnings
+from pathlib import Path
 
 import h5py
 import numpy as np
@@ -115,3 +116,12 @@ def time_slice(t, time_range):
     i0 = 0 if start is None else int(np.searchsorted(t, start, side="left"))
     i1 = len(t) if end is None else int(np.searchsorted(t, end, side="right"))
     return slice(i0, i1)
+
+
+def flight_date_from_name(path):
+    """Flight date (datetime64[ns], 00 UTC) from the first ``YYYYMMDD`` token of a file name."""
+    stem = Path(path).stem
+    for tok in stem.split("_"):
+        if len(tok) == 8 and tok.isdigit():
+            return np.datetime64(f"{tok[:4]}-{tok[4:6]}-{tok[6:]}", "ns")
+    raise ValueError(f"no YYYYMMDD flight date in file name {stem!r}")

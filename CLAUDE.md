@@ -2,7 +2,7 @@
 
 Python code for the NURTURE → FALCON optimal-estimation (OE) cloud retrieval framework: data readers, scattering-database tools, and (later) forward models and the solver.
 
-**Distilled from Project Knowledge** (claude.ai Project "OE Retrieval Frameworks: NURTURE → FALCON"): `index.md` **v1.10** and `appendix_A_nurture_datasets.md` (2026-10-09). Project Knowledge is authoritative. If this file, `docs/data_map.md` or the code disagree with it, stop and flag the conflict to Joe. Do not resolve it yourself.
+**Distilled from Project Knowledge** (claude.ai Project "OE Retrieval Frameworks: NURTURE → FALCON"): `index.md` **v1.13** and `appendix_A_nurture_datasets.md` (2026-10-25). Project Knowledge is authoritative. If this file, `docs/data_map.md` or the code disagree with it, stop and flag the conflict to Joe. Do not resolve it yourself.
 
 Joe is a capable scientist who is still learning OE: explain OE-relevant choices briefly as you make them.
 
@@ -10,7 +10,7 @@ Joe is a capable scientist who is still learning OE: explain OE-relevant choices
 
 - `docs/data_map.md` — every data source: paths, formats, structure, known metadata traps, open register items. **Required before touching any reader.**
 - `config/paths.yaml` — all data locations. Never hard-code a path.
-- `docs/pk_snapshot/` — read-only copies of the PK files (`index-1-10.md`, `appendix_A_nurture_datasets.md`, `handoff.md`; copied 2026-10-14). The originals are on OneDrive: never write there. Ask Joe to refresh the snapshot when PK moves on.
+- `docs/pk_snapshot/` — read-only copies of the PK files (`index.md` v1.13, `appendix_A_nurture_datasets.md`, `appendix_B_stm_figures.md`, `handoff.md`, `team_followups.md`; written 2026-10-25 at the v1.13 fold). The originals are on OneDrive: never write there. Ask Joe to refresh the snapshot when PK moves on.
 
 Environment: `mamba env create -f environment.yml` (conda-forge only), then `pip install -e .` in the `nurture-oe` env. Plots use ultraplot.
 
@@ -38,20 +38,27 @@ Environment: `mamba env create -f environment.yml` (conda-forge only), then `pip
 - Large files: open lazily (h5py, xarray `chunks=`, memory-mapped or line-indexed access). Never load a whole TAMUice2016 `P*.dat` (~600 MB of ASCII each) more than once. Convert the needed subset to netCDF in `cache_dir`, and record the source file, wavelength(s) and code version in its attributes.
 - Tests run against the example flight (`nurture_example` in `config/paths.yaml`). Mark tests that read >100 MB as `@pytest.mark.slow`.
 
-## Current work (updated 2026-10-14)
+## Data facts that bite (v1.13)
 
-Tasks (a), (c) and (d) are independent of each other, except that (d) uses the (a) readers. Each task's deliverables are code, tests, and a short report under `docs/reports/`, with every unresolved item added to `docs/findings_for_pk.md`.
+- **Heights `[DECISION D23]`:** everything is on the HALO MSL datum (HALO `z`, `gps_alt`; `/State` on the same grid). CloudCube gate altitude is $z = \text{alt}_{\text{HALO}} - r\cos\theta$, with θ from `look_vector_ecef` and HALO altitude interpolated to ray times. Never use CloudCube `alt` (WGS84 ellipsoid) for altitude.
+- **Ka sensitivity is per granule:** read `radar_sensitivity_ka_dbz` from each file (−16.32 dBZ for 15:13–18:59 on 02-17, −19.26 for 19:00–19:26). It is also the Ka admission threshold for the optional Ka block `[OPEN O15]`, condition 3 met.
+- **The documented 1 km sensitivity is not the processor's detection threshold.** Delivered `zm` reaches 5–11 dB below $Z_{\min}(r)$ in every band `[GAP G24]`.
+- **HALO 10 s window `[t − 5 s, t + 5 s)`** is a working convention; a ±10 s sweep could not resolve its offset `[GAP G23]`. In 10.5 s steps one sub-profile lies in no window.
+- **Attitude:** never take incidence angle from HALO `imu_*`; use MetNav `[GAP G21]`. `imu_roll` has an unexplained timing/averaging offset; don't describe it as a shifted 10 s mean.
+- **`h2o_mmr_v`:** the README's 100 m truncation above cloud top does not hold. Exclude in-cloud rows with our own cloud mask `[OPEN O32]`.
+- **`1064_dep` rows** take their mask from the product, not from `_unc` `[GAP G22]`.
+- **Co-registered radar rows** are censored means over detecting rays (bias ≥ 1.7 dB at detected fraction ≈ 0.5, ≲ 0.2 dB at ≥ 0.9) `[OPEN O21]`, and on the 15 m grid about one gate in three is duplicated `[OPEN O29]`. `*_all` is the unthresholded detecting-ray mean.
+- **Ka, 19:00 granule:** the Ka range response changed (≈1 km skirt around strong echoes); mask Ka rows near strong echoes; Ka calibration is per granule `[GAP G24]`.
+- **`look_vector_ecef`** is computed from attitude (body-fixed nadir beam assumed), so it can't test mounting `[GAP G27]`.
+- **HALO 0.5 s cloud file** (`io/halo_cloud.py`): interim, no metadata. `bsc` is β_p,532 in m⁻¹ sr⁻¹ and `dep` is δ_p (both inferred, unscreened); `bsc1064` is not on the Aerosol/WV scale; `cp` ≡ C&S `CloudMask/Type`. No ATB and no uncertainty `[DECISION D22]`, `[OPEN O36]`.
+- **Both beams are airframe-fixed** (HALO `offset_angle` = cos pitch · cos roll), so 0.5 s co-registration uses a body-fixed lidar (= ray-time matching). An empirical ≈1.1 s radar−lidar lag (radar earlier) is unexplained and not applied `[GAP G27]`.
+- **The 0.5 s × 15 m co-registered file** is for display and diagnostics; 0.5 s β_p rows are D21-valid only where HSRL-valid.
 
-**(a) NURTURE readers + data-level checks.** Modules: `io/halo_aerowv.py`, `io/halo_cloudsurface.py`, `io/cloudcube.py`, `io/metnav.py`.
+## Current work (updated 2026-10-25)
 
-1. Before writing any reader, dump each example file's full header (groups, variables, dims, dtypes, attributes, fill values) to `docs/reports/headers/`. Diff the HALO Aerosol/WV header against the 2026-01-24 dump summarized in `docs/data_map.md`; the variable set may differ between flights.
-2. Then run the checks listed per product in `docs/data_map.md` ("Checks for task (a)").
+Tasks (a), (c), (d), the follow-ups of Appendix A §A.8(5) and the HALO 0.5 s cloud file (reader + 0.5 s co-registration, §A.8(7)) are done and folded into v1.13 (reports in `docs/reports/`). No Claude Code task is commissioned. Candidates awaiting approval are listed in Appendix A §A.8(6): dropsonde check of DIAL, radar pitch test, Ka skirt on other flights, rebuild of the 10 s cache, window test with the 0.5 s HALO file, the 1.1 s lag on other segments. When the CF-compliant cloud file arrives, re-run `scripts/check_halo_cloud.py` and `tests/test_halo_cloud.py`.
 
-**(c) ARTS SSDB catalog** (groundwork for `[OPEN O27]`). Module: `ssp/arts_catalog.py`. Output: `docs/reports/arts_catalog.md` plus a machine-readable CSV. Per-habit content is listed in `docs/data_map.md` §ARTS. Use the vendor Python interface in the data store (`DataInterfaces/Python`) read-only, or plain netCDF4.
-
-**(d) STM co-registration + Ka coverage check** (appendix §A.8(4), §A.11(b); handoff 2026-10-09). Segment 2026-02-17 15:30–16:00 UTC (CloudCube granule `…S20260217a152158_E20260217a185937…`). Time-match and map CloudCube slant range onto the HALO 15 m altitude grid. Produce the four-panel figure: `532_total_attn_bsc`, `532_dep`, $Z_W$ (gas-corrected only), and $\mathrm{DWR}_{W\text{-}G}$ with the C&S class-0 contour. Ka coverage = fraction of ice pixels with W and G detected where Ka also detects, with $Z_{\min}^{\mathrm{Ka}}(r)$ taken from each granule's attribute. Modules: `coreg.py`, `checks/ka_coverage.py`. Report: `docs/reports/task_d_coreg.md`.
-
-**Not current:** TAMUoic2019 (`[DECISION D19]`, data not yet downloaded); forward models, solver, $\mathbf{S}_\epsilon$ construction.
+**Not current:** TAMUoic2019 (`[DECISION D19]`, data not yet downloaded); forward models, solver, $\mathbf{S}_\epsilon$ construction (execution sessions S1–S3 in Claude Chat first).
 
 ## `docs/findings_for_pk.md` template
 

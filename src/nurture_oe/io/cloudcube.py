@@ -19,7 +19,9 @@ BANDS = ("ka", "w", "g")
 _PROFILE = ("zm", "katten")
 _RAY = ("s0",)
 _NAV = ("alt", "lat", "lon", "roll", "pitch", "heading", "incidence_angle", "landmask")
-PK_ZMIN_1KM_DBZ = {"ka": -19.26, "w": -32.64, "g": -37.58}  # appendix A §A.4 (v1.10)
+PK_ZMIN_1KM_DBZ = {"ka": -19.26, "w": -32.64, "g": -37.58}  # appendix A §A.4 (v1.10 single values)
+# v1.11 (appendix A §A.4): Ka is per granule on 02-17 (-16.32 for 15:13-18:59, -19.26 for 19:00-19:26)
+PK_ZMIN_1KM_DBZ_RECORDED = {"ka": (-16.32, -19.26), "w": (-32.64,), "g": (-37.58,)}
 
 
 def parse_sensitivity(text):
@@ -53,8 +55,8 @@ def read_cloudcube(path, bands=BANDS, time_range=None, profiles=_PROFILE):
     Warns
     -----
     UserWarning
-        When a granule's declared 1 km sensitivity differs from the PK value
-        (appendix A §A.4). The file value governs (CLAUDE.md rule 3).
+        When a granule's declared 1 km sensitivity is none of the values recorded in PK
+        (appendix A §A.4, v1.11). The file value governs (CLAUDE.md rule 3).
     """
     path = Path(path)
     with netCDF4.Dataset(path) as nc:
@@ -101,9 +103,9 @@ def read_cloudcube(path, bands=BANDS, time_range=None, profiles=_PROFILE):
         if key in gattrs:
             val = parse_sensitivity(gattrs[key])
             gattrs[f"zmin_1km_dbz_{b}"] = val
-            if not np.isclose(val, PK_ZMIN_1KM_DBZ[b]):
-                warnings.warn(f"{path.name}: {key} = {gattrs[key]!r} differs from PK "
-                              f"(appendix A §A.4: {PK_ZMIN_1KM_DBZ[b]} dBZ @ 1 km); "
+            if not np.isclose(val, PK_ZMIN_1KM_DBZ_RECORDED[b]).any():
+                warnings.warn(f"{path.name}: {key} = {gattrs[key]!r} is not among the PK values "
+                              f"(appendix A §A.4: {PK_ZMIN_1KM_DBZ_RECORDED[b]} dBZ @ 1 km); "
                               f"the file value governs", stacklevel=2)
     gattrs["source_file"] = path.name
     return xr.Dataset(data_vars, coords=coords, attrs=gattrs)

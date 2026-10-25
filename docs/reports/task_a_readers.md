@@ -23,7 +23,8 @@ All readers return native grids and units, NaN fills and every attribute verbati
 - **`Units ` vs `units`.** These are notation differences everywhere except `Angstrom_Spherical` (`sr` vs `1`). That one raises the only reader warning.
 - **PK regressions (§A.10.5).**
   - Cloud pixels more than 2.5 km below the aircraft: 10,439 liquid and 62,700 ice, against PK's 10,395 / 62,567 (within 0.4 %). The window convention used on 2026-10-06 was not recorded; no variant reproduces PK exactly.
-  - Fill fractions (liquid / ice): unscreened 532 0.909 / 0.804; 1064 `total_attn_bsc` 0.172 / 0.479; screened fields 0.055 / 0.504; `532_ext` 0.042 / 0.457; `Aerosol_ID` 0.013 / 0.345; `h2o_mmr_v` 0.665 / 0.932. All match PK.
+  - Fill fractions (liquid / ice): unscreened 532 0.909 / 0.804; 1064 `total_attn_bsc` 0.172 / 0.479; screened fields 0.055 / 0.504; `532_ext` 0.042 / 0.457; `Aerosol_ID` 0.013 / 0.345; `h2o_mmr_v` 0.665 / 0.932. All match PK except `h2o_mmr_v` in ice.
+  - *Correction 2026-10-20:* `h2o_mmr_v` in ice is 0.932 here vs 0.97 recorded on 2026-10-06 (§A.10.5(b)); reconciliation is follow-up §A.8(5c).
 - **`_unc` masks.** Five of the six `_cloud_screened_unc` fields are filled on exactly the pixels of their screened product. **`1064_dep_cloud_screened_unc` is the exception:** it is finite on 10,971 pixels where `1064_dep_cloud_screened` is NaN.
 - **`Aerosol_ID` vs C&S.** Classes present: 1, 3, 4, 5, 6, 7, 9. P(C&S ice | `Aerosol_ID`=1) = 0.47. P(`Aerosol_ID`=1 | C&S ice) = 0.34.
 - **NaN census by region** (finite fraction; full table in the JSON):

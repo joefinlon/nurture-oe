@@ -1,0 +1,201 @@
+{
+ "n_samples": 15011,
+ "n_turning(|roll|>5)": 447,
+ "n_level(|roll|<1)": 14265,
+ "roll_deg_pct_1_5_50_95_99": [
+  -19.486,
+  -0.58,
+  -0.15,
+  0.25,
+  3.777
+ ],
+ "pitch_deg_pct_1_5_50_95_99": [
+  -2.747,
+  1.74,
+  2.37,
+  3.165,
+  3.3
+ ],
+ "theta_deg_pct": {
+  "all": [
+   1.103,
+   1.806,
+   2.42,
+   3.314,
+   19.862
+  ],
+  "turning": [
+   6.404,
+   6.484,
+   14.931,
+   32.82,
+   37.793
+  ],
+  "level": [
+   1.103,
+   1.799,
+   2.387,
+   3.189,
+   3.315
+  ]
+ },
+ "max_abs_roll_deg": 37.76,
+ "fit theta = a + b*theta_body": {
+  "a_deg": 0.0,
+  "b": 1.0,
+  "residual_rms_deg_all": 0.0008,
+  "residual_rms_deg_turning": 0.0045,
+  "residual_pct_turning": [
+   -0.0,
+   0.0,
+   0.0,
+   0.0,
+   0.0
+  ]
+ },
+ "theta_minus_theta_body_deg": {
+  "all": [
+   -0.0,
+   -0.0,
+   0.0,
+   0.0,
+   0.0
+  ],
+  "turning": [
+   -0.0,
+   -0.0,
+   -0.0,
+   0.0,
+   0.0
+  ],
+  "level": [
+   -0.0,
+   -0.0,
+   0.0,
+   0.0,
+   0.0
+  ]
+ },
+ "body_frame_look_vector": {
+  "fore_aft_tilt_deg (+fwd)": {
+   "all": [
+    -0.0,
+    -0.0,
+    0.0,
+    0.0,
+    0.0
+   ],
+   "turning": [
+    -0.0,
+    -0.0,
+    -0.0,
+    0.0,
+    0.0
+   ],
+   "level": [
+    -0.0,
+    -0.0,
+    0.0,
+    0.0,
+    0.0
+   ]
+  },
+  "lateral_tilt_deg (+starboard)": {
+   "all": [
+    -0.0,
+    -0.0,
+    0.0,
+    0.0,
+    0.0
+   ],
+   "turning": [
+    -0.0,
+    -0.0,
+    -0.0,
+    0.0,
+    0.0
+   ],
+   "level": [
+    -0.0,
+    -0.0,
+    0.0,
+    0.0,
+    0.0
+   ]
+  },
+  "angle_from_body_z_deg": {
+   "all": [
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0
+   ],
+   "turning": [
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.001
+   ]
+  }
+ },
+ "theta_minus_incidence_angle_deg_pct": [
+  -0.191,
+  -0.181,
+  -0.01,
+  0.132,
+  0.157
+ ],
+ "note": "look_vector_ecef equals the body z-axis from heading/pitch/roll: the geolocation assumes a body-fixed, exactly nadir beam, so the theta test above is circular. Independent test below.",
+ "surface_range_test": {
+  "selection": "W surface peak > 10.0 dBZ beyond 3 km range; HALO gps_alt - DEM_altitude (nadir) > 5 km",
+  "n_all": 14991,
+  "n_turning": 427,
+  "r_sfc/h_agl pct (turning)": [
+   0.993,
+   0.999,
+   1.03,
+   1.158,
+   1.182
+  ],
+  "1/cos(theta_body) pct (turning)": [
+   1.006,
+   1.006,
+   1.035,
+   1.142,
+   1.246
+  ],
+  "theta_eff = arccos(h_agl/r_sfc) minus theta_body, deg": {
+   "turning": [
+    -14.864,
+    -9.895,
+    -0.892,
+    5.595,
+    11.22
+   ],
+   "level": [
+    -2.603,
+    -1.82,
+    1.468,
+    2.695,
+    3.723
+   ]
+  },
+  "theta_eff deg (turning)": [
+   0.0,
+   0.0,
+   13.868,
+   30.316,
+   32.2
+  ],
+  "theta_body deg (turning)": [
+   6.399,
+   6.484,
+   14.849,
+   28.838,
+   36.484
+  ],
+  "corr(theta_eff, theta_body) turning": 0.869
+ }
+}

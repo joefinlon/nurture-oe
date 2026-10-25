@@ -10,6 +10,8 @@ dependencies:
   - h5py
   - netcdf4
   - pandas
+  - pyproj      # geoid undulation (follow-up §A.8(5a))
+  - proj-data   # EGM2008 / EGM96 geoid grids
   - matplotlib
   - ultraplot
   - pyyaml

@@ -147,3 +147,74 @@ def run_multiscatter(executable, input_path, algorithms=("fast", "none"), extra=
     p = subprocess.run(cmd, capture_output=True, text=True, timeout=120, check=True)
     rows = [ln.split() for ln in p.stdout.splitlines() if ln.strip() and not ln.startswith("#")]
     return np.array(rows, dtype=float)
+
+
+# --- compat pvc pieces (Dep2, Dep3; anisotropic.c, fast_small_angle.c) ------------------------
+def _ms_erfcx(x):
+    """exp(x^2) erfc(x) for x >= 0 from the rational approximation `ms_erfc` in anisotropic.c."""
+    t = 1.0 / (1.0 + 0.5 * x)
+    poly = (-1.26551223 + t * (1.00002368 + t * (0.37409196 + t * (0.09678418 + t * (-0.18628806 + t * (
+        0.27886807 + t * (-1.13520398 + t * (1.48851587 + t * (-0.82215223 + t * 0.17087277)))))))))
+    return t * np.exp(poly)
+
+
+def factor_yang_compat(gamma2):
+    """H08 Eq. 37 with the C code's erfc approximation (relative error < 1.2e-7)."""
+    from .constants import YANG_GAMMA0, YANG_W
+    pos = np.real(gamma2) > 0
+    g = np.sqrt(np.where(pos, gamma2, 1.0)) * 0.5 / YANG_GAMMA0
+    f = (1.0 - YANG_W) + YANG_W * (1.0 - g * np.sqrt(np.pi) * _ms_erfcx(g))
+    return np.where(pos, f, 1.0)
+
+
+def factors_compat(gamma2, theta2, alpha, beta, kinds, descriptors):
+    """`ms_anisotropic_factor`: one factor per bin and half-level, applied to every class.
+
+    The particulate factor is the extinction-weighted mean over particulate classes (Dep3); air is
+    isotropic and the result is weighted by backscatter between particulate and air, then applied to
+    the particulate *and* the air return (Dep2).
+
+    Returns F_minus, F_plus : (N, J, B), identical along J.
+    """
+    from .anisotropy import factor_droplet
+    part = np.array([k != "molecular" for k in kinds])
+    mol = ~part
+    a_p = alpha[:, part].sum(axis=1)
+    b_p = beta[:, part].sum(axis=1)
+    b_air = beta[:, mol].sum(axis=1)
+    has_p = np.real(a_p) > 0
+
+    def at(g2):
+        fpart = np.zeros_like(a_p * g2)
+        for j in np.flatnonzero(part):
+            th = np.where(np.isfinite(np.real(theta2[:, j])), theta2[:, j], 1.0)
+            if descriptors[j] == "droplet":
+                fj = factor_droplet(g2, th)
+            elif descriptors[j] == "yang":
+                fj = factor_yang_compat(g2)
+            elif descriptors[j] == "isotropic":
+                fj = 1.0
+            else:
+                raise ValueError("compat mode supports the droplet, yang and isotropic descriptors only")
+            fpart = fpart + alpha[:, j] / np.where(has_p, a_p, 1.0) * fj
+        fpart = np.where(has_p, fpart, 1.0)
+        den = b_p + b_air
+        okd = np.real(den) > 0
+        return np.where(okd, (b_p * fpart + b_air) / np.where(okd, den, 1.0), 1.0)
+
+    J = alpha.shape[1]
+    fm = at(gamma2[:-1])
+    fp = at(gamma2[1:])
+    return (np.repeat(fm[:, None, :], J, axis=1), np.repeat(fp[:, None, :], J, axis=1))
+
+
+def bin_means_compat(beta, tu, Mt, F_minus, F_plus, valid, tau):
+    """`fast_small_angle.c` step 6: where no forward-scattered light is in view at r_{i+1/2},
+    the C code returns T_{u,i-1/2} (1 - exp(-tau)) / tau (zero if tau = 0), ignoring M_{i-1/2}.
+    Elsewhere the logarithmic-mean form of Eq. (C.4), algebraically equal to the C code's expression.
+    """
+    from .pvc import bin_means
+    lm = bin_means(beta, tu, Mt, F_minus, F_plus)
+    pos = np.real(tau) > 0
+    ss = np.where(pos, tu[:-1] * (1.0 - np.exp(-tau)) / np.where(pos, tau, 1.0), 0.0)
+    return np.where(valid[1:, None, :], lm, beta * ss[:, None, :])

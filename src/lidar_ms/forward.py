@@ -10,8 +10,8 @@ from dataclasses import asdict
 
 import numpy as np
 
-from . import __version__, compat, grid, mixing
-from .constants import EXTINGUISHED_TU, flag
+from . import __version__, anisotropy, compat, grid, mixing, pvc
+from .constants import EXTINGUISHED_TU, LOBE_MIXTURE_RATIO, TABLE_TAIL_WEIGHT, flag
 from .schema import Instrument, OpticalProfile, RangeGrid, Returns, SolverConfig
 from .single import single
 
@@ -60,7 +60,7 @@ def checksum(r, optics: OpticalProfile) -> str:
 
 
 # --- core --------------------------------------------------------------------------------------
-def solve(r, opt, kinds, descriptors, instrument, config, near=None, near_index=None):
+def solve(r, opt, kinds, descriptors, instrument, config, near=None, near_index=None, names=None):
     """Run the configured solver on bin-major arrays.
 
     Parameters
@@ -76,19 +76,48 @@ def solve(r, opt, kinds, descriptors, instrument, config, near=None, near_index=
     """
     N, J, B = opt["alpha"].shape
     is_compat = config.compat is not None
+    tables = near_tables(near, kinds, names) if near is not None or "table" in descriptors else [None] * J
+    for j, d in enumerate(descriptors):
+        if d == "table" and tables[j] is None:
+            raise ValueError(f"class {j} uses descriptor 'table' but no NearBackscatter was given")
     dr = grid.bin_widths(r.T).T
     alpha = opt["alpha"]
     alpha_tot = alpha.sum(axis=1)
     beta = opt["beta"]
 
+    if is_compat:
+        beta_ss, tu, tau = compat.single_compat(alpha_tot, beta, dr)
+    else:
+        beta_ss, tu, tau = single(alpha_tot, beta, dr)
+    theta2 = mixing.lobe_variance(opt["a_eq"], instrument.wavelength)
+    flags = np.where(np.real(tu[:-1]) < EXTINGUISHED_TU, flag("EXTINGUISHED"), 0).astype(np.uint16)
+
     if config.solver == "single":
-        if is_compat:
-            beta_ss, tu, tau = compat.single_compat(alpha_tot, beta, dr)
-        else:
-            beta_ss, tu, tau = single(alpha_tot, beta, dr)
         beta_ms = beta_ss
-        M = np.zeros((N + 1, B), dtype=beta_ss.dtype)
-        gamma2 = np.zeros((N + 1, B))
+        Mt = np.zeros((N + 1, B), dtype=beta_ss.dtype)
+        gamma2 = np.zeros((N + 1, B), dtype=beta_ss.dtype)
+        F = None
+    elif config.solver in ("pvc", "pvc+tdts"):
+        part = np.array([k != "molecular" for k in kinds])
+        lobe = mixing.lobe_mask(theta2, part, config.theta_max, all_particulate=is_compat)
+        alpha_c, alpha_n, q = mixing.pvc_bin(alpha, theta2, lobe)
+        r_half = grid.half_levels(r.T).T
+        Mt, gamma2, valid = pvc.propagate(dr, r_half, alpha_c, alpha_n, q, tu, instrument.rho_tr,
+                                          instrument.rho_fov, instrument.kappa, instrument.receiver,
+                                          native=not is_compat)
+        if is_compat:
+            Fm, Fp = compat.factors_compat(gamma2, theta2, alpha, beta, kinds, descriptors)
+            beta_ms = compat.bin_means_compat(beta, tu, Mt, Fm, Fp, valid, tau)
+            tail = np.zeros(Fm.shape)
+        else:
+            Fm, Fp, tail = anisotropy.half_level_factors(gamma2, theta2, descriptors, kinds, tables,
+                                                         near_index)
+            beta_ms = pvc.bin_means(beta, tu, Mt, Fm, Fp)
+            # (C.4) reduces to (C.2) where M = 0 at both half-levels: use the single-scatter value
+            no_ms = (np.real(Mt[:-1]) == 0) & (np.real(Mt[1:]) == 0)
+            beta_ms = np.where(no_ms[:, None, :], beta_ss, beta_ms)
+        F = dict(minus=Fm, plus=Fp, theta2=theta2, valid=valid)
+        flags |= pvc_flags(alpha, theta2, lobe, tail, descriptors, Mt)
     else:
         raise NotImplementedError(f"solver {config.solver!r} is not built yet")
 
@@ -96,12 +125,40 @@ def solve(r, opt, kinds, descriptors, instrument, config, near=None, near_index=
     beta_wide = np.zeros((n_out, J, B), dtype=beta_ms.dtype)
 
     par, perp, closure_used, pol_flags = _polarize(beta_ms, beta_ss, opt["delta"], kinds, config)
-    flags = pol_flags | np.where(np.real(tu[:-1]) < EXTINGUISHED_TU, flag("EXTINGUISHED"), 0).astype(np.uint16)
+    flags |= pol_flags
+    with np.errstate(divide="ignore", invalid="ignore"):
+        M = np.where(np.real(tu) > 0, Mt / np.where(np.real(tu) > 0, tu, 1.0), np.nan)
 
     return dict(beta_par=_pad(par, n_out), beta_perp=_pad(perp, n_out), beta_ss=beta_ss,
                 beta_wide=beta_wide, ms_factor=M, gamma2=gamma2,
                 a_s=accumulated_ss_fraction(beta_ms, beta_ss, dr, kinds), flags=flags.astype(np.uint16),
                 closure_used=closure_used)
+
+
+def near_tables(near, kinds, names):
+    """Normalize `near` ({class name or index: NearBackscatter}) to a list of length J."""
+    J = len(kinds)
+    names = tuple(names) if names else tuple(kinds)
+    tables = [None] * J
+    for key, tab in (near or {}).items():
+        j = key if isinstance(key, (int, np.integer)) else names.index(key)
+        if not 0 <= j < J:
+            raise ValueError(f"near-backscatter key {key!r} does not name a class")
+        tables[j] = tab
+    return tables
+
+
+def pvc_flags(alpha, theta2, lobe, tail, descriptors, Mt):
+    """Flag bits 4 (LOBE_MIXTURE) and 5 (TABLE_EXTRAPOLATED), (N, B)."""
+    present = lobe & (np.real(alpha) > 0)
+    th = np.where(present, np.sqrt(np.real(np.where(present, theta2, 1.0))), np.nan)
+    with np.errstate(invalid="ignore"):
+        ratio = np.nanmax(np.where(present, th, -np.inf), axis=1) / np.nanmin(np.where(present, th, np.inf), axis=1)
+    mix = (present.sum(axis=1) >= 2) & (ratio > LOBE_MIXTURE_RATIO)
+    is_tab = np.array([d == "table" for d in descriptors])[None, :, None]
+    ms = (np.real(Mt[:-1]) > 0) | (np.real(Mt[1:]) > 0)
+    ext = (is_tab & (np.real(alpha) > 0) & (tail > TABLE_TAIL_WEIGHT)).any(axis=1) & ms
+    return (np.where(mix, flag("LOBE_MIXTURE"), 0) | np.where(ext, flag("TABLE_EXTRAPOLATED"), 0)).astype(np.uint16)
 
 
 def _pad(a, n_out):
@@ -146,7 +203,7 @@ def simulate(grid_, instrument, optics, config=SolverConfig(), *, near=None, pha
     P = optics.shape[0]
     opt = {nm: to_bin_major(getattr(optics, nm)) for nm in _FIELDS}
     out = solve(r.T.copy(), opt, optics.kinds, optics.descriptors, instrument, config, near=near,
-                near_index=to_bin_major(optics.near_index))
+                near_index=to_bin_major(optics.near_index), names=optics.names)
     return assemble(out, P, r, optics, instrument, config)
 
 

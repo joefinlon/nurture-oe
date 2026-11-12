@@ -63,7 +63,7 @@ def run_chunk(n, med, tabs, inst, mc: McConfig, rng, acc, peak, pol_angle=0.0, r
                                total=co.sum(axis=0) + (0 if cross is None else cross.sum(axis=0))))
         p, _ = tr.redirect(p, med, tabs, layer, d, mc.epsilon_ddis, rng, polarized=pol)
         p = tr.roulette(p, mc.w_roulette, rng)
-        p = tr.compact(p, p["order"] < mc.max_order)
+        p = tr.compact(p, (p["order"] < mc.max_order) & (p["W"] > 0))
 
 
 def run_batch(args):
@@ -105,8 +105,6 @@ def run_profile(r, alpha, omega, a_eq, kinds, phase: PhaseTables, instrument: In
       se : (N, J, 3, 2) batch-mean standard errors
       spike : (N,) largest single contribution / bin total
     """
-    if mc.polarized:
-        raise NotImplementedError("the polarized Monte Carlo is milestone M11; use McConfig(polarized=False)")
     r = np.asarray(r, dtype=float)
     N, J = alpha.shape
     tb.check_lobe_resolution(phase.theta, alpha, a_eq, kinds, instrument.wavelength, theta_max)

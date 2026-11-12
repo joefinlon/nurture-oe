@@ -125,8 +125,9 @@ def redirect(p, med, tabs, layer, d, epsilon, rng, polarized=False):
     S = p["S"]
     if polarized:
         S = apply_matrix(Pm, geo.rotate_stokes(S, c2, s2)) / p_mix
-        W = W * S[0]
-        S = S / S[0]
+        s_i = S[0]
+        W = W * np.maximum(s_i, 0.0)                         # S_I = 0: fully blocked (e.g. Rayleigh at 90 deg)
+        S = np.where(s_i > 0, S / np.where(s_i > 0, s_i, 1.0), np.array([1.0, 0.0, 0.0, 0.0])[:, None])
     return dict(p, u=v, e=l_out, W=W, S=S), w
 
 

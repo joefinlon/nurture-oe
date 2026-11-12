@@ -1,4 +1,4 @@
-"""Depolarization closures: K1-K4, K6 and J4 (appendix C §C.4.3). K5 waits for the Mie fixture (M9)."""
+"""Depolarization closures: K1-K6 and J4 (appendix C §C.4.3). K5 uses the Mie fixture (milestone M9)."""
 import numpy as np
 import pytest
 
@@ -143,10 +143,32 @@ def test_k4_rayleigh_table():
 
 
 # --- K5 ----------------------------------------------------------------------------------------------
-@pytest.mark.skip(reason="needs the Mie fixture (tests/lidar_ms/mie_fixture.py, milestone M9); "
-                         "ordering conflict recorded in docs/findings_for_pk.md")
+def _k5_first_liquid_bin():
+    """delta_liq in the first liquid bin of `halo_ice_over_liquid` under C2 (Mie droplet table) and C1."""
+    import mie_fixture as mf
+    c, opt = ice_over_liquid(0.4)
+    liq = np.flatnonzero(opt.alpha[0, :, 0] > 0)
+    drop = mf.near_backscatter_table(mf.droplet_optics(a_eq=float(opt.a_eq[0, liq[0], 0])))
+    out = {}
+    for name, closure, near in (("c2", "near_backscatter", {"droplet": drop, "isotropic": ice_table(0.4)}),
+                                ("c1", "hu", None)):
+        o = simulate(c.grid, c.instrument, opt, SolverConfig(solver="pvc", closure=closure), near=near)
+        out[name] = o.beta_perp[0, liq[0], 0] / o.beta_par[0, liq[0], 0]
+    return out
+
+
+@pytest.mark.xfail(strict=True, reason="K5 prediction not met: delta_liq(C2) = 0.067 vs C1 0.327 in the first "
+                                       "liquid bin (ratio 0.20); recorded in docs/findings_for_pk.md (2026-11-12)")
 def test_k5_c2_under_ice():
-    pass
+    d = _k5_first_liquid_bin()
+    assert d["c2"] < 0.1 * d["c1"], d
+
+
+def test_k5_values_frozen():
+    """The K5 outcome recorded in docs/findings_for_pk.md, so that a change is noticed."""
+    d = _k5_first_liquid_bin()
+    assert d["c1"] == pytest.approx(0.3265, abs=1e-3)
+    assert d["c2"] == pytest.approx(0.0669, abs=1e-3)
 
 
 # --- K6 ----------------------------------------------------------------------------------------------

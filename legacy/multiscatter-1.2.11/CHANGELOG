@@ -1,0 +1,53 @@
+VERSION 1.2.11
+
+1. Changed license from GNU Lesser General Public License 2.1 to
+Apache 2.0, and changed the stated copyright holder to University of
+Reading.
+
+
+MAIN CHANGES BETWEEN VERSIONS 1.1.3 and 1.2.10
+
+1. The command-line options for the "multiscatter" program have
+changed: the algorithm is now controlled by "-algorithms
+<sa-algorithm> <wa-algorithm>", where <sa-algorithm> is one of "none",
+"single", "original", "fast", "explicit" or "lag" and <wa-algorithm>
+is one of "none", "tdts", "lidar" or "radar" (type "bin/multiscatter
+-help" for their meanings).  Thus options such as "-sa-only",
+"-single-only", "-wide-only" and "-no-forward-lobe" do not work any
+more.
+
+2. The default small-angle algorithm is now the O(N) method of Hogan
+(2008) rather than the O(N^2) method of Hogan (2006). 
+
+3. An adjoint code is now available for retrieval algorithms. This can
+be tested using the bin/multiscatter program with the "-check-adjoint"
+option.
+
+4. The format of the first line of the input file has changed to (1)
+number of range gates, (2) wavelength, (3) altitude, (4) transmitter
+divergence half-width, (5+) receiver half-widths. This change is to
+accommodate multiple field-of-view instruments.  Note the
+"-annular-detectors" option.  For the old behaviour, use the "-v1"
+option.
+
+5. A full Fortran interface is now available.
+
+6. Bug fixes to fast small-angle algorithm (search for "ERROR IN
+ORIGINAL CODE" in fast_small_angle.c); doesn't make too much
+difference.
+
+7. Change to the wide-angle algorithm to prevent (to a large extent)
+superluminal travel; this is done by cropping the tails of the
+Gaussian distribution that correspond to faster-than-light travel.  An
+additional option has been added to only start the wide-angle
+algorithm when the mean-free-path drops below some multiple of the
+receiver footprint; this way the slower wide-angle algorithm is not
+run on clouds where it would be insignificant compared to small-angle
+and single scattering.
+
+8. The code is now able to run on irregular grids: the
+single-scattering and fast small-angle algorithms were already
+intrinsically capable of being run on irregular grids, they just
+needed that flexibility to be coded in. The wide-angle algorithm now
+has interpolation to a regular grid, if required (note that there is
+no adjoint for this interpolation yet).

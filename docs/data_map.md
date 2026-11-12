@@ -1,8 +1,8 @@
 # data_map.md — data sources for nurture-oe
 
-**Distilled from** `appendix_A_nurture_datasets.md` (2026-10-25) and `index.md` **v1.13** (Project Knowledge), plus a directory inspection of the local data stores (2026-10-05). §1 re-synced to the v1.12 PK snapshot on 2026-10-20; §1.6 added at the v1.13 fold (2026-10-25). Project Knowledge is authoritative; this file is a working summary. Register IDs (D/G/O) refer to `index.md` §11.
+**Distilled from** `appendix_A_nurture_datasets.md` (2026-11-11) and `index.md` **v1.14** (Project Knowledge), plus a directory inspection of the local data stores (2026-10-05). §1 re-synced to the v1.12 PK snapshot on 2026-10-20; §1.6 added at the v1.13 fold (2026-10-25). Re-stamped at the v1.14 fold (2026-11-11): no data fact changed; v1.14 added the lidar multiple-scattering model (`appendix_C_lidar_multiple_scattering.md`), whose test references live in `tests/lidar_ms/reference/` and are not a data store. Project Knowledge is authoritative; this file is a working summary. Register IDs (D/G/O) refer to `index.md` §11.
 
-**PK snapshot.** `docs/pk_snapshot/` holds copies of `index.md` (v1.13), `appendix_A_nurture_datasets.md`, `appendix_B_stm_figures.md`, `handoff.md` and `team_followups.md`, written at the v1.13 fold (2026-10-25). The originals are on OneDrive; never write there. Findings of 2026-10-14, 2026-10-20 and 2026-10-25 are folded. Later facts stay in `docs/findings_for_pk.md`, not here, until they are folded.
+**PK snapshot.** `docs/pk_snapshot/` holds copies of `index.md` (v1.14), `appendix_A_nurture_datasets.md`, `appendix_B_stm_figures.md`, `appendix_C_lidar_multiple_scattering.md`, `handoff.md` and `team_followups.md`, refreshed at the v1.14 fold (2026-11-11). The originals are on OneDrive; never write there. Findings of 2026-10-14, 2026-10-20 and 2026-10-25 are folded. Later facts stay in `docs/findings_for_pk.md`, not here, until they are folded.
 
 Paths are keys in `config/paths.yaml`. "Unverified" means nobody has checked it against the file yet, so check it before relying on it.
 

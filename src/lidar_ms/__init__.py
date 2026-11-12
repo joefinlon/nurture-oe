@@ -11,3 +11,4 @@ from . import constants  # noqa: E402,F401
 from .schema import (Instrument, McConfig, NearBackscatter, OpticalProfile, OpticalTangent,  # noqa: E402,F401
                      PhaseTables, RangeGrid, Returns, ReturnsTangent, SolverConfig)
 from .forward import simulate  # noqa: E402,F401
+from .derivatives import check_jvp, jvp  # noqa: E402,F401

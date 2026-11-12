@@ -6,7 +6,7 @@ axis (profiles, or profiles x tangents inside `jvp`) (§C.3.5).
 from __future__ import annotations
 
 import hashlib
-from dataclasses import asdict
+from dataclasses import asdict, replace
 
 import numpy as np
 
@@ -260,10 +260,42 @@ def simulate(grid_, instrument, optics, config=SolverConfig(), *, near=None, pha
     """
     r = check_inputs(grid_, instrument, optics, config)
     P = optics.shape[0]
+    if config.solver == "mc":
+        return simulate_mc(r, instrument, optics, config, phase, P)
     opt = {nm: to_bin_major(getattr(optics, nm)) for nm in _FIELDS}
     out = solve(r.T.copy(), opt, optics.kinds, optics.descriptors, instrument, config, near=near,
                 near_index=to_bin_major(optics.near_index), names=optics.names)
     return assemble(out, P, r, optics, instrument, config)
+
+
+def simulate_mc(r, instrument, optics, config, phase, P) -> Returns:
+    """Solver `mc` (§C.2.7): Monte Carlo tallies assembled as `Returns`.
+
+    beta_par/beta_perp are co-/cross-polarized tallies (scalar mode: all of I in beta_par, beta_perp = 0,
+    closure_used "mc_scalar"); beta_ss is the order-1 tally; beta_order holds orders 1, 2, >= 3;
+    stderr_* are batch-mean standard errors; ms_factor and gamma2 are NaN (no PVC moments);
+    beta_wide is zero (the Monte Carlo does not separate wide-angle light). meta carries the largest
+    single-contribution fraction of any bin with one-way tau <= 3 (spike diagnostic).
+    """
+    from .mc.driver import simulate_mc as _run
+    out = _run(r, optics, instrument, config, phase)
+    N, J = optics.shape[1:]
+    dr = grid.bin_widths(r).T
+    alpha = to_bin_major(optics.alpha)
+    _, tu, _ = single(alpha.sum(axis=1), to_bin_major(optics.beta), dr)
+    flags = np.where(tu[:-1] < EXTINGUISHED_TU, flag("EXTINGUISHED"), 0).astype(np.uint16)
+    total = out["beta_par"] + out["beta_perp"]
+    tau_mid = np.cumsum(alpha.sum(axis=1) * dr, axis=0) - 0.5 * alpha.sum(axis=1) * dr
+    spike = np.where(tau_mid <= 3.0, out["spike"], 0.0)
+    nan = np.full((N + 1, P), np.nan)
+    res = dict(beta_par=out["beta_par"], beta_perp=out["beta_perp"], beta_ss=out["beta_ss"],
+               beta_wide=np.zeros_like(out["beta_par"]), ms_factor=nan, gamma2=nan.copy(),
+               a_s=accumulated_ss_fraction(total, out["beta_ss"], dr, optics.kinds), flags=flags,
+               closure_used=np.array(["mc" if config.mc.polarized else "mc_scalar"] * P, dtype=object))
+    ret = assemble(res, P, r, optics, instrument, config)
+    meta = dict(ret.meta, mc_spike_max=float(spike.max()) if spike.size else 0.0)
+    return replace(ret, meta=meta, beta_order=from_bin_major(out["beta_order"], P),
+                   stderr_par=from_bin_major(out["stderr_par"], P), stderr_perp=from_bin_major(out["stderr_perp"], P))
 
 
 def assemble(out, P, r, optics, instrument, config, real=False) -> Returns:

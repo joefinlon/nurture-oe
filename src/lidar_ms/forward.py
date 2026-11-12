@@ -10,7 +10,7 @@ from dataclasses import asdict
 
 import numpy as np
 
-from . import __version__, anisotropy, compat, grid, mixing, polarization, pvc
+from . import __version__, anisotropy, compat, grid, mixing, polarization, pvc, tdts
 from .constants import EXTINGUISHED_TU, LOBE_MIXTURE_RATIO, TABLE_TAIL_WEIGHT, flag
 from .schema import Instrument, OpticalProfile, RangeGrid, Returns, SolverConfig
 from .single import single
@@ -121,13 +121,23 @@ def solve(r, opt, kinds, descriptors, instrument, config, near=None, near_index=
         raise NotImplementedError(f"solver {config.solver!r} is not built yet")
 
     n_out = N if config.n_out is None else max(int(config.n_out), N)
-    beta_wide = np.zeros((n_out, J, B), dtype=beta_ms.dtype)
+    if config.solver == "pvc+tdts":
+        beta_wide = wide_angle_part(r, alpha, opt["omega"], opt["g"], theta2, lobe, kinds, instrument, config,
+                                    n_out)
+    else:
+        beta_wide = np.zeros((n_out, J, B), dtype=beta_ms.dtype)
 
     par, perp, closure_used, pol_flags, diag = polarization.polarize(
         beta_ms, beta_ss, opt["delta"], kinds, descriptors, config, dr=dr, r=r, alpha=alpha, lobe=lobe, tu=tu,
         Mt=Mt, gamma2=gamma2, theta2=theta2, F_minus=Fm, F_plus=Fp, tables=tables, near_index=near_index,
         rho_fov=instrument.rho_fov)
     flags |= pol_flags
+    if config.solver == "pvc+tdts":
+        dw = config.delta_wide
+        par = _pad(par, n_out) + beta_wide / (1.0 + dw)
+        perp = _pad(perp, n_out) + beta_wide * dw / (1.0 + dw)
+        has_w = (np.real(beta_wide[:N]) > 0).any(axis=1)
+        flags |= np.where(has_w, flag("WIDE_HEURISTIC"), 0).astype(np.uint16)
     with np.errstate(divide="ignore", invalid="ignore"):
         M = np.where(np.real(tu) > 0, Mt / np.where(np.real(tu) > 0, tu, 1.0), np.nan)
 
@@ -135,6 +145,60 @@ def solve(r, opt, kinds, descriptors, instrument, config, near=None, near_index=
                 beta_wide=beta_wide, ms_factor=M, gamma2=gamma2,
                 a_s=accumulated_ss_fraction(beta_ms, beta_ss, dr, kinds), flags=flags.astype(np.uint16),
                 closure_used=closure_used, diagnostic=diag)
+
+
+def wide_angle_part(r, alpha, omega, g, theta2, lobe, kinds, instrument, config, n_out):
+    """beta_w per class, (n_out, J, B), §C.2.5 with heuristic H1; H2 is applied by the caller.
+
+    Native: regular grid required (Dep8), sources start at the first bin with particulate extinction,
+    exact source width (Dep5), class-general sums (Dep11), optional coarsening `wide_coarsen`.
+    compat: `wide_angle.c` from gate 0, branch inferred from the lobe test, variance.c width.
+    """
+    N, J, B = alpha.shape
+    is_compat = config.compat is not None
+    k = int(config.wide_coarsen)
+    if is_compat:
+        if k != 1:
+            raise ValueError("wide_coarsen must be 1 in compat mode")
+        dr = np.abs(r[2] - r[1])
+        part = np.array([kk != "molecular" for kk in kinds])
+        lobe_test = mixing.lobe_mask(theta2, part, config.theta_max)       # pvc compat treats all as lobe
+        lobe_w = compat.tdts_branch_lobe(alpha, lobe_test, kinds)
+        lidar = lobe_w.any(axis=(0, 1))
+        sp, sm = compat.tdts_sources_compat(alpha, omega, g, kinds, lidar, dr, instrument.kappa)
+        s2d = compat.source_width_compat(r, alpha, theta2, kinds, lidar, instrument.rho_tr)
+        ap, om, gp, share = tdts.scaled_medium(alpha, omega, g, lobe_w)
+        return tdts.wide_angle(r, dr, ap, om, gp, share, sp, sm, s2d, instrument.rho_tr, instrument.rho_fov,
+                               n_out, instrument.receiver, d_factor=tdts.COMPAT_D_FACTOR, c_exp=True)
+    if not np.all(grid.is_regular(r.T)):
+        raise ValueError("pvc+tdts needs a regular range grid (spacing constant to 5 %); regrid first (Dep8)")
+    part = np.array([kk != "molecular" for kk in kinds])
+    _check_lobe_albedo(alpha, omega, g, lobe)
+    q_j = np.where(lobe, alpha * np.where(lobe, theta2, 0.0), 0.0)
+    if k > 1:
+        r_w, a_w, om_w, g_w, q_w = tdts.coarsen_classes(k, r, alpha, omega, g, q_j)
+        th2_w = np.where(np.real(a_w) > 0, q_w / np.where(np.real(a_w) > 0, a_w, 1.0), np.inf)
+        lobe_w = lobe.any(axis=0)[None] & (np.real(a_w) > 0) & (np.real(th2_w) <= config.theta_max ** 2)
+        lobe_w = lobe_w | (lobe.any(axis=0)[None] & (np.real(a_w) == 0))
+        q_w = np.where(lobe_w, q_w, 0.0)
+        n_out_w = -(-n_out // k)
+    else:
+        r_w, a_w, om_w, g_w, q_w, lobe_w, n_out_w = r, alpha, omega, g, q_j, lobe, n_out
+    dr = (r_w[-1] - r_w[0]) / (r_w.shape[0] - 1)
+    cloudy = (np.real(a_w[:, part]) > 0).any(axis=1)
+    first = np.where(cloudy.any(axis=0), np.argmax(cloudy, axis=0), r_w.shape[0])
+    sp, sm = tdts.source_terms(a_w, om_w, g_w, lobe_w, dr, instrument.kappa, first_bin=first)
+    s2d = tdts.source_width(r_w, dr, q_w.sum(axis=1), instrument.rho_tr)
+    ap, om, gp, share = tdts.scaled_medium(a_w, om_w, g_w, lobe_w)
+    bw = tdts.wide_angle(r_w, dr, ap, om, gp, share, sp, sm, s2d, instrument.rho_tr, instrument.rho_fov,
+                         n_out_w, instrument.receiver)
+    return tdts.expand(bw, k, n_out) if k > 1 else bw
+
+
+def _check_lobe_albedo(alpha, omega, g, lobe):
+    bad = lobe & (np.real(alpha) > 0) & (np.real(omega * g) < 0.5)
+    if np.any(bad):
+        raise ValueError("a lobe-forming class must satisfy omega * g >= 1/2 where alpha > 0 (§C.2.2)")
 
 
 def near_tables(near, kinds, names):

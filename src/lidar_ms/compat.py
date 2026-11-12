@@ -218,3 +218,95 @@ def bin_means_compat(beta, tu, Mt, F_minus, F_plus, valid, tau):
     pos = np.real(tau) > 0
     ss = np.where(pos, tu[:-1] * (1.0 - np.exp(-tau)) / np.where(pos, tau, 1.0), 0.0)
     return np.where(valid[1:, None, :], lm, beta * ss[:, None, :])
+
+
+# --- compat tdts pieces (Dep5, Dep8, Dep11; wide_angle.c, variance.c) -------------------------
+def tdts_branch_lobe(alpha, lobe, kinds):
+    """Branch of `wide_angle.c` per profile. The C code takes it from the command line (`lidar` or
+    `radar`); here it is inferred: `lidar` (forward lobe) if any particulate class is lobe-forming
+    somewhere in the profile, and then *every* particulate class is treated as lobe-forming.
+    Returns the lobe mask (N, J, B) used by the compat wide-angle calculation."""
+    part = np.array([k != "molecular" for k in kinds])[None, :, None]
+    lidar = (lobe & (np.real(alpha) > 0)).any(axis=(0, 1))                 # (B,)
+    return np.broadcast_to(part & lidar[None, None, :], alpha.shape)
+
+
+def _bulk(alpha, omega, g, kinds):
+    part = np.array([k != "molecular" for k in kinds])
+    ext = alpha[:, part].sum(axis=1)
+    sca = (alpha * omega)[:, part].sum(axis=1)
+    scg = (alpha * omega * g)[:, part].sum(axis=1)
+    air = alpha[:, ~part].sum(axis=1)
+    air_sca = (alpha * omega)[:, ~part].sum(axis=1)
+    pe = np.real(ext) > 0
+    ps = np.real(sca) > 0
+    ssa = np.where(pe, sca / np.where(pe, ext, 1.0), 1.0)
+    # where there are no particulates the C code still reads the file's g column (Dep11)
+    g_raw = g[:, np.flatnonzero(part)[0]]
+    gg = np.where(ps, scg / np.where(ps, sca, 1.0), g_raw)
+    return ext, ssa, gg, air, air_sca
+
+
+def tdts_sources_compat(alpha, omega, g, kinds, lidar, dr, kappa):
+    """Source terms of `wide_angle.c` (S+ = outward, S- = inward), including Dep11: in the `lidar`
+    branch the air scattering carries the particulate asymmetry factor.
+
+    lidar : (B,) bool branch; dr : (B,). Returns S_plus, S_minus : (N, B).
+    """
+    from .constants import MU1
+    ext, ssa, gg, air, air_sca = _bulk(alpha, omega, g, kinds)
+    lim = 1.0 / (3.0 * MU1)
+    N = ext.shape[0]
+    # lidar branch
+    bad = (np.real(ext) > 0) & ~(np.real(ssa) >= 0.5 / np.where(np.real(gg) != 0, np.real(gg), np.nan))
+    if np.any(bad & lidar[None, :]):
+        raise ValueError("multiple scattering with a forward lobe needs ssa >= 0.5/g where ext > 0")
+    pf = 2.0 * ssa - 1.0
+    od = (0.5 * ext + air) * dr
+    pos = np.real(od) > 0
+    cum = np.concatenate([np.zeros_like(od[:1]), np.cumsum(np.where(pos, od, 0.0), axis=0)[:-1]], axis=0)
+    T = np.where(pos, np.exp(-cum) * (1.0 - np.exp(-od)) / np.where(pos, od, 1.0), np.exp(-cum))
+    den = 0.5 * ext * pf + air_sca
+    wf = np.where(pos, (ext * ssa + air_sca) / np.where(np.real(den) != 0, den, 1.0), 1.0)
+    src = kappa * T * den * dr
+    geq = 1.0 - wf + wf * gg
+    fw = np.real(geq) >= lim
+    sp_l = np.where(fw, src, 0.5 * src * (1.0 + 3.0 * geq * MU1))
+    sm_l = np.where(fw, 0.0, 0.5 * src * (1.0 - 3.0 * geq * MU1))
+    # radar (no forward lobe) branch
+    extp = air + ext
+    pe = np.real(extp) > 0
+    ssap = np.where(pe, (air_sca + ext * ssa) / np.where(pe, extp, 1.0), 0.0)
+    ps = pe & (np.real(ssap) > 0)
+    gp = np.where(ps, ext * ssa * gg / np.where(ps, air_sca + ext * ssa, 1.0), 0.0)
+    od2 = extp * dr
+    pos2 = np.real(od2) > 0
+    cum2 = np.concatenate([np.zeros_like(od2[:1]), np.cumsum(np.where(pos2, od2, 0.0), axis=0)[:-1]], axis=0)
+    src2 = kappa * ssap * np.exp(-cum2) * (1.0 - np.exp(-od2))
+    up, dn = np.real(gp) >= lim, np.real(gp) <= -lim
+    sp_r = np.where(up, src2, np.where(dn, 0.0, 0.5 * src2 * (1.0 + 3.0 * gp * MU1)))
+    sm_r = np.where(up, 0.0, np.where(dn, src2, 0.5 * src2 * (1.0 - 3.0 * gp * MU1)))
+    del N
+    return np.where(lidar[None, :], sp_l, sp_r), np.where(lidar[None, :], sm_l, sm_r)
+
+
+def source_width_compat(r, alpha, theta2, kinds, lidar, rho_tr):
+    """`variance.c` (Dep5: the covariance term enters once) in the `lidar` branch; rho_tr^2 r^2 otherwise."""
+    from .grid import bin_widths
+    part = np.array([k != "molecular" for k in kinds])
+    q = np.where(np.isfinite(np.real(theta2)), alpha * np.where(np.isfinite(np.real(theta2)), theta2, 0.0), 0.0)
+    q = q[:, part].sum(axis=1)
+    N, B = r.shape
+    dr = bin_widths(r.T).T
+    rt2 = rho_tr ** 2
+    out = np.empty(r.shape, dtype=np.result_type(q, float))
+    angle = rt2 + 0.0 * q[0]
+    pos = r[0] ** 2 * rt2 + 0.0 * q[0]
+    cov = r[0] * rt2 + 0.0 * q[0]
+    out[0] = pos
+    for i in range(N - 1):
+        pos = pos + angle * dr[i] ** 2 + cov * dr[i]
+        cov = cov + angle * dr[i]
+        angle = angle + 0.5 * q[i] * dr[i]
+        out[i + 1] = pos
+    return np.where(lidar[None, :], out, rt2 * r * r)

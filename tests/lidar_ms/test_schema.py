@@ -181,3 +181,11 @@ def test_st2_is_regular():
     assert not grid.is_regular(bad)
     assert not grid.is_regular(np.array([1.0, 2.0, 1.5, 2.5]))
     np.testing.assert_array_equal(RangeGrid(np.stack([reg, bad])).is_regular(), [True, False])
+
+
+def test_coarsen_conserves():
+    a = np.arange(10.0)[:, None] * np.ones((1, 3))
+    c = grid.coarsen(a, 4)
+    assert c.shape == (3, 3)
+    np.testing.assert_allclose(c.sum(0) * 4, a.sum(0))
+    np.testing.assert_allclose(grid.coarsen_centres(np.arange(10.0), 4), [1.5, 5.5, 9.5])

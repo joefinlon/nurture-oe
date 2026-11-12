@@ -228,3 +228,21 @@ Type: fact
 Refs: D32  Source: repository layout; `tests/lidar_ms/README.md`
 Finding: The two scripts are in `tests/lidar_ms/`, as in the bundle README; only `pvc_port.py`, the `.in`/`.ref` files and the licence files are in `reference/`.
 Impact: Cosmetic; update the CLAUDE.md "Current work" line at the next refresh.
+
+### 2026-11-12 — TDTS transcription (§C.2.5) confirmed against multiscatter 1.2.11; native Dep8/Dep11 change hogan2008fig8 by up to 35 %
+Type: fact
+Refs: D24, O45  Source: `lidar_ms` M7, `tests/lidar_ms/test_tdts.py` (R6, R7); native vs compat on the shipped spaceborne fixtures
+Finding: In compat mode the wide-angle part matches all 16 TDTS references (8 `tdts_only*`, 8 `pvc_tdts`/`single_tdts_nolobe`) to ≤ 4.7e-9 relative, which is the print precision. This was the first execution of the §C.2.5 transcription. The C code picks the `lidar`/`radar` branch from its command line. compat infers it from the lobe test (Θ ≤ 0.1 rad anywhere in the profile → `lidar`, with every particulate class lobe-forming), which reproduces both families of references. Native vs compat, median ratio of β_w (range): `i3rc_lidar_exp1` 1.000 (1.000–1.000), `exp5` 1.000 (0.873–1.000), `calipso_cirrus_aerosol_wa_example` 0.980 (0.000–1.006), `benchmark_profile50_aniso` 1.008 (0.969–1.270), `hogan2008fig8` 0.65 (0.00–1.08). The drop comes from Dep8 (sources start at the first cloudy bin, so wide-angle light sourced by air above the cloud is dropped) together with Dep11 (air no longer carries the cirrus g = 0.85).
+Impact: For spaceborne geometry the Dep8 choice of first source bin changes β_w by tens of percent above and near cloud top. It should be judged against `mc` in the M12 campaign (O45) before F-Lidar use. NURTURE `pvc` is unaffected.
+
+### 2026-11-12 — TDTS pulse spreading falls up to 18 % below the diffusion law at n < 1; n(ν) has unbounded slope at ν → 0+
+Type: OPEN-candidate
+Refs: O45, D27  Source: `src/lidar_ms/tdts.py` (identical to `tdts.c`), `tests/lidar_ms/test_tdts.py` (A9, J5)
+Finding: (i) A9 holds (≤ 0.76 % at Δr/ℓ_t = 0.05–5, n = 0.1–30) in a uniformly filled thick medium, where V/I stays uniform. For a single pulse, the energy-weighted mean of s_w² − s_d² falls 18 % (Δr/ℓ_t = 0.05), 16 % (0.2) and 14 % (0.5) below (4/3)ℓ_t²(n + e^{−n} − 1) at n ≈ 0.2–1.5, and comes back within 2 % by n ≈ 10. The stencil mixes bins whose V/I differ, and the per-bin Ξ is concave in V/I. A9 was read as the uniform-medium test. (ii) The fast inversion n ≈ √(1.5ν)(1 + 0.2√(1.5ν)) has unbounded slope at ν → 0+, which is reached right after source injection (minimum ν 4.5e-14 on `i3rc_lidar_exp5`). Derivatives with respect to the source width (through a_eq) are therefore ill-conditioned there. On `i3rc_lidar_exp5` with a_eq tangents, check_jvp gives 5e-5, 1.2e-2 and 0.69 at FD steps of 1e-4, 1e-6 and 1e-8. That tangent is left out of J5; all other J5 cases are ≤ 1.4e-6. §C.2.8 lists the 1 % jump at ν = 1 but not this branch point.
+Impact: K columns of β_w with respect to particle size (via the source width) can be noisy in spaceborne geometry; size this as part of S_MS / M with `mc`. Add the ν → 0+ point to §C.2.8's list of non-smooth points.
+
+### 2026-11-12 — Gate proxies on Joe's machine (not the M13 benchmark)
+Type: fact
+Refs: D28  Source: ad-hoc timing during M5 and M7; synthetic HALO-like profiles
+Finding: `jvp` with `pvc`, 200 cloudy bins × 300 tangents: 0.036 s (Gate1, limit 0.5 s). `simulate` with `pvc`, 3600 × 845 curtain: 1.07 s (Gate2, limit 5 s). `jvp` with `pvc+tdts`, 200 bins × 300 tangents: 1.45 s at `wide_coarsen` 1, 0.39 s at 2, 0.13 s at 4 (Gate3, limit 0.5 s with coarsening ≤ 4).
+Impact: These agree with appendix C §C.3.5: `pvc` passes with a wide margin; `tdts` with tangents needs `wide_coarsen` ≥ 2. Its accuracy is the M12 question (O45). Formal timings come at M13.

@@ -40,3 +40,28 @@ def is_regular(r, tol=RANGE_SPACING_TOL):
     monotonic = dmax * dmin > 0
     amax, amin = np.abs(dmax), np.abs(dmin)
     return monotonic & (amax <= amin * (1 + tol)) & (amin <= amax * (1 + tol))
+
+
+def coarsen(a, k, axis=0, fill=0.0):
+    """Mean over groups of `k` consecutive bins along `axis`, padding the end with `fill` (§C.3.5).
+
+    Conservative for densities: the coarse value times k Delta r equals the sum over the group.
+    """
+    a = np.moveaxis(np.asarray(a), axis, 0)
+    n = a.shape[0]
+    nc = -(-n // k)
+    if nc * k > n:
+        a = np.concatenate([a, np.full((nc * k - n,) + a.shape[1:], fill, dtype=a.dtype)], axis=0)
+    out = a.reshape((nc, k) + a.shape[1:]).mean(axis=1)
+    return np.moveaxis(out, 0, axis)
+
+
+def coarsen_centres(r, k):
+    """Bin centres of the k-fold coarsened regular grid along axis 0 (end padded by extrapolation)."""
+    r = np.asarray(r)
+    n = r.shape[0]
+    nc = -(-n // k)
+    if nc * k > n:
+        d = r[1] - r[0]
+        r = np.concatenate([r, r[-1:] + d * np.arange(1, nc * k - n + 1).reshape((-1,) + (1,) * (r.ndim - 1))], axis=0)
+    return r.reshape((nc, k) + r.shape[1:]).mean(axis=1)

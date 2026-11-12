@@ -246,3 +246,9 @@ Type: fact
 Refs: D28  Source: ad-hoc timing during M5 and M7; synthetic HALO-like profiles
 Finding: `jvp` with `pvc`, 200 cloudy bins × 300 tangents: 0.036 s (Gate1, limit 0.5 s). `simulate` with `pvc`, 3600 × 845 curtain: 1.07 s (Gate2, limit 5 s). `jvp` with `pvc+tdts`, 200 bins × 300 tangents: 1.45 s at `wide_coarsen` 1, 0.39 s at 2, 0.13 s at 4 (Gate3, limit 0.5 s with coarsening ≤ 4).
 Impact: These agree with appendix C §C.3.5: `pvc` passes with a wide margin; `tdts` with tangents needs `wide_coarsen` ≥ 2. Its accuracy is the M12 question (O45). Formal timings come at M13.
+
+### 2026-11-12 — lidar_ms build M0–M8 complete: measured values against appendix C
+Type: fact
+Refs: D24–D32, O35, O42  Source: branch `lidar-ms-build`, commits for M0–M8; `tests/lidar_ms/` (267 pass, K5 skipped); frozen values in `tests/lidar_ms/frozen/`
+Finding: R1 single ≤ 1e-7 on all `*__single.ref` with atol 0. R2 compat pvc ≤ 4.7e-9 (all `*__pvc*.ref`; finite everywhere, including the NaN bins of `i3rc_lidar_exp5`/`exp6`). R3: native liquid within 0.82 % of compat, molecular class 98 % different in cloud (Dep2). R4: native pvc vs H06 4.27 % (30 km⁻¹, τ ≤ 1) and 8.55 % (10 km⁻¹, 1 < τ ≤ 3). R5 0.042 %. A5 5.2 % (appendix C: 4.7 %; M compared at the half-levels inside the slab). R6/R7 ≤ 4.7e-9. The §C.2.4 fixture is reproduced and frozen: β̂_liq/β̂_ss = 1.144, 2.209, 4.532, 9.323. K2 is frozen: A_s(base) 0.635 and δ_liq 0.034, 0.180, 0.293, 0.360. J2 ≤ 2.5e-8, J4 ≤ 1e-6, J5 ≤ 1.4e-6.
+Impact: Everything F(x) needs from `lidar_ms` is built and regression-tested. Still open: M9–M11 (Monte Carlo, incl. the Mie fixture and K5), M12 (validation campaign → O35, O40–O46), M13 (benchmark report). `lidar_adapter.py` waits for the S1 LUT schema.

@@ -8,3 +8,5 @@ Depends on NumPy and SciPy only; never imports `nurture_oe` [DECISION D29].
 __version__ = "0.1.0"
 
 from . import constants  # noqa: E402,F401
+from .schema import (Instrument, McConfig, NearBackscatter, OpticalProfile, OpticalTangent,  # noqa: E402,F401
+                     PhaseTables, RangeGrid, Returns, ReturnsTangent, SolverConfig)

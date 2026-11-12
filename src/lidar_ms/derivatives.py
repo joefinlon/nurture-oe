@@ -62,12 +62,17 @@ def jvp(grid_, instrument, optics, tangents, config=SolverConfig(), *, near=None
     out, r = _run(grid_, instrument, optics, tangents, config, near, 1j * h)
     first = {}
     for k, v in out.items():
+        if isinstance(v, dict):
+            v = {kk: (np.moveaxis(np.moveaxis(vv, -1, 0).reshape((P, K) + vv.shape[:-1])[:, 0], 0, -1)
+                      if isinstance(vv, np.ndarray) and vv.shape[-1:] == (P * K,) else vv) for kk, vv in v.items()}
+            first[k] = {kk: (np.real(vv) if np.iscomplexobj(vv) else vv) for kk, vv in v.items()}
+            continue
         if isinstance(v, np.ndarray) and v.ndim >= 1 and v.shape[-1] == P * K:
             first[k] = np.moveaxis(v, -1, 0).reshape((P, K) + v.shape[:-1])[:, 0]
             first[k] = np.moveaxis(first[k], 0, -1)
         else:
             first[k] = v
-    first = {k: (np.real(v) if np.iscomplexobj(v) else v) for k, v in first.items()}
+    first = {k: (np.real(v) if isinstance(v, np.ndarray) and np.iscomplexobj(v) else v) for k, v in first.items()}
     returns = assemble(first, P, r, optics, instrument, config, real=True)
     tan = ReturnsTangent(d_beta_par=np.imag(_to_pk(out["beta_par"], P, K)) / h,
                          d_beta_perp=np.imag(_to_pk(out["beta_perp"], P, K)) / h)

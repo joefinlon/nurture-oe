@@ -467,6 +467,7 @@ class Returns:
     beta_order: Optional[np.ndarray] = None
     stderr_par: Optional[np.ndarray] = None
     stderr_perp: Optional[np.ndarray] = None
+    diagnostic: Optional[dict] = None     # diagnose_closures: {"closure": (P,), "beta_perp": (P, N, J)}
 
     def __post_init__(self):
         P, n_out, J = np.shape(self.beta_par)

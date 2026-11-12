@@ -204,3 +204,27 @@ Type: new-GAP-candidate
 Refs: G23, G27, O36  Source: Spearman(ln β_p, Z_W) over C&S-ice pixels vs radar time shift, 15:30–16:00, 1 km bands (`scripts/check_halo_cloud.py`, `figures/check_halo_cloud_lag.png`)
 Finding: Peak lag (radar time − lidar time) −1.06, −0.93, −1.09, −1.19 s at 10.5, 9.5, 8.5, 7.5 km below the aircraft (peak ρ 0.91, 0.94, 0.85, 0.70; lower bands broad, ±0.25 s). A nadir lidar would give −2.13 to −1.53 s, scaling with depth; a body-fixed lidar 0. The constant ≈ 1.1 s (≈ 260 m, two 0.5 s profiles) is timing-like: a time-stamp or clock offset between CloudCube (interval mid-time) and the HALO 0.5 s stamps (centre assumed, G23). One segment, no bootstrap; not applied (`time_offset_s = 0`).
 Impact: At 0.5 s the lag misregisters radar and lidar by about two columns; at 10 s it is ≈ 10 % of a window. Either an S_repr/M term or a correction once its cause is known. Ask J. Collins (0.5 s time-stamp convention) and JPL (time base).
+
+### 2026-11-12 — lidar_ms test K5 (milestone M6) needs the Mie fixture that is created at M9
+Type: conflict-with-PK
+Refs: D26, D32, O40  Source: appendix C §C.4.2 (M6: `polarization.py`, K1–K6; M9: `tests/lidar_ms/mie_fixture.py`), §C.4.3 K5
+Finding: K5 runs closure C2 on `halo_ice_over_liquid` "with Mie-fixture droplet tables", but the Mie fixture is a milestone-M9 file. Decided with Joe on 2026-11-12: K5 is a skipped test at M6 (`tests/lidar_ms/test_polarization.py`) and runs once M9 exists. Every other M6 test passes; K3 and K4 use synthetic tables (a droplet-shaped table with c_perp = 0, and a Yang-shaped table with constant c_perp/p).
+Impact: The C2-under-ice prediction (δ_liq in the first liquid bin < 1/10 of C1's 0.33) is still untested. That bears on O40. Appendix C §C.4.2 should list K5 under M9.
+
+### 2026-11-12 — Under `pvc`, A_s ≥ 0.5 for isotropic near-180° scattering: C1 flag bits 0 and 2 need synthetic tables
+Type: OPEN-candidate
+Refs: O41, D26  Source: `lidar_ms` M6, `tests/lidar_ms/test_polarization.py` (K6); parameter scan at HALO geometry and at a spaceborne fixture geometry (range 700 km, ρ_tr 50 µrad, ρ_fov 65 µrad)
+Finding: Small-angle multiple scattering can at most halve the apparent particle extinction (equivalent-medium limit), so the accumulated single-scatter fraction of a liquid layer satisfies A_s ≥ 0.5 (isotropic) and is larger with the droplet factor (F ≤ 1). The minimum in the scan was 0.50, versus 0.63 for HALO liquid at 5–60 km⁻¹. Hence δ_acc ≤ 0.17, and C1's validity limit (δ_acc > 0.45, bit 0) cannot be reached with closed-form descriptors. A scan over two liquid layers (5–60 km⁻¹, a = 5–20 µm, gaps 30 m–1.8 km, FOV 1–4 mrad) gave no negative C1 increment (bit 2): after the first layer, forward-scattered light still in view dominates the attenuated unscattered beam (M ≈ 0.5–1.3 at the second top, local A_s ≈ 0.6 vs the threshold 2√A_s − A_s ≈ 0.96). K6 therefore raises bits 0 and 2 with synthetic near-180° tables: p rising to 8 off backscatter for bit 0, a backscatter spike with F → 0 for bit 2.
+Impact: Within F(x), C1 only reaches δ_acc ≈ 0.11–0.17 in liquid without wide-angle light. Hu's δ_acc up to 0.45 belongs to footprints where wide-angle multiple scattering matters, and §C.2.6 does not route that light through C1. The O41 failure mode (negative C1 increment at a second layer's top) was not observed under pvc. The validation campaign (M12) should check both against `mc`.
+
+### 2026-11-12 — lidar_ms M3–M5: test-construction choices that appendix C leaves open
+Type: fact
+Refs: D27  Source: `tests/lidar_ms/test_anisotropy.py` (N2), `src/lidar_ms/derivatives.py` (`check_jvp`), `tests/lidar_ms/test_derivatives.py` (J1)
+Finding: (i) N2: the 301 table nodes are spaced quadratically in γ/Θ over 0–10, giving a 4.4e-5 maximum error (appendix C measured 6e-5). Uniform spacing over 0–10 gives 4.4e-4, which fails the 2e-4 tolerance. (ii) `check_jvp` reports the normwise mismatch max|jvp − fd| / max|fd| per profile, tangent and output. Element-wise ratios are dominated by central-difference roundoff (≈1e-16 |F| / step) in elements whose derivative is far below the block maximum. Measured on `pvc`: α 6.9e-10 (appendix C: 5e-10), a 5.5e-9, β 3.1e-10, δ 3.7e-10 (`halo_liquid_30`), and up to 2.5e-8 on `halo_ice_over_liquid`. (iii) J1 compares jvp's real part with `simulate` at 1e-14 relative to each output's maximum. The real part carries the complex step's h² term (≈1e-68 here), which no element-wise test passes where the true value is 0.
+Impact: None on F(x). It records how the fixed tolerances were applied.
+
+### 2026-11-12 — CLAUDE.md locates `schema_sketch.py` and `make_refs.py` in `tests/lidar_ms/reference/`
+Type: fact
+Refs: D32  Source: repository layout; `tests/lidar_ms/README.md`
+Finding: The two scripts are in `tests/lidar_ms/`, as in the bundle README; only `pvc_port.py`, the `.in`/`.ref` files and the licence files are in `reference/`.
+Impact: Cosmetic; update the CLAUDE.md "Current work" line at the next refresh.

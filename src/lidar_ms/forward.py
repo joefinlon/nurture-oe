@@ -10,7 +10,7 @@ from dataclasses import asdict
 
 import numpy as np
 
-from . import __version__, anisotropy, compat, grid, mixing, pvc
+from . import __version__, anisotropy, compat, grid, mixing, polarization, pvc
 from .constants import EXTINGUISHED_TU, LOBE_MIXTURE_RATIO, TABLE_TAIL_WEIGHT, flag
 from .schema import Instrument, OpticalProfile, RangeGrid, Returns, SolverConfig
 from .single import single
@@ -90,16 +90,16 @@ def solve(r, opt, kinds, descriptors, instrument, config, near=None, near_index=
     else:
         beta_ss, tu, tau = single(alpha_tot, beta, dr)
     theta2 = mixing.lobe_variance(opt["a_eq"], instrument.wavelength)
+    part = np.array([k != "molecular" for k in kinds])
+    lobe = mixing.lobe_mask(theta2, part, config.theta_max, all_particulate=is_compat)
     flags = np.where(np.real(tu[:-1]) < EXTINGUISHED_TU, flag("EXTINGUISHED"), 0).astype(np.uint16)
 
     if config.solver == "single":
         beta_ms = beta_ss
         Mt = np.zeros((N + 1, B), dtype=beta_ss.dtype)
         gamma2 = np.zeros((N + 1, B), dtype=beta_ss.dtype)
-        F = None
+        Fm = Fp = np.ones((N, J, B))
     elif config.solver in ("pvc", "pvc+tdts"):
-        part = np.array([k != "molecular" for k in kinds])
-        lobe = mixing.lobe_mask(theta2, part, config.theta_max, all_particulate=is_compat)
         alpha_c, alpha_n, q = mixing.pvc_bin(alpha, theta2, lobe)
         r_half = grid.half_levels(r.T).T
         Mt, gamma2, valid = pvc.propagate(dr, r_half, alpha_c, alpha_n, q, tu, instrument.rho_tr,
@@ -116,7 +116,6 @@ def solve(r, opt, kinds, descriptors, instrument, config, near=None, near_index=
             # (C.4) reduces to (C.2) where M = 0 at both half-levels: use the single-scatter value
             no_ms = (np.real(Mt[:-1]) == 0) & (np.real(Mt[1:]) == 0)
             beta_ms = np.where(no_ms[:, None, :], beta_ss, beta_ms)
-        F = dict(minus=Fm, plus=Fp, theta2=theta2, valid=valid)
         flags |= pvc_flags(alpha, theta2, lobe, tail, descriptors, Mt)
     else:
         raise NotImplementedError(f"solver {config.solver!r} is not built yet")
@@ -124,7 +123,10 @@ def solve(r, opt, kinds, descriptors, instrument, config, near=None, near_index=
     n_out = N if config.n_out is None else max(int(config.n_out), N)
     beta_wide = np.zeros((n_out, J, B), dtype=beta_ms.dtype)
 
-    par, perp, closure_used, pol_flags = _polarize(beta_ms, beta_ss, opt["delta"], kinds, config)
+    par, perp, closure_used, pol_flags, diag = polarization.polarize(
+        beta_ms, beta_ss, opt["delta"], kinds, descriptors, config, dr=dr, r=r, alpha=alpha, lobe=lobe, tu=tu,
+        Mt=Mt, gamma2=gamma2, theta2=theta2, F_minus=Fm, F_plus=Fp, tables=tables, near_index=near_index,
+        rho_fov=instrument.rho_fov)
     flags |= pol_flags
     with np.errstate(divide="ignore", invalid="ignore"):
         M = np.where(np.real(tu) > 0, Mt / np.where(np.real(tu) > 0, tu, 1.0), np.nan)
@@ -132,7 +134,7 @@ def solve(r, opt, kinds, descriptors, instrument, config, near=None, near_index=
     return dict(beta_par=_pad(par, n_out), beta_perp=_pad(perp, n_out), beta_ss=beta_ss,
                 beta_wide=beta_wide, ms_factor=M, gamma2=gamma2,
                 a_s=accumulated_ss_fraction(beta_ms, beta_ss, dr, kinds), flags=flags.astype(np.uint16),
-                closure_used=closure_used)
+                closure_used=closure_used, diagnostic=diag)
 
 
 def near_tables(near, kinds, names):
@@ -165,13 +167,6 @@ def _pad(a, n_out):
     if a.shape[0] == n_out:
         return a
     return np.concatenate([a, np.zeros((n_out - a.shape[0],) + a.shape[1:], dtype=a.dtype)], axis=0)
-
-
-def _polarize(beta_ms, beta_ss, delta, kinds, config):
-    """Single-scatter split per class: beta_perp = beta delta / (1 + delta). Closures arrive at M6."""
-    perp = beta_ms * delta / (1.0 + delta)
-    B = beta_ms.shape[-1]
-    return beta_ms - perp, perp, np.full(B, "none", dtype=object), np.zeros(beta_ms.shape[::2], np.uint16)
 
 
 def accumulated_ss_fraction(beta_ms, beta_ss, dr, kinds):
@@ -225,7 +220,13 @@ def assemble(out, P, r, optics, instrument, config, real=False) -> Returns:
                    gamma2=np.real(from_bin_major(out["gamma2"], P)),
                    a_s=from_bin_major(out["a_s"], P), closure_used=np.asarray(out["closure_used"]),
                    flags=from_bin_major(out["flags"], P), kinds=optics.kinds, names=optics.names,
-                   r=r_out, meta=meta)
+                   r=r_out, meta=meta, diagnostic=_diag(out.get("diagnostic"), P, f))
+
+
+def _diag(d, P, f):
+    if d is None:
+        return None
+    return {"closure": np.asarray(d["closure"]), "beta_perp": f(from_bin_major(d["beta_perp"], P))}
 
 
 def _config_dict(config):

@@ -206,102 +206,119 @@ Finding: Peak lag (radar time − lidar time) −1.06, −0.93, −1.09, −1.19
 Impact: At 0.5 s the lag misregisters radar and lidar by about two columns; at 10 s it is ≈ 10 % of a window. Either an S_repr/M term or a correction once its cause is known. Ask J. Collins (0.5 s time-stamp convention) and JPL (time base).
 
 ### 2026-11-12 — lidar_ms test K5 (milestone M6) needs the Mie fixture that is created at M9
+**FOLDED 2026-11-16**
 Type: conflict-with-PK
 Refs: D26, D32, O40  Source: appendix C §C.4.2 (M6: `polarization.py`, K1–K6; M9: `tests/lidar_ms/mie_fixture.py`), §C.4.3 K5
 Finding: K5 runs closure C2 on `halo_ice_over_liquid` "with Mie-fixture droplet tables", but the Mie fixture is a milestone-M9 file. Decided with Joe on 2026-11-12: K5 is a skipped test at M6 (`tests/lidar_ms/test_polarization.py`) and runs once M9 exists. Every other M6 test passes; K3 and K4 use synthetic tables (a droplet-shaped table with c_perp = 0, and a Yang-shaped table with constant c_perp/p).
 Impact: The C2-under-ice prediction (δ_liq in the first liquid bin < 1/10 of C1's 0.33) is still untested. That bears on O40. Appendix C §C.4.2 should list K5 under M9.
 
 ### 2026-11-12 — Under `pvc`, A_s ≥ 0.5 for isotropic near-180° scattering: C1 flag bits 0 and 2 need synthetic tables
+**FOLDED 2026-11-16**
 Type: OPEN-candidate
 Refs: O41, D26  Source: `lidar_ms` M6, `tests/lidar_ms/test_polarization.py` (K6); parameter scan at HALO geometry and at a spaceborne fixture geometry (range 700 km, ρ_tr 50 µrad, ρ_fov 65 µrad)
 Finding: Small-angle multiple scattering can at most halve the apparent particle extinction (equivalent-medium limit), so the accumulated single-scatter fraction of a liquid layer satisfies A_s ≥ 0.5 (isotropic) and is larger with the droplet factor (F ≤ 1). The minimum in the scan was 0.50, versus 0.63 for HALO liquid at 5–60 km⁻¹. Hence δ_acc ≤ 0.17, and C1's validity limit (δ_acc > 0.45, bit 0) cannot be reached with closed-form descriptors. A scan over two liquid layers (5–60 km⁻¹, a = 5–20 µm, gaps 30 m–1.8 km, FOV 1–4 mrad) gave no negative C1 increment (bit 2): after the first layer, forward-scattered light still in view dominates the attenuated unscattered beam (M ≈ 0.5–1.3 at the second top, local A_s ≈ 0.6 vs the threshold 2√A_s − A_s ≈ 0.96). K6 therefore raises bits 0 and 2 with synthetic near-180° tables: p rising to 8 off backscatter for bit 0, a backscatter spike with F → 0 for bit 2.
 Impact: Within F(x), C1 only reaches δ_acc ≈ 0.11–0.17 in liquid without wide-angle light. Hu's δ_acc up to 0.45 belongs to footprints where wide-angle multiple scattering matters, and §C.2.6 does not route that light through C1. The O41 failure mode (negative C1 increment at a second layer's top) was not observed under pvc. The validation campaign (M12) should check both against `mc`.
 
 ### 2026-11-12 — lidar_ms M3–M5: test-construction choices that appendix C leaves open
+**FOLDED 2026-11-16**
 Type: fact
 Refs: D27  Source: `tests/lidar_ms/test_anisotropy.py` (N2), `src/lidar_ms/derivatives.py` (`check_jvp`), `tests/lidar_ms/test_derivatives.py` (J1)
 Finding: (i) N2: the 301 table nodes are spaced quadratically in γ/Θ over 0–10, giving a 4.4e-5 maximum error (appendix C measured 6e-5). Uniform spacing over 0–10 gives 4.4e-4, which fails the 2e-4 tolerance. (ii) `check_jvp` reports the normwise mismatch max|jvp − fd| / max|fd| per profile, tangent and output. Element-wise ratios are dominated by central-difference roundoff (≈1e-16 |F| / step) in elements whose derivative is far below the block maximum. Measured on `pvc`: α 6.9e-10 (appendix C: 5e-10), a 5.5e-9, β 3.1e-10, δ 3.7e-10 (`halo_liquid_30`), and up to 2.5e-8 on `halo_ice_over_liquid`. (iii) J1 compares jvp's real part with `simulate` at 1e-14 relative to each output's maximum. The real part carries the complex step's h² term (≈1e-68 here), which no element-wise test passes where the true value is 0.
 Impact: None on F(x). It records how the fixed tolerances were applied.
 
 ### 2026-11-12 — CLAUDE.md locates `schema_sketch.py` and `make_refs.py` in `tests/lidar_ms/reference/`
+**FOLDED 2026-11-16**
 Type: fact
 Refs: D32  Source: repository layout; `tests/lidar_ms/README.md`
 Finding: The two scripts are in `tests/lidar_ms/`, as in the bundle README; only `pvc_port.py`, the `.in`/`.ref` files and the licence files are in `reference/`.
 Impact: Cosmetic; update the CLAUDE.md "Current work" line at the next refresh.
 
 ### 2026-11-12 — TDTS transcription (§C.2.5) confirmed against multiscatter 1.2.11; native Dep8/Dep11 change hogan2008fig8 by up to 35 %
+**FOLDED 2026-11-16**
 Type: fact
 Refs: D24, O45  Source: `lidar_ms` M7, `tests/lidar_ms/test_tdts.py` (R6, R7); native vs compat on the shipped spaceborne fixtures
 Finding: In compat mode the wide-angle part matches all 16 TDTS references (8 `tdts_only*`, 8 `pvc_tdts`/`single_tdts_nolobe`) to ≤ 4.7e-9 relative, which is the print precision. This was the first execution of the §C.2.5 transcription. The C code picks the `lidar`/`radar` branch from its command line. compat infers it from the lobe test (Θ ≤ 0.1 rad anywhere in the profile → `lidar`, with every particulate class lobe-forming), which reproduces both families of references. Native vs compat, median ratio of β_w (range): `i3rc_lidar_exp1` 1.000 (1.000–1.000), `exp5` 1.000 (0.873–1.000), `calipso_cirrus_aerosol_wa_example` 0.980 (0.000–1.006), `benchmark_profile50_aniso` 1.008 (0.969–1.270), `hogan2008fig8` 0.65 (0.00–1.08). The drop comes from Dep8 (sources start at the first cloudy bin, so wide-angle light sourced by air above the cloud is dropped) together with Dep11 (air no longer carries the cirrus g = 0.85).
 Impact: For spaceborne geometry the Dep8 choice of first source bin changes β_w by tens of percent above and near cloud top. It should be judged against `mc` in the M12 campaign (O45) before F-Lidar use. NURTURE `pvc` is unaffected.
 
 ### 2026-11-12 — TDTS pulse spreading falls up to 18 % below the diffusion law at n < 1; n(ν) has unbounded slope at ν → 0+
+**FOLDED 2026-11-16**
 Type: OPEN-candidate
 Refs: O45, D27  Source: `src/lidar_ms/tdts.py` (identical to `tdts.c`), `tests/lidar_ms/test_tdts.py` (A9, J5)
 Finding: (i) A9 holds (≤ 0.76 % at Δr/ℓ_t = 0.05–5, n = 0.1–30) in a uniformly filled thick medium, where V/I stays uniform. For a single pulse, the energy-weighted mean of s_w² − s_d² falls 18 % (Δr/ℓ_t = 0.05), 16 % (0.2) and 14 % (0.5) below (4/3)ℓ_t²(n + e^{−n} − 1) at n ≈ 0.2–1.5, and comes back within 2 % by n ≈ 10. The stencil mixes bins whose V/I differ, and the per-bin Ξ is concave in V/I. A9 was read as the uniform-medium test. (ii) The fast inversion n ≈ √(1.5ν)(1 + 0.2√(1.5ν)) has unbounded slope at ν → 0+, which is reached right after source injection (minimum ν 4.5e-14 on `i3rc_lidar_exp5`). Derivatives with respect to the source width (through a_eq) are therefore ill-conditioned there. On `i3rc_lidar_exp5` with a_eq tangents, check_jvp gives 5e-5, 1.2e-2 and 0.69 at FD steps of 1e-4, 1e-6 and 1e-8. That tangent is left out of J5; all other J5 cases are ≤ 1.4e-6. §C.2.8 lists the 1 % jump at ν = 1 but not this branch point.
 Impact: K columns of β_w with respect to particle size (via the source width) can be noisy in spaceborne geometry; size this as part of S_MS / M with `mc`. Add the ν → 0+ point to §C.2.8's list of non-smooth points.
 
 ### 2026-11-12 — Gate proxies on Joe's machine (not the M13 benchmark)
+**FOLDED 2026-11-16**
 Type: fact
 Refs: D28  Source: ad-hoc timing during M5 and M7; synthetic HALO-like profiles
 Finding: `jvp` with `pvc`, 200 cloudy bins × 300 tangents: 0.036 s (Gate1, limit 0.5 s). `simulate` with `pvc`, 3600 × 845 curtain: 1.07 s (Gate2, limit 5 s). `jvp` with `pvc+tdts`, 200 bins × 300 tangents: 1.45 s at `wide_coarsen` 1, 0.39 s at 2, 0.13 s at 4 (Gate3, limit 0.5 s with coarsening ≤ 4).
 Impact: These agree with appendix C §C.3.5: `pvc` passes with a wide margin; `tdts` with tangents needs `wide_coarsen` ≥ 2. Its accuracy is the M12 question (O45). Formal timings come at M13.
 
 ### 2026-11-12 — lidar_ms build M0–M8 complete: measured values against appendix C
+**FOLDED 2026-11-16**
 Type: fact
 Refs: D24–D32, O35, O42  Source: branch `lidar-ms-build`, commits for M0–M8; `tests/lidar_ms/` (267 pass, K5 skipped); frozen values in `tests/lidar_ms/frozen/`
 Finding: R1 single ≤ 1e-7 on all `*__single.ref` with atol 0. R2 compat pvc ≤ 4.7e-9 (all `*__pvc*.ref`; finite everywhere, including the NaN bins of `i3rc_lidar_exp5`/`exp6`). R3: native liquid within 0.82 % of compat, molecular class 98 % different in cloud (Dep2). R4: native pvc vs H06 4.27 % (30 km⁻¹, τ ≤ 1) and 8.55 % (10 km⁻¹, 1 < τ ≤ 3). R5 0.042 %. A5 5.2 % (appendix C: 4.7 %; M compared at the half-levels inside the slab). R6/R7 ≤ 4.7e-9. The §C.2.4 fixture is reproduced and frozen: β̂_liq/β̂_ss = 1.144, 2.209, 4.532, 9.323. K2 is frozen: A_s(base) 0.635 and δ_liq 0.034, 0.180, 0.293, 0.360. J2 ≤ 2.5e-8, J4 ≤ 1e-6, J5 ≤ 1.4e-6.
 Impact: Everything F(x) needs from `lidar_ms` is built and regression-tested. Still open: M9–M11 (Monte Carlo, incl. the Mie fixture and K5), M12 (validation campaign → O35, O40–O46), M13 (benchmark report). `lidar_adapter.py` waits for the S1 LUT schema.
 
 ### 2026-11-12 — K5 not met: closure C2 with Mie droplet tables gives δ_liq = 0.067 under ice (C1: 0.327)
+**FOLDED 2026-11-16**
 Type: OPEN-candidate
 Refs: O40, D26, D32  Source: `tests/lidar_ms/test_polarization.py` (K5, strict xfail; frozen values), `tests/lidar_ms/mie_fixture.py`
 Finding: On `halo_ice_over_liquid` (ice δ = 0.4, isotropic near 180°; droplets a_eq = 8 µm, Mie fixture with Hansen–Travis v_eff = 0.1, m = 1.334), `pvc` with C2 gives δ_liq = 0.0669 in the first liquid bin, against 0.3265 from C1. The ratio is 0.20; appendix C predicted below 0.1. The same case with a synthetic sphere table (c_⊥ ≡ 0) gives 0. The Mie table's c_⊥(γ/Θ) is 1.4e-4 at γ/Θ = 0.1, 0.025 at 0.4 and 0.22 at 0.9: the glory region already depolarizes within one lobe width of backscatter, and the first-bin plus half-level carries the droplets' own lobe. Deeper bins: C2 0.19, 0.29, 0.36; C1 0.39, 0.45, 0.50.
 Impact: C2 still removes most of C1's structural excess under ice, but less than predicted. Whether 0.067 is right is for the Monte Carlo (M12, O40). The near-180° droplet table shape, not only δ_j, drives C2 in liquid; S1 must supply it at the γ/Θ resolution used here (301 nodes to γ/Θ = 10).
 
 ### 2026-11-12 — lidar_ms M9: Monte Carlo tables and the test-only Mie fixture
+**FOLDED 2026-11-16**
 Type: fact
 Refs: D25, D32  Source: `src/lidar_ms/mc/{tables,fixtures,geometry}.py`, `tests/lidar_ms/mie_fixture.py`, `tests/lidar_ms/test_mc_tables.py` (X1–X4)
 Finding: (i) The inverse CDFs tabulate θ rather than μ = cos θ on the 2^16 nodes of §C.3.5, which keeps precision inside narrow forward lobes; P_ij are taken as linear in θ between nodes, and the CDF integrates that form exactly on an 8× refined grid. HG tables match the closed form to ≤ 1e-4 in μ (g = −0.3 to 0.95). (ii) Mie fixture: the water-cloud lidar ratio at 532 nm needs a size-parameter step ≤ 0.02 to converge to 0.2 % (S = 19.95, 19.31, 19.02, 18.99, 18.98 sr at Δx = 0.2, 0.1, 0.05, 0.01, 0.005; a_eq = 8 µm, v_eff = 0.1). At Δx = 0.02, S = 19.3, 19.0, 18.1 sr for a_eq = 5, 8, 12 µm, all inside X2's 18–20 sr. (iii) The fixture's matrices are renormalized to ∫P11 dΩ = 4π on their angle grid (a 3e-4 change); its refractive index (1.334 + 0i) and v_eff = 0.1 are test parameters, not database values.
 Impact: None on F(x). The M12 campaign should use Δx ≤ 0.02 for droplet tables.
 
 ### 2026-11-12 — lidar_ms M10: scalar Monte Carlo confirms the A5 double-scattering integral; return-lobe paths are heavy-tailed in thin layers
+**FOLDED 2026-11-16**
 Type: OPEN-candidate
 Refs: D25, O42, O40  Source: `src/lidar_ms/mc/{transport,estimator,driver}.py`, `tests/lidar_ms/test_mc_scalar.py` (X8, X7)
 Finding: (i) On `halo_thin_slab` with the Gaussian-lobe fixture, the order-2/order-1 ratio integrated over the slab equals the A5 integral to −0.05 % and −0.08 % (two seeds, 4e8 packets, ε_ddis = 0.5). Every slab bin is within 3 SE (bin SE 3–17 %). (ii) Half of the double scattering, the return-lobe path (backscatter, then forward lobe towards the receiver), is estimated only when a packet redirected towards the detector collides again inside the layer above its first collision. In a thin layer this is rare, and the distribution of contributions is heavy-tailed: at ε = 0.1 and 0.3 with 4e7 packets the two top slab bins came out 37–62 % low, at 5–10 batch SE. The batch errors understate the true error there. ε = 0.5 and 4e8 packets (7 s on 8 workers) fix it for this case. (iii) Without DDIS (ε = 0) the local estimate under a forward peak seen from below (HG g = 0.85) is also heavy-tailed. X7 needed 4e6 packets before ε = 0 and 0.1 agreed within 3 batch SE; at 4e5 single bins differed by up to 7.5 SE. (iv) X7 is tested on per-bin totals and on each order summed over the τ ≤ 3 bins. A per-bin, per-order comparison of 75 pairs had one bin at 3.1 SE.
 Impact: Reference runs for M12 should use ε ≈ 0.5, and the §C.2.7 spike diagnostic, not batch errors alone, should decide acceptance near layer tops. The n-tuple local estimate (BM11) is needed at small optical depth as well as large, so §C.2.7's "upgrade if the convergence test fails at large optical depth" should also name thin layers and the first bins of a layer. The default `McConfig.epsilon_ddis` (0.1) is Joe's decision (§C.4.6); it was not changed.
 
 ### 2026-11-12 — Wide-field limit A3 holds in the Monte Carlo only if non-lobe light is lost; with isotropic non-lobe light it is exceeded by 16–60 % at τ ≤ 1
+**FOLDED 2026-11-16**
 Type: OPEN-candidate
 Refs: O45, D24  Source: `tests/lidar_ms/test_mc_scalar.py` (X9), `tests/lidar_ms/mc_cases.py` (`lobe_case`)
 Finding: X9 (`halo_liquid_30_iso`, ρ_fov = 0.5 rad) with the Gaussian-lobe fixture that scatters the non-lobe half isotropically (ω = 1) gives a Monte Carlo total above A3 by 16 % (τ_mid = 0.23), 60 % (0.68) and 121 % (1.13), with batch SE ≤ 1 %. Order 1 is only 71 % and 33 % of the total in the first two bins: this is wide-angle multiple scattering, which A3 (and `pvc`) leaves out. The fixture X9 uses keeps half the extinction in the lobe, 2 % isotropic and the rest absorbed (ω = 0.52). That is the configuration in which A3 is exact, and the Monte Carlo then agrees to 0.45 % and 1.0 % at τ ≤ 1 (5 % at 0.05 isotropic: 0.7 %, 3.3 %). Appendix C does not say what the lobe fixture's non-lobe half does; this choice is recorded here.
 Impact: Confirms that the Monte Carlo's lobe transport and time of flight reproduce the small-angle limit. The size of the wide-angle term at wide fields of view is real physics, not a solver error. For HALO's 0.5 mrad it is the O45 question for M12, with Mie, not isotropic, non-lobe light.
 
 ### 2026-11-12 — lidar_ms M10: conventions of solver `mc` that appendix C leaves open
+**FOLDED 2026-11-16**
 Type: fact
 Refs: D25, D31  Source: `src/lidar_ms/forward.py` (`simulate_mc`), `src/lidar_ms/mc/driver.py`
 Finding: (i) Scalar mode puts all of I in `beta_par` with `beta_perp` = 0 and `closure_used` = "mc_scalar". (ii) `beta_wide` is 0 (the Monte Carlo does not separate wide-angle light); `ms_factor` and `gamma2` are NaN; `a_s` comes from the order-1 and total tallies of the liquid classes; `stderr_*` are batch-mean errors of the order-summed tallies. (iii) `meta["mc_spike_max"]` is the largest single-contribution fraction in any bin with one-way τ ≤ 3, the §C.2.7 spike diagnostic. (iv) A warning is raised if `OpticalProfile.beta` differs from α ω P11(π)/4π of the `PhaseTables` by more than 1e-3; the Monte Carlo uses the tables. (v) `n_out` > N is refused for `mc`. (vi) In the estimator, the path length L is clipped at |x| (a one-ulp rounding) so that r_app ≥ d holds exactly (X6). (vii) The Gaussian receiver option weights arrivals by exp(−ρ²/(ρ_fov z)²), consistent with κ = 1 + ρ_tr²/ρ_fov² in `Instrument.kappa`. (viii) Throughput on Joe's machine: 2e5 HALO packets through a τ = 6 HG cloud in 0.7 s on one worker; 4e8 thin-slab packets in 7 s on 8 workers.
 Impact: None on F(x). It records how M10 filled gaps in §C.2.7 and §C.3.3 for the M12 session.
 
 ### 2026-11-12 — P4 cannot be run: the cases of Hu et al. (2006, Table 1) are not in Project Knowledge
+**FOLDED 2026-11-16**
 Type: new-GAP-candidate
 Refs: D25, D26, O40  Source: appendix C §C.2.7 (P4), §C.4.3; `tests/lidar_ms/test_mc_polarized.py` (`test_p4_hu_table1`, skipped)
 Finding: P4 asks that "the spaceborne cases of Hu et al. (2006, Table 1)" fall on Eq. 3 within 2 %. Neither the table nor the paper is in `docs/pk_snapshot/` or the repository, and inventing the geometries, extinctions and droplet sizes would break hard rule 1. P4 is a skipped test; the Monte Carlo machinery it needs (polarized Mie, A_s and δ_acc from the order-1 and co/cross tallies) is built and tested. Asked the parent session on 2026-11-12 for the table.
 Impact: The normative check that ties the Monte Carlo to the published depolarization relation is missing, and closure C1 rests on that relation. Needs Table 1 (lidar altitude, divergence, field of view, extinction, droplet size) from the paper.
 
 ### 2026-11-12 — P4 proxy: at a CALIPSO-like fixture geometry the Monte Carlo lies 3–11 % below Hu's Eq. 3, more for larger droplets
+**FOLDED 2026-11-16**
 Type: OPEN-candidate
 Refs: O40, D26, O35  Source: `tests/lidar_ms/test_mc_polarized.py` (`test_p4_proxy_*`); geometry of the shipped `calipso_cirrus_aerosol_wa_example.in` (700 km, ρ_tr 50 µrad, ρ_fov 65 µrad), a fixture, not F-Lidar [GAP G6]
 Finding: Polarized Monte Carlo, Mie droplets (v_eff 0.1), semi-infinite cloud from 15 m bins, ε_ddis = 0.5, 4e6 packets: A_s(MC)/Eq. 3(δ_acc(MC)) − 1 is −1.3 % in the first bin and −4.7 % to −7.8 % once δ_acc ≥ 0.1 (a_eq 8 µm, 20 km⁻¹; δ_acc → 0.188, A_s → 0.433). For a_eq 5 µm at 10 km⁻¹ the offset is −3 % (δ_acc → 0.17); for 12 µm at 40 km⁻¹ it is −11 % (δ_acc → 0.20). Batch SE of the offset ≤ 0.9 %. Against the closed form ((1−δ)/(1+δ))² the offsets are +4 % to +14 %. The polarized Mie path itself is verified (next entry), so this is either the physics of this geometry and these droplets, or a difference in setup from Hu et al. that cannot be checked without their Table 1. A strict xfail keeps the 2 % criterion visible, and a frozen band (−10 % to −4 %) keeps the result.
 Impact: If confirmed at Hu's own cases, C1's no-free-parameter relation carries a droplet-size-dependent bias of several percent in A_s at spaceborne geometry. This bears on O40 (C1 vs C2) and on how C1 is weighted in S_ε. For HALO geometry it is part of the M12 campaign.
 
 ### 2026-11-12 — lidar_ms M11: polarized Monte Carlo verified against independent Jones-vector quadrature (P1–P3)
+**FOLDED 2026-11-16**
 Type: fact
 Refs: D25, D31  Source: `src/lidar_ms/mc/{transport,estimator,driver}.py`, `tests/lidar_ms/jones_double.py`, `tests/lidar_ms/test_mc_polarized.py`
 Finding: (i) P1: order-1 ⊥/∥ equals δ_j to 1e-10 (δ = 0.4 fixture); Mie spheres and Rayleigh air give ⊥ ≤ 1e-12 ∥. (ii) P2: a direct quadrature of second-order backscatter that propagates Jones vectors with the scatterer's amplitude matrix (no Stokes rotations; converged to 1e-7) gives, for a Rayleigh slab (τ 0.09, ρ_fov 0.1 rad), ⊥/∥ = 0.11001; Monte Carlo 0.10995 ± 0.0011, with ∥ and ⊥ magnitudes within 1.2 and 0.8 SE. The same check for one Mie sphere size (a = 2.5 µm), beyond the catalogue: 0.4132 vs 0.4137, within 0.2 and 0.6 SE. Flipping the rotation sense only in the transport, or only at the analyzer, moves ⊥/∥ to 0.68 (≈ 90 SE); flipping it everywhere is a mirror convention and leaves every observable unchanged. The P34 sign enters linear depolarization only as −P34². (iii) P3: transmitted polarization at 45° (S0 = (1, 0, 1, 0), co/cross referred to the rotated analyzer) agrees with 0° per order and per bin, as paired same-seed differences. Order 1 agrees to rounding, so P3 uses a floor of 1e-12 of the bin total. Per bin, with 150–300 comparisons, the limit is the Bonferroni/Student-t multiplier with the same family-wise false-alarm rate as one 3-SE test; one Rayleigh bin was at 3.5 SE, as expected for that many comparisons. (iv) When the intensity after scattering is zero (S_I = 0, e.g. Rayleigh at 90° with Q = 1) the packet gets W = 0 and is dropped.
 Impact: The sign conventions §C.2.7 leaves to "the normative tests" are fixed and verified. Appendix C should state how "3 SE in every bin" is applied when a test compares many bins (X5, X7, P3). Single per-bin 3-SE checks over ≥ 100 bins fail by chance at about the rate seen here.
 
 ### 2026-11-12 — lidar_ms build M9–M11 complete
+**FOLDED 2026-11-16**
 Type: fact
 Refs: D25, D32, O40  Source: branch `lidar-ms-build`, commits for M9, M10, M11; `tests/lidar_ms/` (310 pass, 1 skipped: P4; 2 strict xfail: K5 prediction, P4 proxy at 2 %)
 Finding: Solver `mc` is built: scalar and polarized, DDIS, roulette, batches on worker processes, `simulate(..., config=SolverConfig(solver="mc"), phase=PhaseTables)`. X1–X9 and P1–P3 pass; K5 runs and misses its prediction (0.067 vs < 0.033); P4 waits for Hu et al. (2006) Table 1. Monte Carlo tests carry `slow` (17 tests, ≈ 40 s on 8 workers).
